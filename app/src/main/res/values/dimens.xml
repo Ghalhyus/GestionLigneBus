@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="epaisseur_bordure_liste">2dp</dimen>
+    <dimen name="epaisseur_bordure_liste_bottom">1dp</dimen>
+    <dimen name="stroke_bordure_liste">4dp</dimen>
+    <dimen name="table_layout_margin">10dp</dimen>
+    <dimen name="petite_marge">8dp</dimen>
+    <dimen name="espace_bouton_fiche_horaire">20dp</dimen>
+
+    <dimen name="hauteur_bouton">60dp</dimen>
+    <dimen name="largeur_bouton_arret_groupe">150dp</dimen>
+
+    <!-- Arrets groupes -->
+    <dimen name="taille_titre_liste">23sp</dimen>
+
+    <!-- Popups -->
+    <dimen name="largeur_popup">220dp</dimen>
+    <dimen name="hauteur_popup">260dp</dimen>
+    <dimen name="hauteur_entete_arret">60dp</dimen>
+    <dimen name="largeur_bouton_groupe">350dp</dimen>
+    <dimen name="hauteur_bouton_groupe">60dp</dimen>
+</resources>

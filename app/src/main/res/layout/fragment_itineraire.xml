@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="0,1"
+    android:layout_margin="@dimen/table_layout_margin">
+
+    <TableRow>
+        <Spinner
+            android:id="@+id/itineraire_groupe_liste"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/itineraire_arret_depart_hint"
+            />
+        <Button
+            android:id="@+id/itineraire_inversion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/itineraire_btn_inversion"
+            />
+    </TableRow>
+    <TableRow>
+        <EditText
+            android:id="@+id/itineraire_arret_depart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/itineraire_arret_depart_hint"
+            />
+        <EditText
+            android:id="@+id/itineraire_arret_arrive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/itineraire_arret_arrive_hint"
+            />
+    </TableRow>
+    <TableRow>
+        <EditText
+            android:id="@+id/itineraire_horaire_depart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/itineraire_horaire_depart_hint"
+            />
+        <EditText
+            android:id="@+id/itineraire_horaire_arrive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Horaire d'arrivé"
+            />
+    </TableRow>
+    <TableRow>
+        <Spinner
+            android:id="@+id/itineraire_periode_liste"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/itineraire_arret_depart_hint"
+            />
+
+        <CheckBox
+            android:text="Autoriser \ncorrespondances"
+
+            />
+
+    </TableRow>
+    <TableRow android:gravity="center">
+
+        <Button
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Rechercher"/>
+    </TableRow>
+
+    <androidx.recyclerview.widget.RecyclerView/>
+
+</TableLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/renommer"
+        android:title="@string/renommer" />
+    <item
+        android:id="@+id/supprimer"
+        android:title="@string/supprimer" />
+    <item
+        android:id="@+id/annuler"
+        android:title="@string/annuler" />
+</menu>

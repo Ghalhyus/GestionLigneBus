@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke
+        android:width="@dimen/stroke_bordure_liste"
+        android:color="@color/black" />
+    <padding
+        android:left="@dimen/epaisseur_bordure_liste"
+        android:top="@dimen/epaisseur_bordure_liste"
+        android:right="@dimen/epaisseur_bordure_liste"
+        android:bottom="@dimen/epaisseur_bordure_liste_bottom" />
+</shape>

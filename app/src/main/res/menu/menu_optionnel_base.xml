@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/importer_lignes"
+        android:title="Importation Arrêt/Ligne" />
+    <item
+        android:id="@+id/importation_horaire"
+        android:title="Importation horraire d'une ligne" />
+    <item
+        android:id="@+id/annuler"
+        android:title="Annuler" />
+</menu>
