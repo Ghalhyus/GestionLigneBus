@@ -20,6 +20,7 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
     ///////////////////////////////////////////////////
     /////////////////// Attributs /////////////////////
     ///////////////////////////////////////////////////
+    private Context context;
     private BDHelper bdHelper;
     private SQLiteDatabase sqLiteDatabase;
 
@@ -48,6 +49,9 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
             + " JOIN " + BDHelper.LIGNE_ARRET_NOM_TABLE
             + " ON " + BDHelper.LIGNE_ARRET_FK_ARRET + " = " + BDHelper.ARRET_CLE
             + WHERE + BDHelper.LIGNE_ARRET_FK_LIGNE + PARAMETRE;
+
+    private static final String FIND_BY_LIBELLE = SELECT_ETOILE + WHERE + BDHelper.ARRET_LIBELLE
+            + PARAMETRE;
 
     public ArretDAO(Context context) {
         bdHelper = new BDHelper(
@@ -155,6 +159,11 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
     public List<Arret> findByLigne(Ligne ligne) {
         Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_LIGNE, new String[] {String.valueOf(ligne.getId())});
         return cursorToObjectList(cursor);
+    }
+
+    public Arret findByLibelle(String libelle) {
+        Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_LIBELLE, new String[]{libelle});
+        return cursorToObject(cursor);
     }
 
     @Override

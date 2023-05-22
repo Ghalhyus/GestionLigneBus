@@ -57,6 +57,12 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
             + PARAMETRE + " AND "
             + BDHelper.PASSAGE_ARRET + PARAMETRE;
 
+    private final static String FIND_BY_PERIODE_AND_LIGNE = "SELECT * FROM "
+            + BDHelper.TRAJET_NOM_TABLE
+            + " WHERE " + BDHelper.TRAJET_PERIODE
+            + " = ? " + " AND "
+            + BDHelper.TRAJET_LIGNE + " = ? ";
+
     public TrajetDAO(Context context) {
         bdHelper = new BDHelper(context,
                 BDHelper.NOM_BD,
@@ -111,6 +117,16 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
             return cursorToObjectList(cursor);
         } else {
             return new ArrayList<>();
+        }
+    }
+
+    public List<Trajet> findByPeriodeAndLigne(Periode periode,Ligne ligne) {
+        if (periode.getId() != null) {
+            Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_PERIODE_AND_LIGNE,
+                    new String[] { periode.getId().toString() ,ligne.getId().toString()});
+            return cursorToObjectList(cursor);
+        } else {
+            return null;
         }
     }
     @Override

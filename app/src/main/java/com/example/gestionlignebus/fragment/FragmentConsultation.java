@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -163,7 +164,13 @@ public class FragmentConsultation extends Fragment
             builder.setPositiveButton(R.string.bouton_valider, (dialog, which) -> {
                 groupeSelectionne = groupeSelectionne == null
                         ? groupeDAO.findAll().get(0) : groupeSelectionne;
-                groupeDAO.ajouterArret(groupeSelectionne, arretSelectionne);
+
+                if (arretDAO.findByGroupe(groupeSelectionne).contains(arretSelectionne)) {
+                    Toast.makeText(this.getContext(), R.string.message_erreur_ajout_arret,
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    groupeDAO.ajouterArret(groupeSelectionne, arretSelectionne);
+                }
             });
 
             builder.setNegativeButton(R.string.annuler, null);

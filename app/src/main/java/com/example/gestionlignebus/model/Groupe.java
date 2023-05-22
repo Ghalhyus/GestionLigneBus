@@ -1,7 +1,13 @@
 package com.example.gestionlignebus.model;
 
+import com.example.gestionlignebus.dao.BDHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Groupe {
     private Long id;
@@ -70,9 +76,28 @@ public class Groupe {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Groupe
-                && ((Groupe) obj).libelle.equals(this.libelle)
-                && ((((Groupe) obj).arrets == null && this.arrets == null)
-                    || ((((Groupe) obj).arrets != null && this.arrets != null)
-                        && ((Groupe) obj).arrets.equals(this.arrets)));
+                && Objects.equals(((Groupe) obj).id, this.id)
+                && estHomonyme(obj);
+    }
+
+    public boolean estHomonyme(Object obj) {
+        return Objects.equals(((Groupe) obj).libelle, this.libelle)
+                && Objects.equals(((Groupe) obj).arrets, this.arrets);
+    }
+
+    @Override
+    public String toString() {
+        return libelle;
+    }
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(BDHelper.GROUPE_CLE, id);
+            jsonObject.put(BDHelper.GROUPE_LIBELLE, libelle);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return jsonObject;
     }
 }

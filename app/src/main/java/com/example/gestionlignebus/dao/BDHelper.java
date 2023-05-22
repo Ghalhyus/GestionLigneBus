@@ -74,8 +74,8 @@ public class BDHelper extends SQLiteOpenHelper {
     public static final String PERIODE_NOM_TABLE = "periode";
     public static final String PERIODE_CLE = "_id";
     public static final String PERIODE_LIBELLE = "libelle";
-    public static final String PERIODE_CREATION_TABLE = CREATE_TABLE + PERIODE_NOM_TABLE + "( " +
-            PERIODE_CLE + INTEGER_PRIMARY_KEY_CONSTRAINT +
+    public static final String PERIODE_CREATION_TABLE = "CREATE TABLE " + PERIODE_NOM_TABLE + "( " +
+            PERIODE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
             PERIODE_LIBELLE + " TEXT NOT NULL " +
             ");";
     public static final String PERIODE_SUPPRESSION_TABLE = DROP_TABLE+ PERIODE_NOM_TABLE;

@@ -4,13 +4,17 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,17 +23,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gestionlignebus.ArretHoraire;
 import com.example.gestionlignebus.ArretHoraireAdapteur;
 import com.example.gestionlignebus.R;
+import com.example.gestionlignebus.adapter.PeriodeSpinnerAdapter;
 import com.example.gestionlignebus.dao.LigneDAO;
 import com.example.gestionlignebus.dao.PassageDAO;
+import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Passage;
+import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.model.Trajet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LigneActivity extends AppCompatActivity implements View.OnClickListener {
+public class LigneActivity extends AppCompatActivity implements View.OnClickListener,
+         AdapterView.OnItemSelectedListener {
     public static final String CLE_LIGNE = "cle_ligne";
     private ArretHoraireAdapteur adaptateur;
     private ArrayList<ArretHoraire> arretHoraires;
@@ -39,6 +47,9 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
     private List<String> listeHorairesPassages;
     private List<String> listeLibellesArrets;
     private List<Passage> passages;
+    private PeriodeDAO periodeDao;
+    private Periode periodeSelected;
+    private Spinner spin;
     PopupWindow popup;
     private RecyclerView recyclerView;
     private TrajetDAO trajetDao;
@@ -62,26 +73,33 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
         trajetDao = new TrajetDAO(this);
         trajetDao.open();
 
+        periodeDao = new PeriodeDAO(this);
+        periodeDao.open();
+
+
         LigneDAO ligneDao = new LigneDAO(this);
         ligneDao.open();
-        ligneCourante = ligneDao.findById(Long.valueOf(preferences.getLong(CLE_LIGNE, -1L)));
+
+        ligneCourante = ligneDao.findById(Long.valueOf(preferences.getLong(CLE_LIGNE, 1L)));
         ligneDao.close();
 
-        trajets = trajetDao.findByLigne(ligneCourante.getId());
-        List<Trajet> tmpTrajets = new ArrayList<>();
 
-        for (Trajet trajet : trajets) {
-            if (trajet.getPremierPassage().getArret()
-                    .equals(ligneCourante.getArretDepartAllee())) {
-                tmpTrajets.add(trajet);
+        initialisationSpinner();
+
+        periodeSelected = (Periode) spin.getSelectedItem();
+
+        listeLibellesArrets=new ArrayList<>();
+
+        trajets = trajetDao.findByPeriodeAndLigne(periodeSelected,ligneCourante);
+
+        Log.d("trajet", String.valueOf(trajets.size()));
+        if(trajets.size()>0){
+            for(int i =0;i<trajets.size();i++) {
+                passages = trajets.get(i).getPremierPassage().getPassages();
+                listeLibellesArrets = Passage.getArretsPassages(passages);
+                listeHorairesPassages = Passage.getHorairesPassages(passages);
             }
-        }
-        trajets = tmpTrajets;
 
-        if (!trajets.isEmpty()) {
-            passages = trajets.get(0).getPremierPassage().getPassages();
-            listeLibellesArrets = Passage.getArretsPassages(passages);
-            listeHorairesPassages = Passage.getHorairesPassages(passages);
         } else {
             listeHorairesPassages = new ArrayList<>();
         }
@@ -92,9 +110,16 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
                     listeHorairesPassages.get(i)));
         }
 
+        Log.d("periode",periodeSelected.getLibelle());
+        Log.d("liste arret", String.valueOf(listeLibellesArrets.size()));
+        Log.d("liste horaire", String.valueOf(listeLibellesArrets.size()));
+
+
+
         LinearLayoutManager gestionnaireLineaire = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.fiche_horaires);
         recyclerView.setLayoutManager(gestionnaireLineaire);
+
         ArretHoraireAdapteur arretHoraireAdapteur = new ArretHoraireAdapteur(arretHoraires);
         adaptateur = arretHoraireAdapteur;
         recyclerView.setAdapter(arretHoraireAdapteur);
@@ -104,11 +129,65 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
 
         trajetSuivantBouton = findViewById(R.id.trajet_suivant);
         trajetSuivantBouton.setOnClickListener(this);
-
+      
         Button inverserSensPassage = findViewById(R.id.inverser_sens_ligne);
         inverserSensPassage.setOnClickListener(this);
 
         indexTrajet = 0;
+
+    }
+
+    private void initialisationSpinner() {
+
+        spin = findViewById(R.id.spinner_periode);
+
+        List<Periode> periodes = periodeDao.findAll();
+        PeriodeSpinnerAdapter periodeSpinnerAdapter
+                = new PeriodeSpinnerAdapter(this, periodes);
+
+        spin.setAdapter(periodeSpinnerAdapter);
+        spin.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
+        Periode anciennePeriode = periodeSelected;
+
+        periodeSelected = (Periode) adapterView.getSelectedItem();
+
+        if (!anciennePeriode.equals(periodeSelected)) {
+            trajets = trajetDao.findByPeriodeAndLigne(periodeSelected, ligneCourante);
+            listeHorairesPassages.clear();
+            listeLibellesArrets.clear();
+            arretHoraires.clear();
+
+            arretHoraires=new ArrayList<>();
+
+            Log.d("trajet", String.valueOf(trajets.size()));
+            if(trajets.size()>0){
+                for(int i =0;i<trajets.size();i++) {
+                    passages = trajets.get(0).getPremierPassage().getPassages();
+                    listeLibellesArrets = Passage.getArretsPassages(passages);
+                    listeHorairesPassages = Passage.getHorairesPassages(passages);
+                }
+            } else {
+                listeHorairesPassages = new ArrayList();
+            }
+
+            arretHoraires = new ArrayList<>();
+            for (int i = 0; i < listeHorairesPassages.size(); i++) {
+                arretHoraires.add(new ArretHoraire(listeLibellesArrets.get(i),
+                        listeHorairesPassages.get(i)));
+            }
+            ArretHoraireAdapteur arretHoraireAdapteur = new ArretHoraireAdapteur(arretHoraires);
+            recyclerView.setAdapter(arretHoraireAdapteur);
+
+
+
+        }
+    }
+        @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
     @Override
@@ -154,15 +233,18 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
 
             for (Trajet trajet : trajets) {
                 if ((!retour && trajet.getPremierPassage().getArret()
-                        .equals(ligneCourante.getArretDepartAllee()))
+                        .equals(ligneCourante.getArretDepart()))
                     || (retour && trajet.getPremierPassage().getArret()
-                        .equals(ligneCourante.getArretDepartRetour()))) {
+                        .equals(ligneCourante.getArretRetour()))) {
                     tmpTrajets.add(trajet);
                 }
             }
             trajets = tmpTrajets;
 
             changerTrajet(0);
+        } else if (view.getId() == trajetPrecedentBouton.getId()
+                || view.getId() == trajetSuivantBouton.getId()) {
+            Toast.makeText(this, R.string.message_erreur_trajet, Toast.LENGTH_SHORT).show();
         }
     }
 

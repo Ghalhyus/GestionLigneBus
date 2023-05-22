@@ -174,9 +174,10 @@ public class FragmentGroupe extends Fragment
 
         builder.setTitle(getText(R.string.titre_popup_supprimer_groupe) + groupe.getLibelle());
 
-        builder.setPositiveButton(R.string.bouton_valider, (dialog, which) ->
-            groupeDao.delete(groupe)
-        );
+        builder.setPositiveButton(R.string.bouton_valider, (dialog, which) -> {
+            groupeDao.delete(groupe);
+            acutaliserListe();
+        });
 
         builder.setNegativeButton(R.string.annuler, null);
 

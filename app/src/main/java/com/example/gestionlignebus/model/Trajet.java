@@ -2,6 +2,14 @@ package com.example.gestionlignebus.model;
 
 import androidx.annotation.Nullable;
 
+import com.example.gestionlignebus.dao.BDHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.time.LocalTime;
+import java.util.Objects;
+
 public class Trajet {
     private Long id;
     private Ligne ligne;
@@ -49,17 +57,55 @@ public class Trajet {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof  Trajet) {
-            if (((Trajet) obj).getId().equals(this.getId()) &&
-                    ((Trajet) obj).getLigne().equals(this.getLigne()) &&
-                    ((Trajet) obj).getPremierPassage().equals(this.getPremierPassage()) &&
-                    ((Trajet) obj).getPeriode().equals(this.getPeriode())) {
-                return true;
-            } else {
-                return false;
+        return obj instanceof Trajet
+                && Objects.equals(((Trajet) obj).id, this.id)
+                && estHomonyme(obj);
+    }
+
+    public boolean estHomonyme(Object obj) {
+        return obj instanceof Trajet
+                && Objects.equals(((Trajet) obj).periode, this.periode)
+                && Objects.equals(((Trajet) obj).ligne, this.ligne)
+                && Objects.equals(((Trajet) obj).premierPassage, this.premierPassage);
+    }
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(BDHelper.TRAJET_CLE, id);
+            if (periode != null) {
+                jsonObject.put(BDHelper.TRAJET_PERIODE, periode.toJson());
             }
-        } else {
-            return false;
+            if (ligne != null) {
+                jsonObject.put(BDHelper.TRAJET_LIGNE, ligne.toJson());
+            }
+            if (premierPassage != null) {
+                jsonObject.put(BDHelper.TRAJET_PREMIER_PASSAGE, premierPassage.toJson());
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
+        return jsonObject;
+    }
+
+    public static Trajet jsonObjectToTrajet(JSONObject jsonObject) {
+        Trajet trajet = new Trajet();
+        try {
+            if (!jsonObject.isNull(BDHelper.TRAJET_CLE)) {
+                trajet.setId((Long) jsonObject.get(BDHelper.TRAJET_CLE));
+            }
+            if (!jsonObject.isNull(BDHelper.TRAJET_PERIODE)) {
+                trajet.setPeriode(Periode.jsonObjectToPeriode(jsonObject.getJSONObject(BDHelper.TRAJET_PERIODE)));
+            }
+            if (!jsonObject.isNull(BDHelper.TRAJET_LIGNE)) {
+                trajet.setLigne(Ligne.jsonObjectToLigne(jsonObject.getJSONObject(BDHelper.TRAJET_LIGNE)));
+            }
+            if (!jsonObject.isNull(BDHelper.TRAJET_PREMIER_PASSAGE)) {
+                trajet.setPremierPassage(Passage.jsonObjectToPassage(jsonObject.getJSONObject(BDHelper.TRAJET_PREMIER_PASSAGE)));
+            }
+        } catch (JSONException e) {
+            return null;
+        }
+        return trajet;
     }
 }

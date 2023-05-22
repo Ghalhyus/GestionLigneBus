@@ -4,6 +4,9 @@
     <string name="recherche_onglet">Recherche</string>
     <string name="label_arrets">Arrêts</string>
     <string name="label_horaires">Horaires</string>
+    <string name="consultation_onglet">Consultation</string>
+    <string name="message_erreur_trajet">"Il n'y a pas d'autre trajet."</string>
+    <string name="message_erreur_ajout_arret">Cet arrêt existe déjà dans ce groupe.</string>
 
     <!-- Onglet Groupe -->
     <string name="groupe_onglet">Groupe</string>

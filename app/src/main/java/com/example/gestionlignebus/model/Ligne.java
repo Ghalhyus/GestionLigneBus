@@ -1,18 +1,29 @@
 package com.example.gestionlignebus.model;
 
+import com.example.gestionlignebus.dao.BDHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Ligne {
     private Long id;
     private String libelle;
-    private Arret arretDepartAllee;
-    private Arret arretDepartRetour;
+    private Arret arretDepart;
+    private Arret arretRetour;
     private List<Arret> arrets;
 
     public Ligne() {}
     public Ligne(String ligne) {
         this.libelle = ligne;
+    }
+    public Ligne(String ligne, Arret arretDepart, Arret arretRetour) {
+        this.libelle = ligne;
+        this.arretDepart = arretDepart;
+        this.arretRetour = arretRetour;
     }
 
     public Long getId() {
@@ -31,20 +42,20 @@ public class Ligne {
         this.libelle = libelle;
     }
 
-    public Arret getArretDepartAllee() {
-        return arretDepartAllee;
+    public Arret getArretDepart() {
+        return arretDepart;
     }
 
-    public void setArretDepartAllee(Arret arretDepartAllee) {
-        this.arretDepartAllee = arretDepartAllee;
+    public void setArretDepart(Arret arretDepart) {
+        this.arretDepart = arretDepart;
     }
 
-    public Arret getArretDepartRetour() {
-        return arretDepartRetour;
+    public Arret getArretRetour() {
+        return arretRetour;
     }
 
-    public void setArretDepartRetour(Arret arretDepartRetour) {
-        this.arretDepartRetour = arretDepartRetour;
+    public void setArretRetour(Arret arretRetour) {
+        this.arretRetour = arretRetour;
     }
 
     public List<Arret> getArrets() {
@@ -58,20 +69,9 @@ public class Ligne {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Ligne
-                // On compare le libellé
-                && ((Ligne) obj).libelle.equals(this.libelle)
-                // On compare les arrêts
-                && ((((Ligne) obj).arrets == null && this.arrets == null)
-                || ((((Ligne) obj).arrets != null && this.arrets != null)
-                && ((Ligne) obj).arrets.equals(this.arrets)))
-                // On compare l'arrêt de départ
-                && ((((Ligne) obj).arretDepartAllee == null && this.arretDepartAllee == null)
-                || ((((Ligne) obj).arretDepartAllee != null && this.arretDepartAllee != null)
-                && ((Ligne) obj).arretDepartAllee.equals(this.arretDepartAllee)))
-                // On compare l'arrêt de d'arrivé
-                && ((((Ligne) obj).arretDepartRetour == null && this.arretDepartRetour == null)
-                || ((((Ligne) obj).arretDepartRetour != null && this.arretDepartRetour != null)
-                && ((Ligne) obj).arretDepartRetour.equals(this.arretDepartRetour)));
+                // On compare les id
+                && Objects.equals(((Ligne) obj).id, this.id)
+                && estHomonyme(obj);
     }
 
     public static List<String> getLibellesLignes(List<Ligne> lignes) {
@@ -87,5 +87,60 @@ public class Ligne {
     @Override
     public String toString() {
         return libelle;
+    }
+
+    /**
+     * Vérifie si deux lignes ne sont pas homonymes
+     * Renvoie true si elles possèdent le même :
+     * libelle
+     * arretDepart
+     * arretRetour
+     * @param obj
+     * @return
+     */
+    public boolean estHomonyme(Object obj) {
+        return obj instanceof Ligne
+                && Objects.equals(((Ligne) obj).libelle, this.libelle)
+                && Objects.equals(((Ligne) obj).arrets, this.arrets)
+                && Objects.equals(((Ligne) obj).arretDepart, this.arretDepart)
+                && Objects.equals(((Ligne) obj).arretRetour, this.arretRetour);
+    }
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(BDHelper.LIGNE_CLE, id);
+            jsonObject.put(BDHelper.LIGNE_LIBELLE, libelle);
+            if (arretDepart != null) {
+                jsonObject.put(BDHelper.LIGNE_FK_ARRET_ALLE, arretDepart.getLibelle());
+            }
+            if (arretRetour != null) {
+                jsonObject.put(BDHelper.LIGNE_FK_ARRET_RETOUR, arretRetour.getLibelle());
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return jsonObject;
+    }
+
+    public static Ligne jsonObjectToLigne(JSONObject jsonObject) {
+        Ligne ligne = new Ligne();
+        try {
+            if (!jsonObject.isNull(BDHelper.LIGNE_CLE)) {
+                ligne.setId((Long) jsonObject.get(BDHelper.LIGNE_CLE));
+            }
+            if (!jsonObject.isNull(BDHelper.LIGNE_LIBELLE)) {
+                ligne.setLibelle(jsonObject.getString(BDHelper.LIGNE_LIBELLE));
+            }
+            if (!jsonObject.isNull(BDHelper.LIGNE_FK_ARRET_ALLE)) {
+                ligne.setArretDepart(Arret.jsonObjectToArret(jsonObject.getJSONObject(BDHelper.LIGNE_FK_ARRET_ALLE)));
+            }
+            if (!jsonObject.isNull(BDHelper.LIGNE_FK_ARRET_RETOUR)) {
+                ligne.setArretRetour(Arret.jsonObjectToArret(jsonObject.getJSONObject(BDHelper.LIGNE_FK_ARRET_RETOUR)));
+            }
+        } catch (JSONException e) {
+            return null;
+        }
+        return ligne;
     }
 }

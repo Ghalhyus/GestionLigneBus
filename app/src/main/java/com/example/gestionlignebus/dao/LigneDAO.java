@@ -46,6 +46,7 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
     @Override
     public void open() {
         sqLiteDatabase = bdHelper.getWritableDatabase();
+        arretDAO.open();
     }
 
     @Override
@@ -90,11 +91,16 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
 
     @Override
     public int deleteAll(List<Ligne> toDelete) {
-        int nbDelete = 0;
-        for (Ligne ligne : toDelete) {
-            nbDelete += delete(ligne);
+        if (toDelete != null) {
+            int nbDelete = 0;
+            for (Ligne ligne : toDelete) {
+                nbDelete += delete(ligne);
+            }
+            return nbDelete;
+        } else {
+            return -1;
         }
-        return nbDelete;
+
     }
 
     @Override
@@ -154,8 +160,8 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
         result = new Ligne();
         result.setId(cursor.getLong(COLONNE_NUM_CLE));
         result.setLibelle(cursor.getString(COLONNE_NUM_LIBELLE));
-        result.setArretDepartAllee(arretDAO.findById(cursor.getLong(COLONNE_NUM_ARRET_ALLE)));
-        result.setArretDepartRetour(arretDAO.findById(cursor.getLong(COLONNE_NUM_ARRET_RETOUR)));
+        result.setArretDepart(arretDAO.findById(cursor.getLong(COLONNE_NUM_ARRET_ALLE)));
+        result.setArretRetour(arretDAO.findById(cursor.getLong(COLONNE_NUM_ARRET_RETOUR)));
         // Problème du n+1 select
         List<Arret> arrets = arretDAO.findByLigne(result);
         result.setArrets(arrets);
@@ -193,15 +199,46 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
 
         enregistrement.put(BDHelper.LIGNE_CLE, toConvert.getId());
         enregistrement.put(BDHelper.LIGNE_LIBELLE, toConvert.getLibelle());
-        if (toConvert.getArretDepartAllee() == null || toConvert.getArretDepartAllee().getId() == null) {
+
+        // Si l'arrêt de départ ne possède pas d'id mais possède un libelle
+        if (toConvert.getArretDepart() != null
+                && toConvert.getArretDepart().getId() == null
+                && toConvert.getArretDepart().getLibelle() != null) {
+            // Dans ce cas, on recherche un homonyme
+            Arret arret = arretDAO.findByLibelle(toConvert.getArretDepart().getLibelle());
+            // Si un libelle à cet arrêt existe bel et bien, on utilise cet arrêt
+            if (arret != null) {
+                toConvert.setArretDepart(arret);
+            // Sinon on enregistre cet arrêt et l'attribut à la ligne à convertir
+            } else {
+                arret = arretDAO.save(toConvert.getArretDepart());
+                toConvert.setArretDepart(arret);
+            }
+        }
+        // On fait de même pour l'arrêt de retour
+        if (toConvert.getArretRetour() != null
+                && toConvert.getArretRetour().getId() == null
+                && toConvert.getArretRetour().getLibelle() != null) {
+            // Dans ce cas, on recherche un homonyme
+            Arret arret = arretDAO.findByLibelle(toConvert.getArretRetour().getLibelle());
+            // Si un libelle à cet arrêt existe bel et bien, on utilise cet arrêt
+            if (arret != null) {
+                toConvert.setArretRetour(arret);
+            // Sinon on enregistre cet arrêt et l'attribut à la ligne à convertir
+            } else {
+                arret = arretDAO.save(toConvert.getArretRetour());
+                toConvert.setArretRetour(arret);
+            }
+        }
+        if (toConvert.getArretDepart() == null || toConvert.getArretDepart().getId() == null) {
             enregistrement.putNull(BDHelper.LIGNE_FK_ARRET_ALLE);
         } else {
-            enregistrement.put(BDHelper.LIGNE_FK_ARRET_ALLE, toConvert.getArretDepartAllee().getId());
+            enregistrement.put(BDHelper.LIGNE_FK_ARRET_ALLE, toConvert.getArretDepart().getId());
         }
-        if (toConvert.getArretDepartRetour() == null || toConvert.getArretDepartRetour().getId() == null) {
+        if (toConvert.getArretRetour() == null || toConvert.getArretRetour().getId() == null) {
             enregistrement.putNull(BDHelper.LIGNE_FK_ARRET_RETOUR);
         } else {
-            enregistrement.put(BDHelper.LIGNE_FK_ARRET_RETOUR, toConvert.getArretDepartRetour().getId());
+            enregistrement.put(BDHelper.LIGNE_FK_ARRET_RETOUR, toConvert.getArretRetour().getId());
         }
         return enregistrement;
     }
