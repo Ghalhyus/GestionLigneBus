@@ -1,0 +1,154 @@
+{
+  "arrets" : [
+    {
+      "libelle" : "Arret A",
+      "position" : "position A"
+    },
+    {
+      "libelle" : "Arret B",
+      "position" : "position B"
+    },
+    {
+      "libelle" : "Arret C",
+      "position" : "position C"
+    },
+    {
+      "libelle" : "Arret D",
+      "position" : "position D"
+    },
+    {
+      "libelle" : "Arret E",
+      "position" : "position E"
+    },
+    {
+      "libelle" : "Arret F",
+      "position" : "position F"
+    },
+    {
+      "libelle" : "Arret G",
+      "position" : "position G"
+    },
+    {
+      "libelle" : "Arret H",
+      "position" : "position H"
+    },
+    {
+      "libelle" : "Arret I",
+      "position" : "position I"
+    },
+    {
+      "libelle" : "Arret J",
+      "position" : "position J"
+    },
+    {
+      "libelle" : "Arret K",
+      "position" : "position K"
+    },
+    {
+      "libelle" : "Arret L",
+      "position" : "position L"
+    },
+    {
+      "libelle" : "Arret M",
+      "position" : "position M"
+    },
+    {
+      "libelle" : "Arret N",
+      "position" : "position N"
+    },
+    {
+      "libelle" : "Arret O",
+      "position" : "position O"
+    },
+    {
+      "libelle" : "Arret P",
+      "position" : "position P"
+    },
+    {
+      "libelle" : "Arret Q",
+      "position" : "position Q"
+    },
+    {
+      "libelle" : "Arret R",
+      "position" : "position R"
+    },
+    {
+      "libelle" : "Arret S",
+      "position" : "position S"
+    },
+    {
+      "libelle" : "Arret T",
+      "position" : "position T"
+    },
+    {
+      "libelle" : "Arret U",
+      "position" : "position U"
+    },
+    {
+      "libelle" : "Arret V",
+      "position" : "position V"
+    },
+    {
+      "libelle" : "Arret W",
+      "position" : "position W"
+    },
+    {
+      "libelle" : "Arret X",
+      "position" : "position X"
+    },
+    {
+      "libelle" : "Arret Y",
+      "position" : "position Y"
+    },
+    {
+      "libelle" : "Arret Z",
+      "position" : "position Z"
+    }
+  ],
+  "lignes" : [
+    {
+      "libelle" : "ligne 1",
+      "arretDepart" : {
+        "libelle" : "Arret A",
+        "position" : "position A"
+      },
+      "arretRetour" : {
+        "libelle" : "Arret G",
+        "position" : "position G"
+      }
+    },
+    {
+      "libelle" : "ligne 2",
+      "arret_depart" : {
+        "libelle" : "Arret G",
+        "position" : "position G"
+      },
+      "arret_retour" : {
+        "libelle" : "Arret Q",
+        "position" : "position Q"
+      }
+    },
+    {
+      "libelle" : "ligne 3",
+      "arret_depart" : {
+        "libelle" : "Arret Q",
+        "position" : "position Q"
+      },
+      "arret_retour" : {
+        "libelle" : "Arret Z",
+        "position" : "position Z"
+      }
+    }
+  ],
+  "periodes" : [
+    {
+      "libelle" : "Période scolaire"
+    },
+    {
+      "libelle" : "Vacance scolaire"
+    },
+    {
+      "libelle" : "Vancance d'été"
+    }
+  ]
+}
