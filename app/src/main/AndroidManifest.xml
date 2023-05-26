@@ -25,6 +25,7 @@
         <activity android:name=".activity.LigneActivity"/>
         <activity android:name=".activity.ArretsGroupeActivity"/>
         <activity android:name=".activity.ArretActivity"/>
+        <activity android:name=".activity.ChangerFicheHoraireActivity"/>
     </application>
 
 </manifest>

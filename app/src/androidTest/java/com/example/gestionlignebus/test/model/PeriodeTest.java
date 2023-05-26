@@ -1,0 +1,111 @@
+package com.example.gestionlignebus.test.model;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import com.example.gestionlignebus.dao.BDHelper;
+import com.example.gestionlignebus.model.Arret;
+import com.example.gestionlignebus.model.Groupe;
+import com.example.gestionlignebus.model.Ligne;
+import com.example.gestionlignebus.model.Periode;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PeriodeTest {
+    private Periode periode;
+    private String periodeLib = "libelle 1";
+    private Periode periodeBis;
+    private Periode periodeHomonyme;
+    private Periode periodeDifferente;
+    private List<Periode> periodes;
+    @Before
+    public void setUp() {
+        periode = new Periode(periodeLib);
+        periode.setId(1L);
+
+        periodeBis = new Periode(periodeLib);
+        periodeBis.setId(1L);
+
+        periodeHomonyme = new Periode(periodeLib);
+        periodeHomonyme.setId(10L);
+
+        periodeDifferente = new Periode("libelle 2");
+        periodeDifferente.setId(2L);
+
+        periodes = new ArrayList<>();
+        periodes.add(periode);
+        periodes.add(periodeDifferente);
+    }
+
+    @Test
+    public void testEquals() {
+        // Arrets identiques
+        assertTrue(periode.equals(periodeBis));
+
+        // Arrets non identiques
+        assertFalse(periode.equals(periodeDifferente));
+
+        // Arrets homonymes non identiques
+        assertFalse(periode.equals(periodeHomonyme));
+
+        // test avec null
+        assertFalse(periode.equals(null));
+
+        assertFalse(periode.equals(new Groupe()));
+    }
+
+
+    @Test
+    public void testEstHomonyme() {
+        // On essaie avec des ids différents
+        assertTrue(periode.estHomonyme(periodeHomonyme));
+
+        // On essaie avec des id identiques
+        assertTrue(periode.estHomonyme(periodeBis));
+
+        // On essaie avec des arrets différents
+        assertFalse(periode.estHomonyme(periodeDifferente));
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals(periodeLib, periode.toString());
+    }
+
+    @Test
+    public void testToJson() {
+        JSONObject json = periode.toJson();
+
+        try {
+            assertEquals(periode.getId(), json.get("_id"));
+            assertEquals(periode.getLibelle(), json.get("libelle"));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        periode.setId(null);
+        json = periode.toJson();
+
+        try {
+            assertTrue(json.isNull("_id"));
+            assertEquals(periode.getLibelle(), json.get("libelle"));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void testGetLibellesPeriodes() {
+        List<String> libellesLignes = Periode.getLibellesPeriodes(periodes);
+
+        assertEquals(periode.getLibelle(), libellesLignes.get(0));
+        assertEquals(periodeDifferente.getLibelle(), libellesLignes.get(1));
+    }
+}
