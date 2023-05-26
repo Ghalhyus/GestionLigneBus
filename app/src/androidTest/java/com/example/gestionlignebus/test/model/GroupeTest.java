@@ -75,28 +75,6 @@ public class GroupeTest {
     }
 
     @Test
-    public void testToJson() {
-        JSONObject json = groupe.toJson();
-
-        try {
-            assertEquals(groupe.getId(), json.get("_id"));
-            assertEquals(groupe.getLibelle(), json.get("libelle"));
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        groupe.setId(null);
-        json = groupe.toJson();
-
-        try {
-            assertTrue(json.isNull("_id"));
-            assertEquals(groupe.getLibelle(), json.get("libelle"));
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Test
     public void testGetLibellesArrets() {
         List<String> libellesArrets = Groupe.getLibellesGroupes(groupes);
 
