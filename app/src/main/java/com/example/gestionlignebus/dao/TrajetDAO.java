@@ -35,19 +35,37 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
     //////////////////////////////////////////////////////////////////
     ///////////////////////// Requêtes ///////////////////////////////
     //////////////////////////////////////////////////////////////////
+    /**
+     * Requête SQL permettant de retrouver l'ensemble des trajets en base
+     */
     private static final String FIND_ALL = SELECT_ETOILE;
 
     ///////////////////////////////////////////////////
     /////////////////// Prepared //////////////////////
     ///////////////////////////////////////////////////
+    /**
+     * Requête SQL permettant de retrouver des trajets par identifiant
+     */
     private static final String FIND_BY_ID = SELECT_ETOILE + WHERE + BDHelper.TRAJET_CLE
             + PARAMETRE;
+    /**
+     * Requête SQL permettant de retrouver des trajets par arret
+     */
     private static final String FIND_BY_PASSAGE = SELECT_ETOILE
             + WHERE + BDHelper.TRAJET_PREMIER_PASSAGE + PARAMETRE;
 
+    /**
+     * Requête SQL permettant de retrouver des trajets par ligne
+     */
     private static final String FIND_BY_LIGNE = SELECT_ETOILE + WHERE + BDHelper.TRAJET_LIGNE
             + PARAMETRE;
 
+    private static final String FIND_BY_PERIODE = SELECT_ETOILE + WHERE + BDHelper.TRAJET_PERIODE
+            + PARAMETRE;
+
+    /**
+     * Requête SQL permettant de retrouver des trajets par periode et arret
+     */
     private static final String FIND_BY_PERIODE_AND_ARRET = "SELECT * FROM "
             + BDHelper.TRAJET_NOM_TABLE
             + " JOIN " + BDHelper.PASSAGE_NOM_TABLE+ " ON "
@@ -57,12 +75,19 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
             + PARAMETRE + " AND "
             + BDHelper.PASSAGE_ARRET + PARAMETRE;
 
+    /**
+     * Requête SQL permettant de retrouver des trajets par periode et ligne
+     */
     private final static String FIND_BY_PERIODE_AND_LIGNE = "SELECT * FROM "
             + BDHelper.TRAJET_NOM_TABLE
-            + " WHERE " + BDHelper.TRAJET_PERIODE
-            + " = ? " + " AND "
-            + BDHelper.TRAJET_LIGNE + " = ? ";
+            + WHERE + BDHelper.TRAJET_PERIODE
+            + PARAMETRE + " AND "
+            + BDHelper.TRAJET_LIGNE + PARAMETRE;
 
+    /**
+     * Constructeur du DAO pour les transactions liées aux trajets
+     * @param context
+     */
     public TrajetDAO(Context context) {
         bdHelper = new BDHelper(context,
                 BDHelper.NOM_BD,
@@ -95,21 +120,42 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
         return cursorToObject(cursor);
     }
 
+    public List<Trajet> findByPeriode(Periode periode) {
+        Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_PERIODE,
+                new String[]{periode.getId().toString()});
+        return cursorToObjectList(cursor);
+    }
 
-    public Trajet findByPassage(Passage passage) {
+    /**
+     * Récupère les trajets par leur premier passage
+     * @param passage
+     * @return
+     */
+    public List<Trajet> findByPassage(Passage passage) {
         if (passage.getId() != null) {
             Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_PASSAGE, new String[] { passage.getId().toString() });
-            return cursorToObject(cursor);
+            return cursorToObjectList(cursor);
         } else {
             return null;
         }
     }
 
-    public List<Trajet> findByLigne(Long idLigne) {
-        Cursor cursor = this.sqLiteDatabase.rawQuery(FIND_BY_LIGNE, new String[]{idLigne.toString()});
+    /**
+     * Récupère les trajets correspondant à la ligne en paramètre
+     * @param ligne l'élément correspondant
+     * @return la liste d'éléments correspondants
+     */
+    public List<Trajet> findByLigne(Ligne ligne) {
+        Cursor cursor = this.sqLiteDatabase.rawQuery(FIND_BY_LIGNE, new String[]{ligne.toString()});
         return cursorToObjectList(cursor);
     }
 
+    /**
+     * Récupère les trajets correspondant à l'arret et la période en paramètre
+     * @param periode la periode correspondant
+     * @param arret l'arret correspondant
+     * @return la liste d'éléments correspondants
+     */
     public List<Trajet> findByPeriodeAndArret(Periode periode,Arret arret) {
         if (periode.getId() != null) {
             Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_PERIODE_AND_ARRET,
@@ -120,6 +166,12 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
         }
     }
 
+    /**
+     * Récupère les trajets correspondant à la période et la ligne en paramètre
+     * @param periode correspondante
+     * @param ligne correspondante
+     * @return la liste d'éléments
+     */
     public List<Trajet> findByPeriodeAndLigne(Periode periode,Ligne ligne) {
         if (periode.getId() != null) {
             Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_PERIODE_AND_LIGNE,
@@ -136,6 +188,38 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
 
     @Override
     public Trajet save(Trajet toSave) {
+        // On vérifie que le passage ne soit pas null
+        if (toSave.getPremierPassage().getId() == null) {
+            if (toSave.getPremierPassage().getArret() != null
+                && toSave.getPremierPassage().getHoraire() != null) {
+                // On ne vérifie si un passage similaire n'existe pas déjà
+                Passage passageFound = passageDAO.findByArretAndHoraire(
+                        toSave.getPremierPassage().getArret(),
+                        toSave.getPremierPassage().getHoraire());
+                if (passageFound != null) {
+                    // Si oui, on l'utilise
+                    toSave.setPremierPassage(passageFound);
+                } else {
+                    // Si non, on enregistre le passage et les passage chaînés
+                    Passage permierPassage = passageDAO.save(toSave.getPremierPassage());
+                    toSave.setPremierPassage(permierPassage);
+                }
+            }
+        }
+        // On vérifie que la période ne soit pas nulle
+        if (toSave.getPeriode().getId() == null) {
+            if (toSave.getPeriode().getLibelle() != null) {
+                // On cherche si une période identique n'existe pas déjà
+                Periode periodeFound = periodeDAO.findByLibelle(toSave.getPeriode().getLibelle());
+                if ( periodeFound != null) {
+                    // Si oui, on l'utilise
+                    toSave.setPeriode(periodeFound);
+                } else {
+                    // Si non, on enregistre la nouvelle période
+                    toSave.setPeriode(periodeDAO.save(toSave.getPeriode()));
+                }
+            }
+        }
         ContentValues enregistrement = objectToContentValues(toSave);
         long id = sqLiteDatabase.insert(BDHelper.TRAJET_NOM_TABLE, null, enregistrement);
         return findById(id);
@@ -193,7 +277,7 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
     public Trajet cursorToObject(Cursor cursor) {
         Trajet result;
 
-        if (cursor.getCount() == 0) {
+        if (cursor.getCount() <= 0) {
             cursor.close();
             return null;
         }
@@ -244,10 +328,31 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
         ContentValues enregistrement = new ContentValues();
 
         enregistrement.put(BDHelper.TRAJET_CLE, toConvert.getId());
-        enregistrement.put(BDHelper.TRAJET_PERIODE, toConvert.getPeriode().getId());
+
+        if (toConvert.getPeriode() != null && toConvert.getPeriode().getId() != null) {
+            enregistrement.put(BDHelper.TRAJET_PERIODE, toConvert.getPeriode().getId());
+        } else {
+            enregistrement.putNull(BDHelper.TRAJET_PERIODE);
+        }
+
         enregistrement.put(BDHelper.TRAJET_LIGNE, toConvert.getLigne().getId());
         enregistrement.put(BDHelper.TRAJET_PREMIER_PASSAGE, toConvert.getPremierPassage().getId());
 
         return enregistrement;
+    }
+
+    /**
+     *
+     * @param ligne
+     * @return
+     */
+    public int deleteByLigne(Ligne ligne) {
+        return sqLiteDatabase.delete(
+                BDHelper.TRAJET_NOM_TABLE,
+                BDHelper.TRAJET_LIGNE + PARAMETRE,
+                new String[] {
+                    ligne.getId().toString()
+                }
+                );
     }
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.gestionlignebus.adapter.AdapterPage;
 import com.example.gestionlignebus.dao.ArretDAO;
@@ -30,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,80 +65,5 @@ public class MainActivity extends AppCompatActivity {
         new TabLayoutMediator(
                 gestionnaireOnglet, gestionnairePagination,
                 (tab, position) -> tab.setText(titreOnglet[position])).attach();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        new MenuInflater(this).inflate(R.menu.menu_optionnel_base, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.importer_lignes: //importation des informations stables
-                // Gérer l'importation
-
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("file/*");
-//                intent.setType("*/*");
-                String[] mimetypes = {"application/json"};
-                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-                startActivityForResult(intent, PICKFILE_REQUEST_CODE);
-                break;
-            case R.id.importation_horaire://importation des information
-                // Gérer l'importation
-                break;
-            case R.id.annuler:
-                // Annuler l'opération en cours
-                break;
-            default:
-                break;
-
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int codeRequete, int codeResultat, Intent intent)  {
-        super.onActivityResult(codeRequete, codeResultat, intent);
-        if (codeRequete == PICKFILE_REQUEST_CODE &&
-                codeResultat ==  Activity.RESULT_OK) {
-            arretDAO = new ArretDAO(this);
-            arretDAO.open();
-            periodeDAO = new PeriodeDAO(this);
-            periodeDAO.open();
-            ligneDAO = new LigneDAO(this);
-            ligneDAO.open();
-            Uri uri = Uri.parse(intent.getDataString());
-            try {
-                // On ouvre le fichier afin de pouvoir le lire
-                InputStream inputStream = getContentResolver().openInputStream(uri);
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                // On récupère le contenu du JSON
-                String content = JSONUtils.readJSON(bufferedReader);
-
-                // On enregistre les arrêts du fichier
-                List<Arret> arretList = JSONUtils.jsonToArretList(content);
-                arretDAO.saveAll(arretList);
-
-                // On enregistre les périodes du fichier
-                List<Periode> periodeList = JSONUtils.jsonToPeriodeList(content);
-                periodeDAO.saveAll(periodeList);
-
-                // On enregistre les lignes du fichier 
-                List<Ligne> lignes = JSONUtils.jsonToLigneList(content);
-                ligneDAO.saveAll(lignes);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } finally {
-                arretDAO.close();
-                periodeDAO.close();
-                ligneDAO.close();
-            }
-        }
     }
 }

@@ -48,6 +48,11 @@ public class Periode {
                 && estHomonyme(obj);
     }
 
+    /**
+     * Détermine si la ligne en paramètre possède le même libelle
+     * @param obj la ligne à comparer
+     * @return true si vrai
+     */
     public boolean estHomonyme(Object obj) {
         return obj instanceof Periode
                 && Objects.equals(((Periode) obj).libelle, this.libelle);
@@ -58,6 +63,10 @@ public class Periode {
         return libelle;
     }
 
+    /**
+     * Convertit une période en JSONObject
+     * @return le JSONObject après conversion
+     */
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -69,6 +78,11 @@ public class Periode {
         return jsonObject;
     }
 
+    /**
+     * Récupère la liste des libelles d'une liste de période
+     * @param periodes la liste de periode
+     * @return la liste des libelles
+     */
     public static List<String> getLibellesPeriodes(List<Periode> periodes) {
         ArrayList<String> nomPeriodes = new ArrayList<>();
 
@@ -80,6 +94,11 @@ public class Periode {
     }
 
 
+    /**
+     * Convertit un JSONObject en Periode
+     * @param jsonObject le JSON à convertir
+     * @return la période après conversion
+     */
     public static Periode jsonObjectToPeriode(JSONObject jsonObject) {
         Periode periode = new Periode();
         try {

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -48,6 +47,7 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
     private List<String> listeLibellesArrets;
     private List<Passage> passages;
     private PeriodeDAO periodeDao;
+    private PassageDAO passageDAO;
     private Periode periodeSelected;
     private Spinner spin;
     PopupWindow popup;
@@ -55,6 +55,7 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
     private TrajetDAO trajetDao;
     private Button trajetPrecedentBouton;
     private Button trajetSuivantBouton;
+    private Button btnAfficherCarte;
 
     private List<Trajet> trajets;
     private boolean retour;
@@ -62,7 +63,7 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_ligne);
+        setContentView(R.layout.activity_ligne);
         dialog = new Dialog(this);
 
         retour = false;
@@ -73,9 +74,11 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
         trajetDao = new TrajetDAO(this);
         trajetDao.open();
 
+        passageDAO = new PassageDAO(this);
+        passageDAO.open();
+
         periodeDao = new PeriodeDAO(this);
         periodeDao.open();
-
 
         LigneDAO ligneDao = new LigneDAO(this);
         ligneDao.open();
@@ -93,13 +96,12 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
         trajets = trajetDao.findByPeriodeAndLigne(periodeSelected,ligneCourante);
 
         Log.d("trajet", String.valueOf(trajets.size()));
-        if(trajets.size()>0){
-            for(int i =0;i<trajets.size();i++) {
+        if(!trajets.isEmpty()){
+            for(int i = 0 ; i < trajets.size() ; i++) {
                 passages = trajets.get(i).getPremierPassage().getPassages();
                 listeLibellesArrets = Passage.getArretsPassages(passages);
                 listeHorairesPassages = Passage.getHorairesPassages(passages);
             }
-
         } else {
             listeHorairesPassages = new ArrayList<>();
         }
@@ -114,15 +116,11 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
         Log.d("liste arret", String.valueOf(listeLibellesArrets.size()));
         Log.d("liste horaire", String.valueOf(listeLibellesArrets.size()));
 
-
-
-        LinearLayoutManager gestionnaireLineaire = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.fiche_horaires);
-        recyclerView.setLayoutManager(gestionnaireLineaire);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ArretHoraireAdapteur arretHoraireAdapteur = new ArretHoraireAdapteur(arretHoraires);
-        adaptateur = arretHoraireAdapteur;
-        recyclerView.setAdapter(arretHoraireAdapteur);
+        adaptateur = new ArretHoraireAdapteur(arretHoraires);
+        recyclerView.setAdapter(adaptateur);
 
         trajetPrecedentBouton = findViewById(R.id.trajet_precedent);
         trajetPrecedentBouton.setOnClickListener(this);
@@ -132,6 +130,9 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
       
         Button inverserSensPassage = findViewById(R.id.inverser_sens_ligne);
         inverserSensPassage.setOnClickListener(this);
+
+        btnAfficherCarte = findViewById(R.id.afficher_carte);
+        btnAfficherCarte.setOnClickListener(this);
 
         indexTrajet = 0;
 
@@ -164,14 +165,14 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
             arretHoraires=new ArrayList<>();
 
             Log.d("trajet", String.valueOf(trajets.size()));
-            if(trajets.size()>0){
-                for(int i =0;i<trajets.size();i++) {
+            if(trajets.isEmpty()){
+                for(int i = 0 ; i < trajets.size() ; i++) {
                     passages = trajets.get(0).getPremierPassage().getPassages();
                     listeLibellesArrets = Passage.getArretsPassages(passages);
                     listeHorairesPassages = Passage.getHorairesPassages(passages);
                 }
             } else {
-                listeHorairesPassages = new ArrayList();
+                listeHorairesPassages = new ArrayList<>();
             }
 
             arretHoraires = new ArrayList<>();
@@ -181,9 +182,6 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
             }
             ArretHoraireAdapteur arretHoraireAdapteur = new ArretHoraireAdapteur(arretHoraires);
             recyclerView.setAdapter(arretHoraireAdapteur);
-
-
-
         }
     }
         @Override
@@ -228,7 +226,7 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
             changerTrajet(++indexTrajet);
         } else if (view.getId() == R.id.inverser_sens_ligne) {
             retour = !retour;
-            trajets = trajetDao.findByLigne(ligneCourante.getId());
+            trajets = trajetDao.findByLigne(ligneCourante);
             List<Trajet> tmpTrajets = new ArrayList<>();
 
             for (Trajet trajet : trajets) {

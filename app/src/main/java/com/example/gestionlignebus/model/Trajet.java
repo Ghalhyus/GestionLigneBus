@@ -59,16 +59,15 @@ public class Trajet {
     public boolean equals(Object obj) {
         return obj instanceof Trajet
                 && Objects.equals(((Trajet) obj).id, this.id)
-                && estHomonyme(obj);
-    }
-
-    public boolean estHomonyme(Object obj) {
-        return obj instanceof Trajet
                 && Objects.equals(((Trajet) obj).periode, this.periode)
                 && Objects.equals(((Trajet) obj).ligne, this.ligne)
                 && Objects.equals(((Trajet) obj).premierPassage, this.premierPassage);
     }
 
+    /**
+     * Convertit un trajet en JSONObject
+     * @return le JSONObject après converison
+     */
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -88,6 +87,11 @@ public class Trajet {
         return jsonObject;
     }
 
+    /**
+     * Convertit un JSONObject en Trajet
+     * @param jsonObject à convertir
+     * @return le trajet après conversion
+     */
     public static Trajet jsonObjectToTrajet(JSONObject jsonObject) {
         Trajet trajet = new Trajet();
         try {

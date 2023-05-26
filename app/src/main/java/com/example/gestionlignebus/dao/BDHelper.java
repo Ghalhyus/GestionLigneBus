@@ -7,8 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.gestionlignebus.model.Arret;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BDHelper extends SQLiteOpenHelper {
     public static final String NOM_BD = "gestion_bus.db";
@@ -64,7 +67,7 @@ public class BDHelper extends SQLiteOpenHelper {
     public static final String GROUPE_LIBELLE = "libelle";
     public static final String GROUPE_CREATION_TABLE = CREATE_TABLE + GROUPE_NOM_TABLE + "( " +
             GROUPE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE," +
-            GROUPE_LIBELLE + " TEXT NOT NULL " +
+            GROUPE_LIBELLE + " TEXT UNIQUE NOT NULL " +
             ");";
     public static final String GROUPE_SUPPRESSION_TABLE = DROP_TABLE+ GROUPE_NOM_TABLE;
 
@@ -76,7 +79,7 @@ public class BDHelper extends SQLiteOpenHelper {
     public static final String PERIODE_LIBELLE = "libelle";
     public static final String PERIODE_CREATION_TABLE = "CREATE TABLE " + PERIODE_NOM_TABLE + "( " +
             PERIODE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            PERIODE_LIBELLE + " TEXT NOT NULL " +
+            PERIODE_LIBELLE + " TEXT UNIQUE NOT NULL " +
             ");";
     public static final String PERIODE_SUPPRESSION_TABLE = DROP_TABLE+ PERIODE_NOM_TABLE;
 
@@ -95,7 +98,8 @@ public class BDHelper extends SQLiteOpenHelper {
             PASSAGE_PASSAGE_SUIVANT + INTEGER +
             FOREIGN_KEY + PASSAGE_PASSAGE_SUIVANT + REFERENCES + PASSAGE_NOM_TABLE
             + "("+ PASSAGE_CLE + ")," +
-            FOREIGN_KEY + PASSAGE_ARRET + REFERENCES + ARRET_NOM_TABLE + "("+ ARRET_CLE + ")" +
+            FOREIGN_KEY + PASSAGE_ARRET + REFERENCES + ARRET_NOM_TABLE + "("+ ARRET_CLE + ")," +
+            "UNIQUE(" + PASSAGE_ARRET + "," + PASSAGE_HORAIRE + " )" +
             ");";
     public static final String PASSAGE_SUPPRESSION_TABLE = DROP_TABLE+ PASSAGE_NOM_TABLE;
 
@@ -173,188 +177,7 @@ public class BDHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(LIGNE_ARRET_CREATION_TABLE);
         sqLiteDatabase.execSQL(GROUPE_ARRET_CREATION_TABLE);
         sqLiteDatabase.execSQL(TRAJET_CREATION_TABLE);
-
-
-        ContentValues enregistrement = new ContentValues();
-
-        enregistrement.put(ARRET_LIBELLE, "Arret 1");
-        enregistrement.put(ARRET_POSITION, "Position 1");
-        long idArret1 = sqLiteDatabase.insert(ARRET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(ARRET_LIBELLE, "Arret 31");
-        enregistrement.put(ARRET_POSITION, "Position 31");
-        sqLiteDatabase.insert(ARRET_NOM_TABLE,null,enregistrement);
-
-        enregistrement.put(ARRET_LIBELLE, "Arret 111");
-        enregistrement.put(ARRET_POSITION, "Position 111");
-        sqLiteDatabase.insert(ARRET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(ARRET_LIBELLE, "Arret 2");
-        enregistrement.put(ARRET_POSITION, "Position 2");
-        long idArret2 = sqLiteDatabase.insert(ARRET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(ARRET_LIBELLE, "Arret 32");
-        enregistrement.put(ARRET_POSITION, "Position 32");
-        sqLiteDatabase.insert(ARRET_NOM_TABLE,null,enregistrement);
-
-        enregistrement.put(ARRET_LIBELLE, "Arret 222");
-        enregistrement.put(ARRET_POSITION, "Position 222");
-        sqLiteDatabase.insert(ARRET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(ARRET_LIBELLE, "Arret 3");
-        enregistrement.put(ARRET_POSITION, "Position 3");
-        long idArret3 = sqLiteDatabase.insert(ARRET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.clear();
-
-        enregistrement.put(LIGNE_LIBELLE, "Ligne A");
-        sqLiteDatabase.insert(LIGNE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(LIGNE_LIBELLE, "Ligne AA");
-        sqLiteDatabase.insert(LIGNE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(LIGNE_LIBELLE, "Ligne AAA");
-        long idLigneAAA = sqLiteDatabase.insert(LIGNE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(LIGNE_LIBELLE, "Ligne B");
-        long idLigneB = sqLiteDatabase.insert(LIGNE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(LIGNE_LIBELLE, "Ligne C");
-        sqLiteDatabase.insert(LIGNE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(LIGNE_LIBELLE, "Ligne D");
-        sqLiteDatabase.insert(LIGNE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.clear();
-
-        enregistrement.put(GROUPE_LIBELLE, "Favori");
-        sqLiteDatabase.insert(GROUPE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.clear();
-
-        enregistrement.put(PERIODE_LIBELLE, "Impair");
-        long idPeriodeImpair
-                = sqLiteDatabase.insert(PERIODE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(PERIODE_LIBELLE, "Pair");
-        long idPeriodePair
-                = sqLiteDatabase.insert(PERIODE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(PERIODE_LIBELLE, "Scolaire semaine");
-        long idPeriode2
-                = sqLiteDatabase.insert(PERIODE_NOM_TABLE, null, enregistrement);
-
-
-        enregistrement.clear();
-
-        ArrayList<Long> listeArrets = new ArrayList<>();
-        for (int i = 4 ; i < 24 ; i++) {
-            enregistrement.clear();
-            enregistrement.put(ARRET_LIBELLE, "Arret " + i);
-            enregistrement.put(ARRET_POSITION, "Position " + i);
-            listeArrets.add(sqLiteDatabase.insert(
-                    ARRET_NOM_TABLE, null, enregistrement));
-        }
-
-        enregistrement.clear();
-        enregistrement.put(PASSAGE_ARRET, idArret1);
-        enregistrement.put(PASSAGE_HORAIRE, LocalTime.of(9, 30).toString());
-        enregistrement.put(PASSAGE_PASSAGE_SUIVANT, idArret2);
-        long idPassage3
-                = sqLiteDatabase.insert(PASSAGE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(PASSAGE_ARRET, listeArrets.get(0));
-        enregistrement.put(PASSAGE_HORAIRE, LocalTime.of(4, 0).toString());
-        enregistrement.put(PASSAGE_PASSAGE_SUIVANT, "");
-        String idDernierPassage = Long.toString(
-                sqLiteDatabase.insert(PASSAGE_NOM_TABLE, null, enregistrement));
-
-        String idPremierPassage = idDernierPassage;
-        for (int i = 5 ; i < 24 ; i++) {
-            enregistrement.put(PASSAGE_ARRET, listeArrets.get(i - 4));
-            enregistrement.put(PASSAGE_HORAIRE, LocalTime.of(i, 0).toString());
-            enregistrement.put(PASSAGE_PASSAGE_SUIVANT, idPremierPassage);
-            idPremierPassage = Long.toString(sqLiteDatabase.insert(
-                    PASSAGE_NOM_TABLE, null, enregistrement));
-        }
-
-        enregistrement.put(PASSAGE_ARRET, listeArrets.get(listeArrets.size() - 1));
-        enregistrement.put(PASSAGE_HORAIRE, LocalTime.of(4, 0).toString());
-        enregistrement.put(PASSAGE_PASSAGE_SUIVANT, "");
-        idDernierPassage = Long.toString(
-                sqLiteDatabase.insert(PASSAGE_NOM_TABLE, null, enregistrement));
-
-        String idPremierPassageRetour = idDernierPassage;
-        int y = 5;
-        for (int i = 22 ; i > 3 ; i--) {
-            enregistrement.put(PASSAGE_ARRET, listeArrets.get(i - 4));
-            enregistrement.put(PASSAGE_HORAIRE, LocalTime.of(y, 0).toString());
-            enregistrement.put(PASSAGE_PASSAGE_SUIVANT, idPremierPassageRetour);
-            idPremierPassageRetour = Long.toString(sqLiteDatabase.insert(
-                    PASSAGE_NOM_TABLE, null, enregistrement));
-            y++;
-        }
-        long idPassage4 =
-                sqLiteDatabase.insert(PASSAGE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(PASSAGE_ARRET, idArret1);
-        enregistrement.put(PASSAGE_HORAIRE, LocalTime.of(9, 0).toString());
-        enregistrement.put(PASSAGE_PASSAGE_SUIVANT, idArret3);
-        long idPassage2
-                = sqLiteDatabase.insert(PASSAGE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(PASSAGE_ARRET, listeArrets.get(0));
-        enregistrement.put(PASSAGE_HORAIRE, LocalTime.of(10, 30).toString());
-        enregistrement.put(PASSAGE_PASSAGE_SUIVANT, idArret3);
-        sqLiteDatabase.insert(PASSAGE_NOM_TABLE, null, enregistrement);
-
-        enregistrement.clear();
-
-        enregistrement.put(LIGNE_LIBELLE, "Ligne Test");
-        enregistrement.put(LIGNE_FK_ARRET_ALLE, listeArrets.get(0));
-        enregistrement.put(LIGNE_FK_ARRET_RETOUR, listeArrets.get(listeArrets.size() - 1));
-        long idLigne = sqLiteDatabase.insert(LIGNE_NOM_TABLE,null,enregistrement);
-
-        enregistrement.clear();
-
-        enregistrement.put(TRAJET_LIGNE, idLigne);
-        enregistrement.put(TRAJET_PERIODE, idPeriodeImpair);
-        enregistrement.put(TRAJET_PREMIER_PASSAGE, idPremierPassage);
-        sqLiteDatabase.insert(TRAJET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(TRAJET_LIGNE, idLigne);
-        enregistrement.put(TRAJET_PERIODE, idPeriodePair);
-        enregistrement.put(TRAJET_PREMIER_PASSAGE, idPremierPassageRetour);
-        sqLiteDatabase.insert(TRAJET_NOM_TABLE, null, enregistrement);
-
-
-        enregistrement.put(TRAJET_LIGNE, idLigneAAA);
-        enregistrement.put(TRAJET_PERIODE, idPeriodePair);
-        enregistrement.put(TRAJET_PREMIER_PASSAGE, idPassage3);
-        sqLiteDatabase.insert(TRAJET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(TRAJET_LIGNE, idLigneB);
-        enregistrement.put(TRAJET_PERIODE, idPeriodePair);
-        enregistrement.put(TRAJET_PREMIER_PASSAGE, idPassage2);
-        sqLiteDatabase.insert(TRAJET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(TRAJET_LIGNE, idLigneB);
-        enregistrement.put(TRAJET_PERIODE, idPeriodePair);
-        enregistrement.put(TRAJET_PREMIER_PASSAGE, idPassage4);
-        sqLiteDatabase.insert(TRAJET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(TRAJET_LIGNE, idLigneB);
-        enregistrement.put(TRAJET_PERIODE, idPeriode2);
-        enregistrement.put(TRAJET_PREMIER_PASSAGE, idPassage3);
-        sqLiteDatabase.insert(TRAJET_NOM_TABLE, null, enregistrement);
-
-        enregistrement.put(TRAJET_LIGNE, idLigneAAA);
-        enregistrement.put(TRAJET_PERIODE, idPeriode2);
-        enregistrement.put(TRAJET_PREMIER_PASSAGE, idPassage2);
-        sqLiteDatabase.insert(TRAJET_NOM_TABLE, null, enregistrement);
     }
-
-
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {

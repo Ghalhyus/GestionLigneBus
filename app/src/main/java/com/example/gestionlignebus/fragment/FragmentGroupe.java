@@ -120,7 +120,7 @@ public class FragmentGroupe extends Fragment
     public void onClick(View fragmentGroupeView) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
 
-        final View customLayout = getLayoutInflater().inflate(R.layout.popup_saisie,
+        final View customLayout = getLayoutInflater().inflate(R.layout.popup_saisie_groupe,
                 null);
         builder.setView(customLayout);
 
@@ -144,7 +144,7 @@ public class FragmentGroupe extends Fragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getView().getContext());
 
-        final View customLayout = getLayoutInflater().inflate(R.layout.popup_saisie,
+        final View customLayout = getLayoutInflater().inflate(R.layout.popup_saisie_groupe,
                 null);
         ((EditText)customLayout.findViewById(R.id.saisie)).setText(groupe.getLibelle());
         builder.setView(customLayout);

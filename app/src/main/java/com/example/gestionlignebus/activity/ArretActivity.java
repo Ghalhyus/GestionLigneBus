@@ -3,7 +3,6 @@ package com.example.gestionlignebus.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -23,7 +22,6 @@ import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Ligne;
-import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.model.Trajet;
 
@@ -65,7 +63,7 @@ public class ArretActivity extends AppCompatActivity implements AdapterView.OnIt
         PassageDAO passageDao;
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_arret);
+        setContentView(R.layout.activity_arret);
         SharedPreferences preferences;
 
         periodeDao = new PeriodeDAO(this);

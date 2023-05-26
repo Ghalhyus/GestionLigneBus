@@ -56,21 +56,34 @@ public class Passage {
 
     public boolean equals(Object obj) {
         return obj instanceof Passage
-                && Objects.equals(((Passage) obj).id, this.id)
                 && arretIdentique(obj)
                 && horaireIdentique(obj);
     }
 
+    /**
+     * Détermine si un passage possède des arrêts identiques
+     * @param obj arret à comparer
+     * @return true si vrai
+     */
     public boolean arretIdentique(Object obj) {
         return obj instanceof Passage
                 && Objects.equals(((Passage) obj).arret, this.arret);
     }
 
+    /**
+     * Détermine si un passage possède des arrêts identiques
+     * @param obj arret à comparer
+     * @return true si vrai
+     */
     public boolean horaireIdentique(Object obj) {
         return obj instanceof Passage
                 && Objects.equals(((Passage) obj).horaire, this.horaire);
     }
 
+    /**
+     * Convertit une ligne en JSONObject
+     * @return la ligne après conversion
+     */
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -169,5 +182,39 @@ public class Passage {
         }
 
         return nomsPassages;
+    }
+
+    public Passage getCorrespondanceArrivee(List<Passage> passages) {
+        for (Passage passage : passages) {
+            if (this.arretIdentique(passage)) {
+                return this;
+            }
+        }
+
+        return this.passageSuivant == null ? null
+                : this.passageSuivant.getCorrespondanceArrivee(passages);
+    }
+
+    public Passage getCorrespondanceDepart(List<Passage> passages) {
+        for (Passage passage : passages) {
+            if (this.arretIdentique(passage)) {
+                return passage;
+            }
+        }
+
+        return this.passageSuivant == null ? null
+                : this.passageSuivant.getCorrespondanceDepart(passages);
+    }
+
+    public static Passage getPassageByArret(List<Passage> passages, Arret arret) {
+        Passage passageTrouve = null;
+
+        for (Passage passage : passages) {
+            if (passage.getArret().equals(arret)) {
+                passageTrouve = passage;
+            }
+        }
+
+        return passageTrouve;
     }
 }

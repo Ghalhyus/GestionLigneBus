@@ -73,31 +73,30 @@ public class Groupe {
         return nomsGroupes;
     }
 
+    /**
+     * Détermine si deux groupes possèdent les mêmes attributs
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Groupe
                 && Objects.equals(((Groupe) obj).id, this.id)
-                && estHomonyme(obj);
+                && estHomonyme(obj)
+                && Objects.equals(((Groupe) obj).arrets, arrets);
     }
 
+    /**
+     * Inqique si deux groupes possèdent le même libelle
+     * @param obj
+     * @return
+     */
     public boolean estHomonyme(Object obj) {
-        return Objects.equals(((Groupe) obj).libelle, this.libelle)
-                && Objects.equals(((Groupe) obj).arrets, this.arrets);
+        return Objects.equals(((Groupe) obj).libelle, this.libelle);
     }
 
     @Override
     public String toString() {
         return libelle;
-    }
-
-    public JSONObject toJson() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(BDHelper.GROUPE_CLE, id);
-            jsonObject.put(BDHelper.GROUPE_LIBELLE, libelle);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        return jsonObject;
     }
 }

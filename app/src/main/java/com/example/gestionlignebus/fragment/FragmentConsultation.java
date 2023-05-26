@@ -2,14 +2,17 @@ package com.example.gestionlignebus.fragment;
 
 import static java.util.Arrays.asList;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,19 +27,27 @@ import androidx.fragment.app.Fragment;
 
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.activity.ArretActivity;
+import com.example.gestionlignebus.activity.ChangerFicheHoraireActivity;
 import com.example.gestionlignebus.activity.LigneActivity;
 import com.example.gestionlignebus.adapter.GroupeSpinnerAdapter;
 import com.example.gestionlignebus.adapter.ListViewAdapter;
-import com.example.gestionlignebus.adapter.PeriodeSpinnerAdapter;
 import com.example.gestionlignebus.adapter.SpinnerAdapter;
 import com.example.gestionlignebus.dao.ArretDAO;
 import com.example.gestionlignebus.dao.GroupeDAO;
 import com.example.gestionlignebus.dao.LigneDAO;
+import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Ligne;
+import com.example.gestionlignebus.model.Periode;
+import com.example.gestionlignebus.utils.JSONUtils;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Objects;
 
 public class FragmentConsultation extends Fragment
         implements AdapterView.OnItemSelectedListener,
@@ -44,6 +55,8 @@ public class FragmentConsultation extends Fragment
 
     private static final String LIGNE = "Ligne";
     private static final String ARRET = "Arrêt";
+    private static final int PICK_FILE_STABLE = 1;
+
 
     private Spinner spin;
     private AutoCompleteTextView search;
@@ -53,6 +66,7 @@ public class FragmentConsultation extends Fragment
 
     private LigneDAO ligneDAO;
     private ArretDAO arretDAO;
+    private PeriodeDAO periodeDAO;
     private GroupeDAO groupeDAO;
 
     private List<String> listeLibelles;
@@ -68,6 +82,11 @@ public class FragmentConsultation extends Fragment
         return new FragmentConsultation();
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater,
@@ -78,11 +97,9 @@ public class FragmentConsultation extends Fragment
         fragmentConsultationView = layoutInflater.inflate(R.layout.fragment_groupe,
                 container, false);
 
-
-
         initialisationDao();
-        listeArret=arretDAO.findAll();
-        listeLigne=ligneDAO.findAll();
+        listeArret = arretDAO.findAll();
+        listeLigne = ligneDAO.findAll();
 
         initialisationSpinner(view);
 
@@ -90,8 +107,8 @@ public class FragmentConsultation extends Fragment
 
         arretsAffiches = false;
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(fragmentConsultationView.getContext());
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(
+                fragmentConsultationView.getContext());
 
         return view;
     }
@@ -115,7 +132,7 @@ public class FragmentConsultation extends Fragment
     }
 
     /**
-     *
+     * Méthode initialisant le spinner du type de recherche
      * @param view
      */
     private void initialisationSpinner(View view) {
@@ -126,6 +143,9 @@ public class FragmentConsultation extends Fragment
         spin.setOnItemSelectedListener(this);
     }
 
+    /**
+     * Initialisation des différents DAO
+     */
     private void initialisationDao() {
         arretDAO = new ArretDAO(this.getContext());
         arretDAO.open();
@@ -135,6 +155,9 @@ public class FragmentConsultation extends Fragment
 
         groupeDAO = new GroupeDAO(this.getContext());
         groupeDAO.open();
+
+        periodeDAO = new PeriodeDAO(this.getContext());
+        periodeDAO.open();
     }
 
     @Override
@@ -229,7 +252,8 @@ public class FragmentConsultation extends Fragment
             arretsAffiches = false;
             search.setText("");
 
-            listeLibelles = Ligne.getLibellesLignes(ligneDAO.findAll());
+            listeLigne = ligneDAO.findAll();
+            listeLibelles = Ligne.getLibellesLignes(listeLigne);
 
             adapterlist = new ListViewAdapter(
                     this.getContext(), android.R.layout.simple_list_item_1, listeLibelles);
@@ -265,5 +289,107 @@ public class FragmentConsultation extends Fragment
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         // Nothing
+    }
+
+    // Menu optionnel
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.menu_optionnel_base, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.importer_lignes:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
+                String[] mimetypes = {"application/json"};
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+                startActivityForResult(intent, PICK_FILE_STABLE);
+                break;
+            case R.id.importation_horaire:
+                Intent intent2 = new Intent(this.getContext(), ChangerFicheHoraireActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.annuler:
+                // Annuler l'opération en cours
+                break;
+            default:
+                break;
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int codeRequete, int codeResultat, Intent intent)  {
+        super.onActivityResult(codeRequete, codeResultat, intent);
+        if (codeRequete == PICK_FILE_STABLE &&
+                codeResultat ==  Activity.RESULT_OK) {
+            enregistrerDonneeStable(intent);
+            initialisationDao();
+            // MAJ Adaptateur
+            changerTypeRecherche();
+        }
+    }
+
+    public void enregistrerDonneeStable(Intent intent) {
+        Uri uri = Uri.parse(intent.getDataString());
+        try {
+            // On ouvre le fichier afin de pouvoir le lire
+            InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            // On récupère le contenu du JSON
+            String content = JSONUtils.readJSON(bufferedReader);
+
+            if (!Objects.equals(content, "")) {
+                // On convertit les Arret JSON en arrêt java
+                List<Arret> arretList = JSONUtils.jsonToArretList(content);
+                if (arretList != null) {
+                    // On supprime les anciennes données
+                    arretDAO.clear();
+                    // On enregistre les arrêts du fichier
+                    arretDAO.saveAll(arretList);
+                } else {
+                    // Erreur lors de la lecture des arrêts
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_arret), Toast.LENGTH_LONG).show();
+                }
+
+                List<Periode> periodeList = JSONUtils.jsonToPeriodeList(content);
+
+                if ( periodeList != null) {
+                    // On supprime les anciennes données
+                    periodeDAO.clear();
+                    // On enregistre les périodes du fichier
+                    periodeDAO.saveAll(periodeList);
+                } else {
+                    // Erreur lors de la lecture des périodes
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_periode), Toast.LENGTH_LONG).show();
+                }
+
+                List<Ligne> ligneList = JSONUtils.jsonToLigneList(content);
+                if ( ligneList != null ) {
+                    // On supprime les anciennes données
+                    ligneDAO.clear();
+                    // On enregistre les lignes du fichier
+                    ligneDAO.saveAll(ligneList);
+                } else {
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_ligne), Toast.LENGTH_LONG).show();
+                }
+            } else {
+                // Erreur lecture fichier
+                Toast.makeText(this.getContext(), getString(R.string.erreur_fichier_vide), Toast.LENGTH_LONG).show();
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            arretDAO.close();
+            periodeDAO.close();
+            ligneDAO.close();
+        }
     }
 }

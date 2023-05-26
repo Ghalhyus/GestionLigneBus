@@ -15,9 +15,9 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
     ///////////////////////////////////////////////////
     /////////////////// Attributs /////////////////////
     ///////////////////////////////////////////////////
-    private BDHelper bdHelper;
+    private final BDHelper bdHelper;
     private SQLiteDatabase sqLiteDatabase;
-    private ArretDAO arretDAO;
+    private final ArretDAO arretDAO;
 
     public static final int COLONNE_NUM_CLE = 0;
     public static final int COLONNE_NUM_LIBELLE = 1;
@@ -67,8 +67,51 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
 
     @Override
     public Ligne save(Ligne toSave) {
+        // On ajoute l'arrrêt de départ
+        if (toSave.getArretDepart().getId() == null) {
+            Arret arretDepartFound = arretDAO.findByLibelle(toSave.getArretDepart().getLibelle());
+            if (arretDepartFound != null) {
+                toSave.setArretDepart(arretDepartFound);
+            } else {
+                toSave.setArretDepart(arretDAO.save(toSave.getArretDepart()));
+            }
+        }
+        // On ajoute l'arrrêt de retour
+        if (toSave.getArretRetour().getId() == null) {
+            Arret arretRetourFound = arretDAO.findByLibelle(toSave.getArretRetour().getLibelle());
+            if (arretRetourFound != null) {
+                toSave.setArretRetour(arretRetourFound);
+            } else {
+                toSave.setArretRetour(arretDAO.save(toSave.getArretRetour()));
+            }
+        }
+        // On ajoute les arrêts à la table de jointures
+        if (toSave.getArrets() != null) {
+            for (Arret arret : toSave.getArrets()) {
+                // S'il n'a pas d'identifiant
+                if (arret.getId() == null) {
+                    // On vérifie qu'il n'y ait pas d'arrêt homonyme dans la base
+                    Arret arretFound = arretDAO.findByLibelle(arret.getLibelle());
+                    if (arretFound != null) {
+                        // On remplace l'arret de la liste par l'arrêt trouvé
+                        toSave.getArrets().set(toSave.getArrets().indexOf(arret), arretFound);
+                    } else {
+                        // Sinon on enregistre l'arrêt
+                        Arret nouvelArret  = arretDAO.save(arret);
+                        toSave.getArrets().set(toSave.getArrets().indexOf(arret), nouvelArret);
+                    }
+                }
+            }
+        }
         ContentValues enregistrement = objectToContentValues(toSave);
         long id = sqLiteDatabase.insert(BDHelper.LIGNE_NOM_TABLE, null, enregistrement);
+        if (id > 0 && toSave.getArrets() != null) {
+            toSave.setId(id);
+            for (Arret arret : toSave.getArrets()) {
+                ajouterArret(toSave, arret);
+            }
+        }
+
         return findById(id);
     }
 
@@ -200,46 +243,23 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
         enregistrement.put(BDHelper.LIGNE_CLE, toConvert.getId());
         enregistrement.put(BDHelper.LIGNE_LIBELLE, toConvert.getLibelle());
 
-        // Si l'arrêt de départ ne possède pas d'id mais possède un libelle
         if (toConvert.getArretDepart() != null
-                && toConvert.getArretDepart().getId() == null
-                && toConvert.getArretDepart().getLibelle() != null) {
-            // Dans ce cas, on recherche un homonyme
-            Arret arret = arretDAO.findByLibelle(toConvert.getArretDepart().getLibelle());
-            // Si un libelle à cet arrêt existe bel et bien, on utilise cet arrêt
-            if (arret != null) {
-                toConvert.setArretDepart(arret);
-            // Sinon on enregistre cet arrêt et l'attribut à la ligne à convertir
-            } else {
-                arret = arretDAO.save(toConvert.getArretDepart());
-                toConvert.setArretDepart(arret);
-            }
-        }
-        // On fait de même pour l'arrêt de retour
-        if (toConvert.getArretRetour() != null
-                && toConvert.getArretRetour().getId() == null
-                && toConvert.getArretRetour().getLibelle() != null) {
-            // Dans ce cas, on recherche un homonyme
-            Arret arret = arretDAO.findByLibelle(toConvert.getArretRetour().getLibelle());
-            // Si un libelle à cet arrêt existe bel et bien, on utilise cet arrêt
-            if (arret != null) {
-                toConvert.setArretRetour(arret);
-            // Sinon on enregistre cet arrêt et l'attribut à la ligne à convertir
-            } else {
-                arret = arretDAO.save(toConvert.getArretRetour());
-                toConvert.setArretRetour(arret);
-            }
-        }
-        if (toConvert.getArretDepart() == null || toConvert.getArretDepart().getId() == null) {
-            enregistrement.putNull(BDHelper.LIGNE_FK_ARRET_ALLE);
-        } else {
+            && toConvert.getArretDepart().getId() != null) {
             enregistrement.put(BDHelper.LIGNE_FK_ARRET_ALLE, toConvert.getArretDepart().getId());
-        }
-        if (toConvert.getArretRetour() == null || toConvert.getArretRetour().getId() == null) {
-            enregistrement.putNull(BDHelper.LIGNE_FK_ARRET_RETOUR);
         } else {
+            enregistrement.putNull(BDHelper.LIGNE_FK_ARRET_ALLE);
+        }
+
+        if (toConvert.getArretRetour() != null
+                && toConvert.getArretRetour().getId() != null) {
             enregistrement.put(BDHelper.LIGNE_FK_ARRET_RETOUR, toConvert.getArretRetour().getId());
+        } else {
+            enregistrement.putNull(BDHelper.LIGNE_FK_ARRET_RETOUR);
         }
         return enregistrement;
+    }
+
+    public void clear() {
+        sqLiteDatabase.delete(BDHelper.LIGNE_NOM_TABLE, null, null);
     }
 }

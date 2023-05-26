@@ -68,7 +68,12 @@ public class Arret {
     public String toString() {
         return libelle;
     }
-    
+
+    /**
+     * Renvoie la liste des libelles d'une liste d'arrets
+     * @param arrets la liste d'arrêt à convertir
+     * @return la liste des libelles
+     */
     public static List<String> getLibellesArrets(List<Arret> arrets) {
         ArrayList<String> nomsArrets = new ArrayList<>();
 
@@ -79,6 +84,10 @@ public class Arret {
         return nomsArrets;
     }
 
+    /**
+     * Converti un arrêt en JSONObject
+     * @return le JSONObject de l'arrêt
+     */
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -91,6 +100,11 @@ public class Arret {
         return jsonObject;
     }
 
+    /**
+     * Convertit un JSONObject en Arret
+     * @param jsonObject le JSONObject de l'arrêt
+     * @return l'Arret après conversion
+     */
     public static Arret jsonObjectToArret(JSONObject jsonObject) {
         Arret arret = new Arret();
         try {

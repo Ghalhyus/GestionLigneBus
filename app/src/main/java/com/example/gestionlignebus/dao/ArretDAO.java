@@ -21,7 +21,7 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
     /////////////////// Attributs /////////////////////
     ///////////////////////////////////////////////////
     private Context context;
-    private BDHelper bdHelper;
+    private final BDHelper bdHelper;
     private SQLiteDatabase sqLiteDatabase;
 
     public static final int COLONNE_NUM_CLE = 0;
@@ -40,6 +40,8 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
     ///////////////////////////////////////////////////
     private static final String FIND_BY_ID = SELECT_ETOILE + WHERE + BDHelper.ARRET_CLE
             + PARAMETRE;
+    private static final String FIND_BY_LIBELLE = SELECT_ETOILE + WHERE + BDHelper.ARRET_LIBELLE
+            + PARAMETRE;
     private static final String FIND_BY_GROUPE = SELECT_ETOILE
             + " JOIN " + BDHelper.GROUPE_ARRET_NOM_TABLE
             + " ON " + BDHelper.GROUPE_ARRET_FK_ARRET + " = " + BDHelper.ARRET_CLE
@@ -49,10 +51,6 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
             + " JOIN " + BDHelper.LIGNE_ARRET_NOM_TABLE
             + " ON " + BDHelper.LIGNE_ARRET_FK_ARRET + " = " + BDHelper.ARRET_CLE
             + WHERE + BDHelper.LIGNE_ARRET_FK_LIGNE + PARAMETRE;
-
-    private static final String FIND_BY_LIBELLE = SELECT_ETOILE + WHERE + BDHelper.ARRET_LIBELLE
-            + PARAMETRE;
-
     public ArretDAO(Context context) {
         bdHelper = new BDHelper(
                 context,
@@ -216,5 +214,9 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
         enregistrement.put(BDHelper.ARRET_POSITION, toConvert.getPosition());
 
         return enregistrement;
+    }
+
+    public void clear() {
+        sqLiteDatabase.delete(BDHelper.ARRET_NOM_TABLE, null, null);
     }
 }

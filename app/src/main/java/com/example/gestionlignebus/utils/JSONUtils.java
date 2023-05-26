@@ -1,5 +1,8 @@
 package com.example.gestionlignebus.utils;
 
+import android.content.Context;
+
+import com.example.gestionlignebus.dao.BDHelper;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
@@ -10,17 +13,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JSONUtils {
 
-    private static final String LISTE_ARRET_NAME = "arrets";
-    private static final String LISTE_LIGNE_NAME = "lignes";
-    private static final String LISTE_PERIODE_NAME = "periodes";
-    private static final String LISTE_TRAJET_NAME = "trajets";
+    public static final String LISTE_ARRET_NAME = "arrets";
+    public static final String LISTE_LIGNE_NAME = "lignes";
+    public static final String LISTE_PERIODE_NAME = "periodes";
+    public static final String LISTE_TRAJET_NAME = "trajets";
+    private static final String[] suffixes = new String[] {"A", "B", "C", "D", "E", "F", "G", "H",
+            "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
+
+    /**
+     * Lis un fichier et renvoi un String de son contenu
+     * @param bufferedReader
+     * @return
+     */
     public static String readJSON(BufferedReader bufferedReader) {
         StringBuilder result = new StringBuilder();
         if (bufferedReader != null) {
@@ -36,17 +49,25 @@ public class JSONUtils {
         return result.toString();
     }
 
+    /**
+     * Extrait une JSONArray du contenu d'un fichier JSON et renvoi une liste de ses arrets
+     * @param json contenu du fichier des données stables
+     * @return la liste des arrêts
+     */
     public static List<Arret> jsonToArretList(String json) {
-        List<Arret> arrets = new ArrayList<>();
+        List<Arret> arrets = null;
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(json);
-            jsonObject.getJSONArray(LISTE_ARRET_NAME);
-            JSONArray o = jsonObject.getJSONArray(LISTE_ARRET_NAME);
-            for ( int i = 0 ; i < o.length() ; i++) {
-                JSONObject arretJson = o.getJSONObject(i);
-                Arret arret = Arret.jsonObjectToArret(arretJson);
-                arrets.add(arret);
+            if (!jsonObject.isNull(LISTE_ARRET_NAME)) {
+                jsonObject.getJSONArray(LISTE_ARRET_NAME);
+                JSONArray o = jsonObject.getJSONArray(LISTE_ARRET_NAME);
+                arrets = new ArrayList<>();
+                for ( int i = 0 ; i < o.length() ; i++) {
+                    JSONObject arretJson = o.getJSONObject(i);
+                    Arret arret = Arret.jsonObjectToArret(arretJson);
+                    arrets.add(arret);
+                }
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -54,15 +75,23 @@ public class JSONUtils {
         return arrets;
     }
 
+    /**
+     * Extrait une JSONArray du contenu d'un fichier JSON et renvoi une liste de ses lignes
+     * @param json contenu du fichier des données stables
+     * @return la liste des lignes
+     */
     public static List<Ligne> jsonToLigneList(String json) {
-        List<Ligne> lignes = new ArrayList<>();
+        List<Ligne> lignes = null;
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(json);
-            JSONArray o = jsonObject.getJSONArray(LISTE_LIGNE_NAME);
-            for ( int i = 0 ; i < o.length() ; i++) {
-                Ligne ligne = Ligne.jsonObjectToLigne(o.getJSONObject(i));
-                lignes.add(ligne);
+            if (!jsonObject.isNull(LISTE_LIGNE_NAME)) {
+                lignes = new ArrayList<>();
+                JSONArray o = jsonObject.getJSONArray(LISTE_LIGNE_NAME);
+                for ( int i = 0 ; i < o.length() ; i++) {
+                    Ligne ligne = Ligne.jsonObjectToLigne(o.getJSONObject(i));
+                    lignes.add(ligne);
+                }
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -70,16 +99,24 @@ public class JSONUtils {
         return lignes;
     }
 
+    /**
+     * Extrait une liste de période du JSON contenant l'ensemble des données
+     * @param json du fichier
+     * @return la liste des périodes
+     */
     public static List<Periode> jsonToPeriodeList(String json) {
-        List<Periode> periodes = new ArrayList<>();
+        List<Periode> periodes = null;
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(json);
-            JSONArray o = jsonObject.getJSONArray(LISTE_PERIODE_NAME);
-            for ( int i = 0 ; i < o.length() ; i++) {
-                JSONObject periodeJson = o.getJSONObject(i);
-                Periode periode = Periode.jsonObjectToPeriode(periodeJson);
-                periodes.add(periode);
+            if ( !jsonObject.isNull(LISTE_PERIODE_NAME)) {
+                JSONArray o = jsonObject.getJSONArray(LISTE_PERIODE_NAME);
+                periodes = new ArrayList<>();
+                for ( int i = 0 ; i < o.length() ; i++) {
+                    JSONObject periodeJson = o.getJSONObject(i);
+                    Periode periode = Periode.jsonObjectToPeriode(periodeJson);
+                    periodes.add(periode);
+                }
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -87,16 +124,24 @@ public class JSONUtils {
         return periodes;
     }
 
+    /**
+     * Extrait une liste de trajets du JSON contenant l'ensemble des données
+     * @param json contenu du fichier
+     * @return la liste des trajets
+     */
     public static List<Trajet> jsonToTrajets(String json) {
-        List<Trajet> trajets = new ArrayList<>();
+        List<Trajet> trajets = null;
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(json);
-            JSONArray o = jsonObject.getJSONArray(LISTE_TRAJET_NAME);
-            for (int i = 0; i < o.length() ; i++) {
-                JSONObject trajetJSON = o.getJSONObject(i);
-                Trajet trajet = Trajet.jsonObjectToTrajet(trajetJSON);
-                trajets.add(trajet);
+            if (!jsonObject.isNull(LISTE_TRAJET_NAME)) {
+                trajets = new ArrayList<>();
+                JSONArray o = jsonObject.getJSONArray(LISTE_TRAJET_NAME);
+                for (int i = 0; i < o.length() ; i++) {
+                    JSONObject trajetJSON = o.getJSONObject(i);
+                    Trajet trajet = Trajet.jsonObjectToTrajet(trajetJSON);
+                    trajets.add(trajet);
+                }
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);

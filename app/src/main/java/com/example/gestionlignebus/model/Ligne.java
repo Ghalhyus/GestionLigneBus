@@ -1,7 +1,9 @@
 package com.example.gestionlignebus.model;
 
 import com.example.gestionlignebus.dao.BDHelper;
+import com.example.gestionlignebus.utils.JSONUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,6 +76,11 @@ public class Ligne {
                 && estHomonyme(obj);
     }
 
+    /**
+     * Renvoie la liste des libelle d'une liste de ligne
+     * @param lignes la liste de ligne
+     * @return la liste des libelles
+     */
     public static List<String> getLibellesLignes(List<Ligne> lignes) {
         ArrayList<String> nomsLignes = new ArrayList<>();
 
@@ -106,6 +113,10 @@ public class Ligne {
                 && Objects.equals(((Ligne) obj).arretRetour, this.arretRetour);
     }
 
+    /**
+     * Convertit une ligne en objet JSONObject
+     * @return le JSONObject
+     */
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -123,6 +134,11 @@ public class Ligne {
         return jsonObject;
     }
 
+    /**
+     * Convertit un JSONObject en Ligne
+     * @param jsonObject à convertir
+     * @return la ligne après conversion
+     */
     public static Ligne jsonObjectToLigne(JSONObject jsonObject) {
         Ligne ligne = new Ligne();
         try {
@@ -138,9 +154,29 @@ public class Ligne {
             if (!jsonObject.isNull(BDHelper.LIGNE_FK_ARRET_RETOUR)) {
                 ligne.setArretRetour(Arret.jsonObjectToArret(jsonObject.getJSONObject(BDHelper.LIGNE_FK_ARRET_RETOUR)));
             }
+            if (!jsonObject.isNull(JSONUtils.LISTE_ARRET_NAME)) {
+                JSONArray arrets = jsonObject.getJSONArray(JSONUtils.LISTE_ARRET_NAME);
+                for (int i = 0 ; i < arrets.length() ; i++) {
+                    Arret arret = Arret.jsonObjectToArret(arrets.getJSONObject(i));
+                    if (arret != null) {
+                        ligne.ajouterArret(arret);
+                    }
+                }
+            }
         } catch (JSONException e) {
             return null;
         }
         return ligne;
+    }
+
+    /**
+     * Ajoute un arrêt à la liste des arrêts d'une ligne
+     * @param arret à ajouter
+     */
+    private void ajouterArret(Arret arret) {
+        if (arrets == null) {
+            arrets = new ArrayList<>();
+        }
+        arrets.add(arret);
     }
 }

@@ -14,7 +14,7 @@ public class PeriodeDAO implements ICommonDAO<Periode, Long> {
     ///////////////////////////////////////////////////
     /////////////////// Attributs /////////////////////
     ///////////////////////////////////////////////////
-    private BDHelper bdHelper;
+    private final BDHelper bdHelper;
     private SQLiteDatabase sqLiteDatabase;
 
     public static final int COLONNE_NUM_CLE = 0;
@@ -166,5 +166,9 @@ public class PeriodeDAO implements ICommonDAO<Periode, Long> {
         enregistrement.put(BDHelper.PERIODE_LIBELLE, toConvert.getLibelle());
 
         return enregistrement;
+    }
+
+    public void clear() {
+        sqLiteDatabase.delete(BDHelper.PERIODE_NOM_TABLE, null, null);
     }
 }

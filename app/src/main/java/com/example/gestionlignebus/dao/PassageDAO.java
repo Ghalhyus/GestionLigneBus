@@ -16,9 +16,9 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
     ///////////////////////////////////////////////////
     /////////////////// Attributs /////////////////////
     ///////////////////////////////////////////////////
-    private BDHelper bdHelper;
+    private final BDHelper bdHelper;
     private SQLiteDatabase sqLiteDatabase;
-    private ArretDAO arretDAO;
+    private final ArretDAO arretDAO;
 
     public static final int COLONNE_NUM_CLE = 0;
     public static final int COLONNE_NUM_ARRET = 1;
@@ -44,6 +44,15 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
     private static final String FIND_BY_ARRET = SELECT_ETOILE + WHERE + BDHelper.PASSAGE_ARRET
             + PARAMETRE;
 
+    private static final String FIND_BY_ARRET_AND_HORAIRE_INFERIEUR = SELECT_ETOILE
+            + WHERE + BDHelper.PASSAGE_ARRET + PARAMETRE
+            + " AND " + BDHelper.PASSAGE_HORAIRE+ " <= ?" ;
+
+    private static final String FIND_BY_ARRET_AND_HORAIRE = SELECT_ETOILE
+            + WHERE + BDHelper.PASSAGE_ARRET
+            + PARAMETRE + " AND "
+            + BDHelper.PASSAGE_HORAIRE + PARAMETRE;
+
 
     public PassageDAO(Context context) {
         bdHelper = new BDHelper(context, BDHelper.NOM_BD, null, BDHelper.VERSION);
@@ -67,6 +76,11 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
         return cursorToObject(sqLiteDatabase.rawQuery(FIND_BY_ID, new String[] {aLong.toString()}));
     }
 
+    public List<Passage> findByArretAndHoraireInferieur(Arret arret, String horaire) {
+        return cursorToObjectList(sqLiteDatabase.rawQuery(
+                FIND_BY_ARRET_AND_HORAIRE, new String[] { arret.getId().toString(), horaire }));
+    }
+
     @Override
     public List<Passage> findAll() {
         return cursorToObjectList(cursorFindAll());
@@ -74,9 +88,31 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
 
     @Override
     public Passage save(Passage toSave) {
-        ContentValues enregistrement = objectToContentValues(toSave);
-        long id = sqLiteDatabase.insert(BDHelper.PASSAGE_NOM_TABLE, null, enregistrement);
-        return findById(id);
+        if (findByArretAndHoraire(toSave.getArret(), toSave.getHoraire()) == null) {
+            if (toSave.getArret() != null && toSave.getArret().getId() == null) {
+                Arret arretFound = arretDAO.findByLibelle(toSave.getArret().getLibelle());
+                if (arretFound != null ) {
+                    toSave.setArret(arretFound);
+                } else {
+                    toSave.setArret(arretDAO.save(toSave.getArret()));
+                }
+            }
+            ContentValues enregistrement = objectToContentValues(toSave);
+            long id = sqLiteDatabase.insert(BDHelper.PASSAGE_NOM_TABLE, null, enregistrement);
+            // On enregistre le passage suivant
+            if (toSave.getPassageSuivant() != null && toSave.getPassageSuivant().getId() == null) {
+                Passage passageSuivant = save(toSave.getPassageSuivant());
+
+                // On met à jour l'arrêt à enregistrer
+                toSave = findById(id);
+                toSave.setPassageSuivant(passageSuivant);
+                toSave = update(toSave);
+            }
+            return findById(id);
+        } else {
+            // Un passage identique existe déjà
+            return null;
+        }
     }
 
     @Override
@@ -90,15 +126,10 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
 
     @Override
     public int delete(Passage toDelete) {
-        if (toDelete.getId() != null) {
-            // On met passe à null le passage suivant de tous les passages ayant le passage supprimé
-            // comme passage suivant
-            List<Passage> passages = findByPassageSuivant(toDelete);
-            if (passages != null) {
-                for (Passage passage : passages) {
-                    passage.setPassageSuivant(null);
-                    update(passage);
-                }
+        if (toDelete != null && toDelete.getId() != null) {
+            // On supprime les passages chaîné
+            if (toDelete.getPassageSuivant() != null) {
+                delete(toDelete.getPassageSuivant());
             }
 
             return sqLiteDatabase.delete(
@@ -196,8 +227,15 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
     public ContentValues objectToContentValues(Passage toConvert) {
         ContentValues enregistrement = new ContentValues();
         enregistrement.put(BDHelper.PASSAGE_CLE, toConvert.getId());
-        enregistrement.put(BDHelper.PASSAGE_ARRET, toConvert.getArret().getId());
+
+        if (toConvert.getArret() != null && toConvert.getArret().getId() != null) {
+            enregistrement.put(BDHelper.PASSAGE_ARRET, toConvert.getArret().getId());
+        } else {
+            enregistrement.putNull(BDHelper.PASSAGE_ARRET);
+        }
+
         enregistrement.put(BDHelper.PASSAGE_HORAIRE, toConvert.getHoraire().toString());
+
         if (toConvert.getPassageSuivant() != null && toConvert.getPassageSuivant().getId() != null) {
             enregistrement.put(BDHelper.PASSAGE_PASSAGE_SUIVANT, toConvert.getPassageSuivant().getId());
         } else {
@@ -217,11 +255,35 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
         }
     }
 
-    public Passage findByArret(Arret arret) {
+    public List<Passage> findByArret(Arret arret) {
         if (arret.getId() != null) {
             Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_ARRET, new String[] { arret.getId().toString() });
-            return cursorToObject(cursor);
+            return cursorToObjectList(cursor);
         } else {
+            return null;
+        }
+    }
+
+    public Passage findByArretAndHoraire(Arret arret, LocalTime horaire) {
+        // On vérifie que les arguments ne sont pas nuls
+        if (arret != null && horaire != null) {
+            // Si l'arrrêt n'a pas d'id on cherche un homonyme
+            if (arret.getId() == null && arret.getLibelle() != null) {
+                arret = arretDAO.findByLibelle(arret.getLibelle());
+            }
+            // On vérifie qu'il existe bien un homonyme
+            if (arret != null) {
+                Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_ARRET_AND_HORAIRE, new String[] {
+                        arret.getId().toString(),
+                        horaire.toString()
+                });
+                return cursorToObject(cursor);
+            } else {
+                // Aucun homonyme trouvé
+                return null;
+            }
+        } else {
+            // Les arguments sont null
             return null;
         }
     }
