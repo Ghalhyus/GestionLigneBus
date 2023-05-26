@@ -1,46 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/container_view">
 
     <!-- Dropdown List -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <TableRow
+        style="@style/table_row_centered">
 
         <!-- Spinner -->
         <Spinner
             android:id="@+id/liste_deroulant_recherche"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown" />
+            style="@style/spinner"/>
 
-        <!-- SearchView -->
         <AutoCompleteTextView
             android:id="@+id/barre_recherche"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:dropDownHeight="0dp"
-            android:hint="Recherche"
-            android:importantForAutofill="no" />
+            style="@style/edittext"
+            android:hint="Recherche"/>
+    </TableRow>
 
-        <!-- Button -->
-
-
-    </LinearLayout>
 
     <ListView
         android:id="@+id/recherche_list"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        style="@style/listview"/>
 
-</LinearLayout>
+</TableLayout>

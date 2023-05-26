@@ -1,74 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:stretchColumns="0,1"
-    android:layout_margin="@dimen/table_layout_margin">
+    style="@style/container_view">
 
-    <TableRow>
+    <TableRow style="@style/table_row_centered">
+        <TextView
+            android:text="@string/spinner_groupe_label"
+            style="@style/spinner_label"/>
         <Spinner
             android:id="@+id/itineraire_groupe_liste"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/itineraire_arret_depart_hint"
-            />
-        <Button
-            android:id="@+id/itineraire_inversion"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/itineraire_btn_inversion"
+            style="@style/spinner"
             />
     </TableRow>
     <TableRow>
-        <EditText
+        <Button
+            android:id="@+id/itineraire_inversion"
+            style="@style/button"
+            android:text="@string/itineraire_btn_inversion"
+            />
+    </TableRow>
+    <TableRow style="@style/table_row_centered">
+        <AutoCompleteTextView
             android:id="@+id/itineraire_arret_depart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/edittext"
             android:hint="@string/itineraire_arret_depart_hint"
             />
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/itineraire_arret_arrive"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/edittext"
             android:hint="@string/itineraire_arret_arrive_hint"
             />
     </TableRow>
-    <TableRow>
-        <EditText
+    <TableRow style="@style/table_row_centered">
+        <AutoCompleteTextView
             android:id="@+id/itineraire_horaire_depart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/edittext"
             android:hint="@string/itineraire_horaire_depart_hint"
             />
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/itineraire_horaire_arrive"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Horaire d'arrivé"
+            style="@style/edittext"
+            android:hint="@string/itineraire_horaire_arrive_hint"
             />
     </TableRow>
-    <TableRow>
+    <TableRow style="@style/table_row_centered">
+        <TextView
+            android:text="@string/spinner_periode_label"
+            style="@style/spinner_label"
+            />
         <Spinner
-            android:id="@+id/itineraire_periode_liste"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/itineraire_arret_depart_hint"
+            android:id="@+id/spinner_periode"
+            style="@style/spinner"
             />
-
+    </TableRow>
+    <TableRow style="@style/table_row_centered">
         <CheckBox
-            android:text="Autoriser \ncorrespondances"
-
+            android:id="@+id/autoriser_correspondances"
+            android:text="@string/checkbox_correspondances_label"
+            style="@style/checkbox"
             />
-
     </TableRow>
-    <TableRow android:gravity="center">
-
+    <TableRow style="@style/table_row_centered">
         <Button
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Rechercher"/>
+            android:id="@+id/bouton_rechercher"
+            style="@style/button"
+            android:text="@string/btn_rechercher"/>
     </TableRow>
 
-    <androidx.recyclerview.widget.RecyclerView/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itineraires"
+        style="@style/recyclerview"/>
 
 </TableLayout>

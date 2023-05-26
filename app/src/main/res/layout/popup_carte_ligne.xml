@@ -20,11 +20,10 @@
                 android:src="@drawable/exemple_carte_ligne"/>
 
     </LinearLayout>
-    <Button
-        android:id="@+id/close_button"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:text="Fermer"
-        android:backgroundTint="@color/primary"/>
+<!--    <Button-->
+<!--        android:id="@+id/close_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:text="Fermer"/>-->
 </LinearLayout>

@@ -1,32 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="16dp">
+    style="@style/container_view"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/creer_groupe_button"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/primary"
-        android:text="Créer un groupe"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <TableRow>
+        <Button
+            android:id="@+id/creer_groupe_button"
+            style="@style/button"
+            android:text="@string/btn_creation_groupe" />
+    </TableRow>
 
     <ListView
         android:id="@+id/groupe_liste"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:divider="@color/black"
-        android:background="@drawable/bordure"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/creer_groupe_button" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        style="@style/listview"/>
+</TableLayout>

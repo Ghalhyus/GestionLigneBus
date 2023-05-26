@@ -1,12 +1,9 @@
 <resources>
     <string name="app_name">GestionLigneBus</string>
     <!-- Onglet Recherche -->
-    <string name="recherche_onglet">Recherche</string>
     <string name="label_arrets">Arrêts</string>
     <string name="label_horaires">Horaires</string>
     <string name="consultation_onglet">Consultation</string>
-    <string name="message_erreur_trajet">"Il n'y a pas d'autre trajet."</string>
-    <string name="message_erreur_ajout_arret">Cet arrêt existe déjà dans ce groupe.</string>
 
     <!-- Onglet Groupe -->
     <string name="groupe_onglet">Groupe</string>
@@ -25,11 +22,13 @@
     <string name="titre_ajouter_arret">Ajouter un arret</string>
     <string name="message_supprimer_arret_groupe">"Voulez-vous vraiment retirer l'arrêt %s de se groupe?"</string>
     <string name="titre_retirer_arret_groupe">Retirer un arrêt</string>
+
     <!-- Onglet Itinéraire -->
     <string name="itineraire_onglet">Itinéraire</string>
     <string name="itineraire_arret_depart_hint">Arrêt de départ</string>
     <string name="itineraire_arret_arrive_hint">Arrêt d\'arrivé</string>
     <string name="itineraire_horaire_depart_hint">Horaire de départ</string>
+    <string name="itineraire_horaire_arrive_hint">Horaire d\'arrivé</string>
     <string name="spinner_groupes">Groupes</string>
     <string name="itineraire_btn_inversion">Inverser itinéraire</string>
 
@@ -39,19 +38,32 @@
     <string name="renommer">Renommer</string>
     <string name="supprimer">Supprimer</string>
 
-    <string-array name="exemple_ligne">
-        <item name="ligne_a0">A0</item>
-        <item name="ligne_a1">A1</item>
-        <item name="ligne_a2">A2</item>
-        <item name="ligne_b0">B0</item>
-        <item name="ligne_b1">B1</item>
-        <item name="ligne_b2">B2</item>
-        <item name="ligne_c">C</item>
-        <item name="ligne_d">D</item>
-    </string-array>
+    <!-- Spinner label -->
+    <string name="spinner_periode_label">Choisissez une période :</string>
+    <string name="spinner_groupe_label">Choisissez un groupe :</string>
+    <string name="spinner_ligne_import_label">Choisissez la ligne dont vous souhaitez importer les horaires :</string>
+    <string name="checkbox_correspondances_label">Autoriser correspondances</string>
+    <string name="nom_groupe_hint">Nom du groupe</string>
 
     <!-- Boutons -->
     <string name="bouton_valider">Valider</string>
+    <string name="btn_retour">Retour</string>
+    <string name="bouton_import_fichier">Import Fichier</string>
+    <string name="bouton_inverser_sens">Inverser sens de passage</string>
     <string name="trajet_precedent">Trajet précédent</string>
-    <string name="trajet_suivant">Trajet suivant</string>
+    <string name="trajet_suivant">Trajet \nsuivant</string>
+    <string name="btn_afficher_carte">Afficher la carte</string>
+    <string name="btn_creation_groupe">Créer un groupe</string>
+    <string name="btn_rechercher">Rechercher</string>
+    <string name="btn_inverser_sens">Inverser sens de passage</string>
+
+    <!-- Erreurs -->
+    <string name="erreur_ouverture_fichier">Erreur lors de l\'ouverture du fichier</string>
+    <string name="erreur_fichier_vide">Erreur, le fichier fourni est vide</string>
+    <string name="erreur_import_arret">Erreur lors de l\'import des arrêts</string>
+    <string name="erreur_import_periode">Erreur lors de l\'import des périodes</string>
+    <string name="erreur_import_ligne">Erreur lors de l\'import des lignes</string>
+    <string name="erreur_import_trajet">Erreur lors de l\'import des trajets</string>
+    <string name="message_erreur_trajet">"Il n'y a pas d'autre trajet."</string>
+    <string name="message_erreur_ajout_arret">Cet arrêt existe déjà dans ce groupe.</string>
 </resources>
