@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/container_view">
+
+    <TableRow
+        style="@style/table_row_centered">
+        <TextView
+            android:text="@string/spinner_ligne_import_label"
+            style="@style/spinner_label"
+            />
+        <Spinner
+            android:id="@+id/spinner_ligne"
+            style="@style/spinner" />
+    </TableRow>
+    <TableRow
+        style="@style/table_row_centered">
+        <Button
+            android:id="@+id/btn_retour"
+            style="@style/button"
+            android:text="@string/btn_retour"/>
+        <Button
+            android:id="@+id/btn_import_variable"
+            style="@style/button"
+            android:text="@string/bouton_import_fichier"/>
+    </TableRow>
+
+</TableLayout>

@@ -1,0 +1,53 @@
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/container_view">
+    <TableRow
+        style="@style/table_row_centered">
+        <TextView
+            style="@style/spinner_label"
+            android:text="@string/spinner_periode_label"/>
+        <Spinner
+            android:id="@+id/spinner_periode"
+            style="@style/spinner"/>
+    </TableRow>
+    <TableRow style="@style/table_row_centered">
+        <Button
+            android:id="@+id/inverser_sens_ligne"
+            style="@style/button"
+            android:text="@string/btn_inverser_sens"/>
+    </TableRow>
+    <TableRow style="@style/table_row_centered">
+        <Button
+            android:id="@+id/trajet_precedent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/btn_horizontal_margin"
+            android:text="@string/trajet_precedent" />
+
+        <Button
+            android:id="@+id/trajet_suivant"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/btn_horizontal_margin"
+            android:text="@string/trajet_suivant" />
+    </TableRow>
+    <TableRow
+        style="@style/table_row_centered">
+        <TextView
+            style="@style/listview_title"
+            android:text="@string/label_arrets"/>
+        <TextView
+            style="@style/listview_title"
+            android:text="@string/label_horaires"/>
+    </TableRow>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fiche_horaires"
+        style="@style/recyclerview"/>
+    <TableRow>
+        <Button
+            android:id="@+id/afficher_carte"
+            style="@style/button"
+            android:visibility="invisible"
+            android:text="@string/btn_afficher_carte"/>
+    </TableRow>
+</TableLayout>

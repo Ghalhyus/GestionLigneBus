@@ -1,0 +1,631 @@
+{
+  "trajets" : [
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "08:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "08:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "08:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "08:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "08:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "08:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "08:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "08:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "08:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "08:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "08:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "08:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "08:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "08:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "10:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "10:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "10:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "10:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "10:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "10:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "10:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "12:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "12:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "12:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "12:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "12:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "12:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "12:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "12:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "12:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "12:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "12:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "12:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "12:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "12:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance d'été"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "12:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "12:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "12:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "12:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "12:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "12:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "12:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "14:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "14:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "14:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "14:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "14:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "14:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "14:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "16:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "16:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "16:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "16:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "16:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "16:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "16:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "18:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "18:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "18:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "18:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "18:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "18:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "18:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "18:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "18:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "18:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "18:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "18:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "18:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "18:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance d'été"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 1"
+      },
+      "premier_passage" : {
+        "arret" : {
+          "libelle" : "Arret A",
+          "position" : "position A"
+        },
+        "horaire" : "18:00",
+        "passage_suivant" : {
+          "arret": {
+            "libelle" : "Arret B",
+            "position" : "position B"
+          },
+          "horaire": "18:05",
+          "passage_suivant": {
+            "arret": {
+              "libelle" : "Arret C",
+              "position" : "position C"
+            },
+            "horaire": "18:10",
+            "passage_suivant": {
+              "arret": {
+                "libelle" : "Arret D",
+                "position" : "position D"
+              },
+              "horaire": "18:15",
+              "passage_suivant": {
+                "arret": {
+                  "libelle" : "Arret E",
+                  "position" : "position E"
+                },
+                "horaire": "18:20",
+                "passage_suivant": {
+                  "arret": {
+                    "libelle" : "Arret F",
+                    "position" : "position F"
+                  },
+                  "horaire": "18:25",
+                  "passage_suivant": {
+                    "arret": {
+                      "libelle" : "Arret G",
+                      "position" : "position G"
+                    },
+                    "horaire": "18:30"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/container_view">
+
+    <TableRow
+        style="@style/table_row_centered">
+        <TextView
+            style="@style/spinner_label"
+            android:text="@string/spinner_periode_label" />
+        <Spinner
+            android:id="@+id/spinner_periode"
+            style="@style/spinner"/>
+    </TableRow>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/liste_arret"
+            style="@style/recyclerview"/>
+
+</TableLayout>

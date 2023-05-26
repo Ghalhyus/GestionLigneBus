@@ -1,0 +1,580 @@
+{
+  "trajets" : [
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "08:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "08:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "08:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "08:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "08:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "08:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "08:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "08:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "08:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "08:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "10:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "10:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "10:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "10:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "10:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "10:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "10:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "10:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "10:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "10:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "10:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "10:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "10:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "10:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "10:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "10:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "10:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "10:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "10:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "10:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "12:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "12:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "12:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "12:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "12:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "12:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "12:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "12:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "12:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "12:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "12:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "12:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "12:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "12:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "12:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "12:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "12:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "12:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "12:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "12:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance d'été"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "12:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "12:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "12:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "12:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "12:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "12:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "12:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "12:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "12:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "12:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "14:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "14:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "14:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "14:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "14:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "14:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "14:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "14:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "14:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "14:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "16:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "16:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "16:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "16:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "16:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "16:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "16:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "16:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "16:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "16:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "18:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "18:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "18:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "18:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "18:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "18:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "18:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "18:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "18:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "18:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "18:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "18:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "18:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "18:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "18:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "18:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "18:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "18:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "18:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "18:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Vacance d'été"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "18:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "18:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "18:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "18:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "18:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "18:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "18:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "18:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "18:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "18:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "periode" : {
+        "libelle" : "Période scolaire"
+      },
+      "ligne" : {
+        "libelle" : "Ligne 3"
+      },
+      "premier_passage" : {
+        "arret" : "Arret Q",
+        "horaire" : "20:00",
+        "passage_suivant" : {
+          "arret": "Arret R",
+          "horaire": "20:05",
+          "passage_suivant": {
+            "arret": "Arret S",
+            "horaire": "20:10",
+            "passage_suivant": {
+              "arret": "Arret T",
+              "horaire": "20:15",
+              "passage_suivant": {
+                "arret": "Arret U",
+                "horaire": "20:20",
+                "passage_suivant": {
+                  "arret": "Arret V",
+                  "horaire": "20:25",
+                  "passage_suivant": {
+                    "arret": "Arret W",
+                    "horaire": "20:30",
+                    "passage_suivant": {
+                      "arret": "Arret X",
+                      "horaire": "20:35",
+                      "passage_suivant": {
+                        "arret": "Arret Y",
+                        "horaire": "20:40",
+                        "passage_suivant": {
+                          "arret": "Arret Z",
+                          "horaire": "20:45"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
