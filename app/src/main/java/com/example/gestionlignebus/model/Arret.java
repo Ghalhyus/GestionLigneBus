@@ -1,5 +1,9 @@
 package com.example.gestionlignebus.model;
 
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
+
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import com.example.gestionlignebus.dao.BDHelper;
@@ -8,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class Arret {
     private Long id;
@@ -96,13 +101,16 @@ public class Arret {
      */
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
+
         try {
             jsonObject.put(BDHelper.ARRET_CLE, id);
             jsonObject.put(BDHelper.ARRET_LIBELLE, libelle);
             jsonObject.put(BDHelper.ARRET_POSITION, position);
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, String.format(
+                    "Erreur lors de la transformation de l'arrêt %s en objet JSON.", libelle));
         }
+
         return jsonObject;
     }
 

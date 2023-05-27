@@ -132,9 +132,9 @@ public class LigneDAOTest {
 
         List<Ligne> lignesTrouves = ligneDao.findAll();
         for (Ligne ligne : lignesTrouves) {
-            Assert.assertFalse(ligne.equals(lignesTest.get(0)));
-            Assert.assertFalse(ligne.equals(lignesTest.get(1)));
-            Assert.assertFalse(ligne.equals(lignesTest.get(2)));
+            Assert.assertNotEquals(ligne, lignesTest.get(0));
+            Assert.assertNotEquals(ligne, lignesTest.get(1));
+            Assert.assertNotEquals(ligne, lignesTest.get(2));
         }
     }
 

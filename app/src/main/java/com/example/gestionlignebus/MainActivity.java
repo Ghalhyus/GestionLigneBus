@@ -14,11 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int PICKFILE_REQUEST_CODE = 1;
-
-    private ArretDAO arretDAO;
-    private PeriodeDAO periodeDAO;
-    private LigneDAO ligneDAO;
+    public static final String CLE_LOG = "gestion_lignes_bus";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

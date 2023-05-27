@@ -37,9 +37,9 @@ public class GroupeDAOTest {
         arretDao.open();
 
         arretsTest = new ArrayList<>();
-        arretsTest.add(new Arret("Arrêt 1", "1"));
-        arretsTest.add(new Arret("Arrêt 2", "2"));
-        arretsTest.add(new Arret("Arrêt 3", "3"));
+        arretsTest.add(new Arret("Arrêt Test 1", "Position 1"));
+        arretsTest.add(new Arret("Arrêt Test 2", "Position 2"));
+        arretsTest.add(new Arret("Arrêt Test 3", "Position 3"));
         arretsTest = arretDao.saveAll(arretsTest);
 
         groupeTest = new Groupe("Test groupe");

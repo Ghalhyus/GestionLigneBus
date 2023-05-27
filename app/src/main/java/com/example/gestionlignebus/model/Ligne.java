@@ -1,5 +1,9 @@
 package com.example.gestionlignebus.model;
 
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
+
+import android.util.Log;
+
 import com.example.gestionlignebus.dao.BDHelper;
 import com.example.gestionlignebus.utils.JSONUtils;
 
@@ -135,7 +139,8 @@ public class Ligne {
                 jsonObject.put(BDHelper.LIGNE_FK_ARRET_RETOUR, arretRetour.getLibelle());
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, String.format(
+                    "Erreur lors de la transformation de la ligne %s en objet JSON.", libelle));
         }
         return jsonObject;
     }

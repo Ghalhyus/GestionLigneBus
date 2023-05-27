@@ -44,10 +44,6 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
     private static final String FIND_BY_ARRET = SELECT_ETOILE + WHERE + BDHelper.PASSAGE_ARRET
             + PARAMETRE;
 
-    private static final String FIND_BY_ARRET_AND_HORAIRE_INFERIEUR = SELECT_ETOILE
-            + WHERE + BDHelper.PASSAGE_ARRET + PARAMETRE
-            + " AND " + BDHelper.PASSAGE_HORAIRE+ " <= ?" ;
-
     private static final String FIND_BY_ARRET_AND_HORAIRE = SELECT_ETOILE
             + WHERE + BDHelper.PASSAGE_ARRET
             + PARAMETRE + " AND "
@@ -98,7 +94,9 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
                 }
             }
             ContentValues enregistrement = objectToContentValues(toSave);
-            long id = sqLiteDatabase.insert(BDHelper.PASSAGE_NOM_TABLE, null, enregistrement);
+            long id = sqLiteDatabase.insert(
+                    BDHelper.PASSAGE_NOM_TABLE, null, enregistrement);
+
             // On enregistre le passage suivant
             if (toSave.getPassageSuivant() != null && toSave.getPassageSuivant().getId() == null) {
                 Passage passageSuivant = save(toSave.getPassageSuivant());
@@ -106,8 +104,9 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
                 // On met à jour l'arrêt à enregistrer
                 toSave = findById(id);
                 toSave.setPassageSuivant(passageSuivant);
-                toSave = update(toSave);
+                update(toSave);
             }
+
             return findById(id);
         } else {
             // Un passage identique existe déjà
@@ -260,7 +259,7 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
             Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_ARRET, new String[] { arret.getId().toString() });
             return cursorToObjectList(cursor);
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 

@@ -1,5 +1,9 @@
 package com.example.gestionlignebus.utils;
 
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
+
+import android.util.Log;
+
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
@@ -42,7 +46,7 @@ public class JSONUtils {
                     result.append(line);
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Log.e(CLE_LOG, "Erreur lors de la lecture du fichier JSON.");
             }
         }
         return result.toString();
@@ -56,12 +60,15 @@ public class JSONUtils {
     public static List<Arret> jsonToArretList(String json) {
         List<Arret> arrets = null;
         JSONObject jsonObject;
+
         try {
             jsonObject = new JSONObject(json);
+
             if (!jsonObject.isNull(LISTE_ARRET_NAME)) {
                 jsonObject.getJSONArray(LISTE_ARRET_NAME);
                 JSONArray o = jsonObject.getJSONArray(LISTE_ARRET_NAME);
                 arrets = new ArrayList<>();
+
                 for ( int i = 0 ; i < o.length() ; i++) {
                     JSONObject arretJson = o.getJSONObject(i);
                     Arret arret = Arret.jsonObjectToArret(arretJson);
@@ -69,7 +76,8 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, "Erreur lors de la récupération des arrêts depuis "
+                    + "le fichier JSON.");
         }
         return arrets;
     }
@@ -93,7 +101,8 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, "Erreur lors de la récupération des lignes depuis "
+                    + "le fichier JSON.");
         }
         return lignes;
     }
@@ -118,7 +127,8 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, "Erreur lors de la récupération des périodes depuis "
+                    + "le fichier JSON.");
         }
         return periodes;
     }
@@ -143,7 +153,8 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, "Erreur lors de la récupération des trajets depuis "
+                    + "le fichier JSON.");
         }
         return trajets;
     }

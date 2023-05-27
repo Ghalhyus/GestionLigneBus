@@ -87,24 +87,12 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
         }
         // On ajoute les arrêts à la table de jointures
         if (toSave.getArrets() != null) {
-            for (Arret arret : toSave.getArrets()) {
-                // S'il n'a pas d'identifiant
-                if (arret.getId() == null) {
-                    // On vérifie qu'il n'y ait pas d'arrêt homonyme dans la base
-                    Arret arretFound = arretDAO.findByLibelle(arret.getLibelle());
-                    if (arretFound != null) {
-                        // On remplace l'arret de la liste par l'arrêt trouvé
-                        toSave.getArrets().set(toSave.getArrets().indexOf(arret), arretFound);
-                    } else {
-                        // Sinon on enregistre l'arrêt
-                        Arret nouvelArret  = arretDAO.save(arret);
-                        toSave.getArrets().set(toSave.getArrets().indexOf(arret), nouvelArret);
-                    }
-                }
-            }
+            sauvegardeArrets(toSave);
         }
+
         ContentValues enregistrement = objectToContentValues(toSave);
-        long id = sqLiteDatabase.insert(BDHelper.LIGNE_NOM_TABLE, null, enregistrement);
+        long id = sqLiteDatabase.insert(BDHelper.LIGNE_NOM_TABLE, null,
+                enregistrement);
         if (id > 0 && toSave.getArrets() != null) {
             toSave.setId(id);
             for (Arret arret : toSave.getArrets()) {
@@ -113,6 +101,24 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
         }
 
         return findById(id);
+    }
+    
+    private void sauvegardeArrets(Ligne ligne) {
+        for (Arret arret : ligne.getArrets()) {
+            // S'il n'a pas d'identifiant
+            if (arret.getId() == null) {
+                // On vérifie qu'il n'y ait pas d'arrêt homonyme dans la base
+                Arret arretFound = arretDAO.findByLibelle(arret.getLibelle());
+                if (arretFound != null) {
+                    // On remplace l'arret de la liste par l'arrêt trouvé
+                    ligne.getArrets().set(ligne.getArrets().indexOf(arret), arretFound);
+                } else {
+                    // Sinon on enregistre l'arrêt
+                    Arret nouvelArret  = arretDAO.save(arret);
+                    ligne.getArrets().set(ligne.getArrets().indexOf(arret), nouvelArret);
+                }
+            }
+        }
     }
 
     @Override

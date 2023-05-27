@@ -47,7 +47,6 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
     private List<String> listeLibellesArrets;
     private List<Passage> passages;
     private PeriodeDAO periodeDao;
-    private PassageDAO passageDAO;
     private Periode periodeSelected;
     private Spinner spin;
     PopupWindow popup;
@@ -55,7 +54,6 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
     private TrajetDAO trajetDao;
     private Button trajetPrecedentBouton;
     private Button trajetSuivantBouton;
-    private Button btnAfficherCarte;
 
     private List<Trajet> trajets;
     private boolean retour;
@@ -64,6 +62,7 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ligne);
+
         dialog = new Dialog(this);
 
         retour = false;
@@ -73,9 +72,6 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
 
         trajetDao = new TrajetDAO(this);
         trajetDao.open();
-
-        passageDAO = new PassageDAO(this);
-        passageDAO.open();
 
         periodeDao = new PeriodeDAO(this);
         periodeDao.open();
@@ -131,7 +127,7 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
         Button inverserSensPassage = findViewById(R.id.inverser_sens_ligne);
         inverserSensPassage.setOnClickListener(this);
 
-        btnAfficherCarte = findViewById(R.id.afficher_carte);
+        Button btnAfficherCarte = findViewById(R.id.afficher_carte);
         btnAfficherCarte.setOnClickListener(this);
 
         indexTrajet = 0;
@@ -186,6 +182,7 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
     }
         @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+        // Empty body
     }
 
     @Override
@@ -225,21 +222,7 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
                 && indexTrajet < trajets.size() - 1) {
             changerTrajet(++indexTrajet);
         } else if (view.getId() == R.id.inverser_sens_ligne) {
-            retour = !retour;
-            trajets = trajetDao.findByLigne(ligneCourante);
-            List<Trajet> tmpTrajets = new ArrayList<>();
-
-            for (Trajet trajet : trajets) {
-                if ((!retour && trajet.getPremierPassage().getArret()
-                        .equals(ligneCourante.getArretDepart()))
-                    || (retour && trajet.getPremierPassage().getArret()
-                        .equals(ligneCourante.getArretRetour()))) {
-                    tmpTrajets.add(trajet);
-                }
-            }
-            trajets = tmpTrajets;
-
-            changerTrajet(0);
+            inverserSensLigne();
         } else if (view.getId() == trajetPrecedentBouton.getId()
                 || view.getId() == trajetSuivantBouton.getId()) {
             Toast.makeText(this, R.string.message_erreur_trajet, Toast.LENGTH_SHORT).show();
@@ -259,5 +242,23 @@ public class LigneActivity extends AppCompatActivity implements View.OnClickList
 
         adaptateur = new ArretHoraireAdapteur(arretHoraires);
         recyclerView.setAdapter(adaptateur);
+    }
+
+    private void inverserSensLigne() {
+        retour = !retour;
+        trajets = trajetDao.findByLigne(ligneCourante);
+        List<Trajet> tmpTrajets = new ArrayList<>();
+
+        for (Trajet trajet : trajets) {
+            if ((!retour && trajet.getPremierPassage().getArret()
+                    .equals(ligneCourante.getArretDepart()))
+                    || (retour && trajet.getPremierPassage().getArret()
+                    .equals(ligneCourante.getArretRetour()))) {
+                tmpTrajets.add(trajet);
+            }
+        }
+        trajets = tmpTrajets;
+
+        changerTrajet(0);
     }
 }

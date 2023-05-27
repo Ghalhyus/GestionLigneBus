@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TrajetDAOTest {
@@ -76,13 +77,6 @@ public class TrajetDAOTest {
         periode2 = new Periode("Test Vacances été");
         periode2 = periodeDAO.save(periode2);
 
-        // Ligne
-        ligne1 = new Ligne("Ligne A test");
-        ligne1 = ligneDAO.save(ligne1);
-
-        ligne2 = new Ligne("Ligne B test");
-        ligne2 = ligneDAO.save(ligne2);
-
         // Arret
         arret1 = new Arret("Test Arret 1", "test position 1");
         arret1 = arretDAO.save(arret1);
@@ -90,8 +84,20 @@ public class TrajetDAOTest {
         arret2 = new Arret("Test Arret 2", "test position 2");
         arret2 = arretDAO.save(arret2);
 
-        // Passage
+        // Ligne
+        ligne1 = new Ligne("Ligne A test");
+        ligne1.setArrets(Arrays.asList(arret1, arret2));
+        ligne1.setArretDepart(arret1);
+        ligne1.setArretRetour(arret2);
+        ligne1 = ligneDAO.save(ligne1);
 
+        ligne2 = new Ligne("Ligne B test");
+        ligne2.setArrets(Arrays.asList(arret1, arret2));
+        ligne2.setArretDepart(arret1);
+        ligne2.setArretRetour(arret2);
+        ligne2 = ligneDAO.save(ligne2);
+
+        // Passage
         passage1 = new Passage(arret1, LocalTime.now());
         passage1 = passageDAO.save(passage1);
 

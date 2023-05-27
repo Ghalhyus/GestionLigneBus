@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.model.Passage;
 
@@ -29,8 +31,6 @@ public class PassageAdapter extends ArrayAdapter<Passage> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.ligne_itineraire, parent, false);
-        Context context = this.getContext();
-        Resources res = context.getResources();
 
         ((TextView)view.findViewById(R.id.itineraire_arret_nom))
                 .setText(passages.get(position).getArret().getLibelle());
@@ -39,9 +39,9 @@ public class PassageAdapter extends ArrayAdapter<Passage> {
                 .setText(passages.get(position).getHoraire().toString());
 
         if(position % 2 == 0)
-            view.setBackgroundColor(res.getColor(R.color.item_pair));
+            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.item_pair));
         else
-            view.setBackgroundColor(res.getColor(R.color.item_impair));
+            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.item_impair));
 
         return view;
     }

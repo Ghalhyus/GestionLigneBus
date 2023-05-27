@@ -163,9 +163,9 @@ public class JSONUtilsTest {
     public void testLigneList() {
         List<Ligne> lignes = JSONUtils.jsonToLigneList(jsonStable.toString());
 
-        assertEquals(ligne1, lignes.get(0));
-        assertEquals(ligne2, lignes.get(1));
-        assertEquals(ligne3, lignes.get(2));
+        assertEquals(Ligne.jsonObjectToLigne(ligne1), lignes.get(0));
+        assertEquals(Ligne.jsonObjectToLigne(ligne2), lignes.get(1));
+        assertEquals(Ligne.jsonObjectToLigne(ligne3), lignes.get(2));
 
     }
 

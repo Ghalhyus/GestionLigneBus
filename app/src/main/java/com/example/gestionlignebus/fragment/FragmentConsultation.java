@@ -1,5 +1,6 @@
 package com.example.gestionlignebus.fragment;
 
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
 import static java.util.Arrays.asList;
 
 import android.app.Activity;
@@ -10,6 +11,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -68,7 +70,6 @@ public class FragmentConsultation extends Fragment
     private ArretDAO arretDAO;
     private PeriodeDAO periodeDAO;
     private GroupeDAO groupeDAO;
-
     private List<String> listeLibelles;
     private List<Arret> listeArret;
     private List<Ligne> listeLigne;
@@ -377,7 +378,7 @@ public class FragmentConsultation extends Fragment
                         Toast.LENGTH_LONG).show();
             }
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, String.format("Erreur le fichier %s n'a pas été trouvé.", uri));
         } finally {
             arretDAO.close();
             periodeDAO.close();

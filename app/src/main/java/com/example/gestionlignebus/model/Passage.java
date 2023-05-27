@@ -1,5 +1,9 @@
 package com.example.gestionlignebus.model;
 
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
+
+import android.util.Log;
+
 import com.example.gestionlignebus.dao.BDHelper;
 
 import org.json.JSONException;
@@ -101,7 +105,9 @@ public class Passage {
                 jsonObject.put(BDHelper.PASSAGE_PASSAGE_SUIVANT, passageSuivant.toJson());
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, String.format(
+                    "Erreur lors de la transformation du passage %s %s en objet JSON.",
+                    arret, horaire));
         }
         return jsonObject;
     }
