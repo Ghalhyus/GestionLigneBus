@@ -4,45 +4,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.activity.ResultatRechercheItineraireActivity;
 import com.example.gestionlignebus.adapter.GroupeSpinnerAdapter;
-import com.example.gestionlignebus.adapter.ItineraireAdapter;
 import com.example.gestionlignebus.adapter.ListViewAdapter;
 import com.example.gestionlignebus.adapter.PeriodeSpinnerAdapter;
 import com.example.gestionlignebus.dao.ArretDAO;
 import com.example.gestionlignebus.dao.GroupeDAO;
-import com.example.gestionlignebus.dao.LigneDAO;
-import com.example.gestionlignebus.dao.PassageDAO;
 import com.example.gestionlignebus.dao.PeriodeDAO;
-import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
-import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Periode;
-import com.example.gestionlignebus.model.Trajet;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 

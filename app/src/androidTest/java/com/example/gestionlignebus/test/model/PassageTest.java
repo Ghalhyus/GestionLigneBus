@@ -6,11 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.example.gestionlignebus.dao.BDHelper;
 import com.example.gestionlignebus.model.Arret;
-import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Passage;
-import com.example.gestionlignebus.model.Periode;
 
 import org.json.JSONException;
 import org.json.JSONObject;

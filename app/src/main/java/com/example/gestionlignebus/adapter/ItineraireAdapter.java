@@ -18,9 +18,6 @@ public class ItineraireAdapter extends RecyclerView.Adapter<ItineraireViewHolder
     private List<List<Passage>> passages;
     private List<List<String>> lignes;
 
-    public ItineraireAdapter() {
-    }
-
     public ItineraireAdapter(List<List<Passage>> passages, List<List<String>> lignes) {
         this.passages = passages;
         this.lignes = lignes;

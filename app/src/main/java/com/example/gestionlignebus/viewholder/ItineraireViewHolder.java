@@ -2,10 +2,8 @@ package com.example.gestionlignebus.viewholder;
 
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestionlignebus.R;

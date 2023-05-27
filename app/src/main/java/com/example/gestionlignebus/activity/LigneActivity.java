@@ -24,7 +24,6 @@ import com.example.gestionlignebus.ArretHoraireAdapteur;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.adapter.PeriodeSpinnerAdapter;
 import com.example.gestionlignebus.dao.LigneDAO;
-import com.example.gestionlignebus.dao.PassageDAO;
 import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.model.Ligne;

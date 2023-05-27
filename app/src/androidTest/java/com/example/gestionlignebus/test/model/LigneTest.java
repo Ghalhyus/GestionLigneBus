@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.example.gestionlignebus.dao.BDHelper;
 import com.example.gestionlignebus.model.Arret;
-import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Ligne;
 
 import org.json.JSONException;

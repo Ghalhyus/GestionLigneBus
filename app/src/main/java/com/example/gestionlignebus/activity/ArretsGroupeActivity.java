@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.adapter.ArretSpinnerAdapter;
 import com.example.gestionlignebus.adapter.ListViewAdapter;
-import com.example.gestionlignebus.adapter.PeriodeSpinnerAdapter;
 import com.example.gestionlignebus.dao.ArretDAO;
 import com.example.gestionlignebus.dao.GroupeDAO;
 import com.example.gestionlignebus.model.Arret;

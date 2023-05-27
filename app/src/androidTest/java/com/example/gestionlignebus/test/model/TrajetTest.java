@@ -1,13 +1,9 @@
 package com.example.gestionlignebus.test.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
-import com.example.gestionlignebus.dao.BDHelper;
 import com.example.gestionlignebus.model.Arret;
-import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Periode;
@@ -19,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,16 +23,12 @@ public class TrajetTest {
     private Trajet trajetBis;
     private Trajet trajetDifferent;
     private List<Trajet> trajets;
-
     private Periode periode;
     private Periode periodeDifferente;
-
     private Ligne ligne;
     private Ligne ligneDifferente;
-
     private Arret arret;
     private Arret arretDifferent;
-
     private Passage passage;
     private Passage passageDifferent;
 

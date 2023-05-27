@@ -4,15 +4,14 @@ import static com.example.gestionlignebus.MainActivity.CLE_LOG;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.example.gestionlignebus.dao.BDHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 public class Arret {
     private Long id;

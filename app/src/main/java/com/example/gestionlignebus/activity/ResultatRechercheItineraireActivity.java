@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.adapter.ItineraireAdapter;
 import com.example.gestionlignebus.dao.ArretDAO;
-import com.example.gestionlignebus.dao.LigneDAO;
-import com.example.gestionlignebus.dao.PassageDAO;
 import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.fragment.FragmentItineraire;
