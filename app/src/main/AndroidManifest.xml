@@ -26,6 +26,7 @@
         <activity android:name=".activity.ArretsGroupeActivity"/>
         <activity android:name=".activity.ArretActivity"/>
         <activity android:name=".activity.ChangerFicheHoraireActivity"/>
+        <activity android:name=".activity.ResultatRechercheItineraireActivity"/>
     </application>
 
 </manifest>

@@ -1,7 +1,11 @@
 package com.example.gestionlignebus.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +17,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestionlignebus.R;
+import com.example.gestionlignebus.activity.ResultatRechercheItineraireActivity;
 import com.example.gestionlignebus.adapter.GroupeSpinnerAdapter;
 import com.example.gestionlignebus.adapter.ItineraireAdapter;
 import com.example.gestionlignebus.adapter.ListViewAdapter;
@@ -43,22 +49,25 @@ import java.util.List;
 public class FragmentItineraire extends Fragment
         implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
+    public static final String CLE_ARRET_DEPART = "arret_depart";
+    public static final String CLE_ARRET_ARRIVE= "arret_arrive";
+    public static final String CLE_HORAIRE_DEPART = "horaire_depart";
+    public static final String CLE_HORAIRE_ARRIVE= "horaire_arrive";
+    public static final String CLE_AUTORISE_CORRESPONDANCE = "autorise_correspondance";
+    public static final String CLE_PERIODE = "periode";
+
     private Button rechercher;
     private Button inverserItineraire;
     private CheckBox autoriserCorrespondance;
+    private Periode periodeSelectionnee;
     private AutoCompleteTextView saisieArretDepart;
     private AutoCompleteTextView saisieArretArrive;
     private EditText saisieHoraireDepart;
     private EditText saisieHoraireArrive;
-    private RecyclerView itineraires;
-    private ItineraireAdapter adapter;
     private Spinner spinnerPeriode;
     private Spinner spinnerGroupe;
     private List<Periode> periodes;
     private List<Groupe> groupes;
-    private List<List<Passage>> passages;
-    private List<List<String>> lignes;
-    private Periode periodeSelectionnee;
     private Groupe groupeSelectionne;
     private PassageDAO passageDAO;
     private ArretDAO arretDAO;
@@ -78,7 +87,7 @@ public class FragmentItineraire extends Fragment
                              Bundle savedInstanceState) {
         View fragment = layoutInflater
                 .inflate(R.layout.fragment_itineraire, container, false);
-        
+
         initialiserDao(fragment);
 
         recuperationDesComposants(fragment);
@@ -122,9 +131,6 @@ public class FragmentItineraire extends Fragment
         rechercher = fragment.findViewById(R.id.bouton_rechercher);
         inverserItineraire = fragment.findViewById(R.id.itineraire_inversion);
 
-        // Récupération de la liste des itinéraires
-        itineraires = fragment.findViewById(R.id.itineraires);
-
         // Récupération des spinners
         spinnerPeriode = fragment.findViewById(R.id.spinner_periode);
         spinnerGroupe = fragment.findViewById(R.id.itineraire_groupe_liste);
@@ -141,12 +147,6 @@ public class FragmentItineraire extends Fragment
         // Initialisation des boutons
         rechercher.setOnClickListener(this::onClick);
         inverserItineraire.setOnClickListener(this::onClick);
-
-        // Initialisation de la liste des itinéraires
-        passages = new ArrayList<>();
-        itineraires.setLayoutManager(new LinearLayoutManager(fragment.getContext()));
-        adapter = new ItineraireAdapter(passages, new ArrayList<>());
-        itineraires.setAdapter(adapter);
 
         // Initialisation du spinner des périodes
         PeriodeDAO periodeDAO = new PeriodeDAO(fragment.getContext());
@@ -196,157 +196,23 @@ public class FragmentItineraire extends Fragment
     @Override
     public void onClick(View view) {
         if (view.getId() == rechercher.getId()) {
-            Passage passageDepart = creerPassage(saisieArretDepart.getText().toString(),
-                    saisieHoraireDepart.getText().toString());
-            Passage passageArrive = creerPassage(saisieArretArrive.getText().toString(),
-                    saisieHoraireArrive.getText().toString());
+            SharedPreferences.Editor editeur
+                    = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
-            rechercheItineraire(passageDepart, passageArrive);
+            editeur.putString(CLE_ARRET_DEPART, saisieArretDepart.getText().toString());
+            editeur.putString(CLE_ARRET_ARRIVE, saisieArretArrive.getText().toString());
+            editeur.putString(CLE_HORAIRE_DEPART, saisieHoraireDepart.getText().toString());
+            editeur.putString(CLE_HORAIRE_ARRIVE, saisieHoraireArrive.getText().toString());
+            editeur.putLong(CLE_PERIODE, periodeSelectionnee.getId());
+            editeur.putBoolean(CLE_AUTORISE_CORRESPONDANCE, autoriserCorrespondance.isChecked());
+            editeur.apply();
 
-            adapter = new ItineraireAdapter(passages, lignes);
-            itineraires.setAdapter(adapter);
+            startActivity(new Intent(getContext(), ResultatRechercheItineraireActivity.class));
         } else if (view.getId() == inverserItineraire.getId()) {
             String tmp = saisieArretDepart.getText().toString();
             saisieArretDepart.setText(saisieArretArrive.getText().toString());
             saisieArretArrive.setText(tmp);
         }
-    }
-
-    private Passage creerPassage(String libelleArret, String horaire) {
-        Passage passage = new Passage();
-
-        passage.setArret(arretDAO.findByLibelle(libelleArret));
-        passage.setHoraire(LocalTime.parse(horaire));
-
-        return passage;
-    }
-
-    private void rechercheItineraire(Passage depart, Passage arrive) {
-        passages = new ArrayList<>();
-        lignes = new ArrayList<>();
-        List<Trajet> trajets = trajetDAO.findByPeriode(periodeSelectionnee);
-
-        for (Trajet trajet : trajets) {
-            List<Passage> listePassages = trajet.getPremierPassage().getPassages();
-
-            for (Passage passage : listePassages) {
-                List<Passage> itineraire = new ArrayList<>();
-
-                arrive = Passage.getPassageByArret(listePassages, arrive.getArret());
-
-                if (passage.arretIdentique(depart) && arrive != null
-                    && passage.getHoraire().compareTo(depart.getHoraire()) <= 0) {
-                    arrive = listePassages.get(listePassages.indexOf(arrive));
-
-                    itineraire.add(passage);
-                    itineraire.add(arrive);
-                    passages.add(itineraire);
-
-                    List<String> ligneItineraire = new ArrayList<>();
-                    ligneItineraire.add(trajet.getLigne().getLibelle());
-                    ligneItineraire.add(trajet.getLigne().getLibelle());
-                    lignes.add(ligneItineraire);
-                } else if (passage.arretIdentique(depart)
-                        && passage.getHoraire().compareTo(depart.getHoraire()) <= 0
-                        && autoriserCorrespondance.isChecked()) {
-                    Trajet trajetArrive = rechercherTrajetArrive(arrive);
-
-                    if (trajetArrive != null) {
-                        rechercherCorrespondance(passage, arrive, itineraire, trajet, trajetArrive);
-                    }
-                }
-            }
-        }
-    }
-
-    private void rechercherCorrespondance(Passage depart, Passage arrive, List<Passage> itineraire,
-                                          Trajet trajet, Trajet trajetArrive) {
-        itineraire.add(depart);
-
-        List<String> ligneItineraire = new ArrayList<>();
-        ligneItineraire.add(trajet.getLigne().getLibelle());
-
-        List<Passage> passagesArrive
-                = trajetArrive.getPremierPassage().getPassages();
-        for (Passage passage : passagesArrive) {
-            if (passage.arretIdentique(arrive)
-                    && passage.getHoraire().compareTo(arrive.getHoraire()) <= 0) {
-                arrive = passage;
-            }
-        }
-
-        List<Trajet> trajets = trajetDAO.findAll();
-        trajets.remove(trajets.indexOf(trajet));
-
-        itineraire = rechercherCorrespondance(depart, itineraire, ligneItineraire, arrive,
-                trajet, trajets);
-
-        if (itineraire.isEmpty()) {
-            lignes = new ArrayList<>();
-        }
-
-        passages.add(itineraire);
-        lignes.add(ligneItineraire);
-    }
-
-    private List<Passage> rechercherCorrespondance(Passage depart, List<Passage> correspondances,
-                                                   List<String> lignes, Passage arrive,
-                                                   Trajet trajetDepart, List<Trajet> trajets) {
-        Passage correspondanceArrive;
-        Passage correspondanceDepart = null;
-
-        if (trajets.isEmpty() || depart == null) {
-            return new ArrayList<>();
-        }
-
-        for (int i = 0 ; i < trajets.size() && correspondanceDepart == null ; i++) {
-            List<Passage> listePassages = trajets.get(i).getPremierPassage().getPassages();
-
-            if (trajets.get(i).getPeriode().equals(periodeSelectionnee)) {
-                correspondanceArrive = depart.getCorrespondanceArrivee(listePassages);
-
-                if (correspondanceArrive != null) {
-                    correspondanceDepart = correspondanceArrive.getCorrespondanceDepart(
-                            trajets.get(i).getPremierPassage().getPassages());
-
-                    correspondances.add(correspondanceArrive);
-                    correspondances.add(correspondanceDepart);
-
-                    lignes.add(trajetDepart.getLigne().getLibelle());
-                    lignes.add(trajets.get(i).getLigne().getLibelle());
-
-                    trajetDepart = trajets.get(i);
-                    trajets.remove(i);
-                }
-
-                if (correspondanceDepart != null
-                    && correspondanceDepart.getPassages().contains(arrive)) {
-                    correspondances.add(arrive);
-                    lignes.add(trajetDepart.getLigne().getLibelle());
-
-                    return  correspondances;
-                }
-            }
-        }
-
-        return rechercherCorrespondance(correspondanceDepart, correspondances, lignes, arrive,
-                trajetDepart, trajets);
-    }
-
-    private Trajet rechercherTrajetArrive(Passage arrive) {
-        for (Trajet trajet : trajetDAO.findAll()) {
-            List<Passage> listePassages = trajet.getPremierPassage().getPassages();
-
-            for (Passage passage : listePassages) {
-                if (passage.arretIdentique(arrive)
-                    && passage.getHoraire().compareTo(arrive.getHoraire()) <= 0
-                    && trajet.getPeriode().equals(periodeSelectionnee)) {
-                    return trajet;
-                }
-            }
-        }
-
-        return null;
     }
 
     private void setAutocompletion(Context context) {

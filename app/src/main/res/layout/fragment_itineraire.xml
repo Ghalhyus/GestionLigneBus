@@ -66,8 +66,4 @@
             android:text="@string/btn_rechercher"/>
     </TableRow>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itineraires"
-        style="@style/recyclerview"/>
-
 </TableLayout>

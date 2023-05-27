@@ -58,24 +58,19 @@ public class ArretActivity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        ArretDAO arretDao;
-        PassageDAO passageDao;
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arret);
-        SharedPreferences preferences;
 
         periodeDao = new PeriodeDAO(this);
         periodeDao.open();
 
-        passageDao=new PassageDAO(this);
+        PassageDAO passageDao=new PassageDAO(this);
         passageDao.open();
 
         trajetDao=new TrajetDAO(this);
         trajetDao.open();
 
-        arretDao=new ArretDAO(this);
+        ArretDAO arretDao=new ArretDAO(this);
         arretDao.open();
 
         recyclerView=findViewById(R.id.liste_arret);
@@ -91,7 +86,8 @@ public class ArretActivity extends AppCompatActivity implements AdapterView.OnIt
         LinearLayoutManager gestionnaireLineaire = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(gestionnaireLineaire);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences preferences
+                = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         arret = arretDao.findById(preferences.getLong(CLE_ID, 1));
 
         ArretHoraireAdapteur adaptateur = new ArretHoraireAdapteur(listArretHoraire);

@@ -31,6 +31,9 @@
     <string name="itineraire_horaire_arrive_hint">Horaire d\'arrivé</string>
     <string name="spinner_groupes">Groupes</string>
     <string name="itineraire_btn_inversion">Inverser itinéraire</string>
+    <string name="message_aucun_itineraire">
+        "Désolé, mais il n'y a aucun itinéraire pour votre recherche"
+    </string>
 
     <!-- Menu contextuel -->
     <string name="retirer_arret">"Retirer l'arrêt"</string>
