@@ -1,8 +1,5 @@
 package com.example.gestionlignebus.utils;
 
-import android.content.Context;
-
-import com.example.gestionlignebus.dao.BDHelper;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
@@ -13,9 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +20,13 @@ public class JSONUtils {
     public static final String LISTE_LIGNE_NAME = "lignes";
     public static final String LISTE_PERIODE_NAME = "periodes";
     public static final String LISTE_TRAJET_NAME = "trajets";
-    private static final String[] suffixes = new String[] {"A", "B", "C", "D", "E", "F", "G", "H",
-            "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
+    /**
+     * Constructeur privé pour cacher le constructeur implicite
+     */
+    private JSONUtils() {
+        // empty body
+    }
 
     /**
      * Lis un fichier et renvoi un String de son contenu

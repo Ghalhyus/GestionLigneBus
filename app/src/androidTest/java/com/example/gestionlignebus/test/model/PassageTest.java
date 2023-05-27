@@ -85,16 +85,16 @@ public class PassageTest {
     @Test
     public void testEquals() {
         // Passages identiques
-        assertTrue(passage1.equals(passage1Bis));
+        assertEquals(passage1, passage1Bis);
 
         // Passages arrêts identique mais horaire différent
-        assertFalse(passage1.equals(passage1HoraireDifferent));
+        assertNotEquals(passage1, passage1HoraireDifferent);
 
         // Passage arrêts différents
-        assertFalse(passage1.equals(passage2));
+        assertNotEquals(passage1, passage2);
 
         // test avec null
-        assertFalse(passage1.equals(null));
+        assertNotEquals(null, passage1);
     }
 
     @Test

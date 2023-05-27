@@ -76,6 +76,12 @@ public class Ligne {
                 && estHomonyme(obj);
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode() + libelle.hashCode() + arretDepart.hashCode() + arretRetour.hashCode()
+                + arrets.hashCode();
+    }
+
     /**
      * Renvoie la liste des libelle d'une liste de ligne
      * @param lignes la liste de ligne

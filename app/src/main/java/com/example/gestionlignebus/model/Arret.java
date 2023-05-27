@@ -65,7 +65,13 @@ public class Arret {
     }
 
     @Override
+    public int hashCode() {
+        return id.hashCode() + libelle.hashCode() + position.hashCode();
+    }
+
+    @Override
     public String toString() {
+
         return libelle;
     }
 

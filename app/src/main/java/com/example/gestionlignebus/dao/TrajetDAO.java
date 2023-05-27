@@ -30,7 +30,8 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
     public static final int COLONNE_NUM_LIGNE = 2;
     public static final int COLONNE_NUM_PREMIER_PASSAGE = 3;
 
-    private static final String SELECT_ETOILE = "SELECT * FROM " + BDHelper.TRAJET_NOM_TABLE;
+    private static final String SELECT_ETOILE = ICommonDAO.SELECT_ETOILE
+            + BDHelper.TRAJET_NOM_TABLE;
 
     //////////////////////////////////////////////////////////////////
     ///////////////////////// Requêtes ///////////////////////////////
@@ -78,7 +79,7 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
     /**
      * Requête SQL permettant de retrouver des trajets par periode et ligne
      */
-    private final static String FIND_BY_PERIODE_AND_LIGNE = "SELECT * FROM "
+    private static final String FIND_BY_PERIODE_AND_LIGNE = "SELECT * FROM "
             + BDHelper.TRAJET_NOM_TABLE
             + WHERE + BDHelper.TRAJET_PERIODE
             + PARAMETRE + " AND "
@@ -136,7 +137,7 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
             Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_PASSAGE, new String[] { passage.getId().toString() });
             return cursorToObjectList(cursor);
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -178,7 +179,7 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
                     new String[] { periode.getId().toString() ,ligne.getId().toString()});
             return cursorToObjectList(cursor);
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
     @Override
@@ -189,35 +190,33 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
     @Override
     public Trajet save(Trajet toSave) {
         // On vérifie que le passage ne soit pas null
-        if (toSave.getPremierPassage().getId() == null) {
-            if (toSave.getPremierPassage().getArret() != null
-                && toSave.getPremierPassage().getHoraire() != null) {
-                // On ne vérifie si un passage similaire n'existe pas déjà
-                Passage passageFound = passageDAO.findByArretAndHoraire(
-                        toSave.getPremierPassage().getArret(),
-                        toSave.getPremierPassage().getHoraire());
-                if (passageFound != null) {
-                    // Si oui, on l'utilise
-                    toSave.setPremierPassage(passageFound);
-                } else {
-                    // Si non, on enregistre le passage et les passage chaînés
-                    Passage permierPassage = passageDAO.save(toSave.getPremierPassage());
-                    toSave.setPremierPassage(permierPassage);
-                }
+    if (toSave.getPremierPassage().getId() == null
+            && (toSave.getPremierPassage().getArret() != null
+            && toSave.getPremierPassage().getHoraire() != null)) {
+            // On ne vérifie si un passage similaire n'existe pas déjà
+            Passage passageFound = passageDAO.findByArretAndHoraire(
+                    toSave.getPremierPassage().getArret(),
+                    toSave.getPremierPassage().getHoraire());
+            if (passageFound != null) {
+                // Si oui, on l'utilise
+                toSave.setPremierPassage(passageFound);
+            } else {
+                // Si non, on enregistre le passage et les passage chaînés
+                Passage permierPassage = passageDAO.save(toSave.getPremierPassage());
+                toSave.setPremierPassage(permierPassage);
             }
         }
         // On vérifie que la période ne soit pas nulle
-        if (toSave.getPeriode().getId() == null) {
-            if (toSave.getPeriode().getLibelle() != null) {
-                // On cherche si une période identique n'existe pas déjà
-                Periode periodeFound = periodeDAO.findByLibelle(toSave.getPeriode().getLibelle());
-                if ( periodeFound != null) {
-                    // Si oui, on l'utilise
-                    toSave.setPeriode(periodeFound);
-                } else {
-                    // Si non, on enregistre la nouvelle période
-                    toSave.setPeriode(periodeDAO.save(toSave.getPeriode()));
-                }
+        if (toSave.getPeriode().getId() == null
+                && (toSave.getPeriode().getLibelle() != null)) {
+            // On cherche si une période identique n'existe pas déjà
+            Periode periodeFound = periodeDAO.findByLibelle(toSave.getPeriode().getLibelle());
+            if ( periodeFound != null) {
+                // Si oui, on l'utilise
+                toSave.setPeriode(periodeFound);
+            } else {
+                // Si non, on enregistre la nouvelle période
+                toSave.setPeriode(periodeDAO.save(toSave.getPeriode()));
             }
         }
         ContentValues enregistrement = objectToContentValues(toSave);

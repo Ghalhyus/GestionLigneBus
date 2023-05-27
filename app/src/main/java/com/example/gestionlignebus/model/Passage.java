@@ -80,6 +80,11 @@ public class Passage {
                 && Objects.equals(((Passage) obj).horaire, this.horaire);
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode() + passageSuivant.hashCode() + arret.hashCode() + horaire.hashCode();
+    }
+
     /**
      * Convertit une ligne en JSONObject
      * @return la ligne après conversion
@@ -138,13 +143,16 @@ public class Passage {
                 passage.setId((Long) jsonObject.get(BDHelper.PASSAGE_CLE));
             }
             if (!jsonObject.isNull(BDHelper.PASSAGE_ARRET)) {
-                passage.setArret(Arret.jsonObjectToArret(jsonObject.getJSONObject(BDHelper.PASSAGE_ARRET)));
+                passage.setArret(Arret.jsonObjectToArret(
+                        jsonObject.getJSONObject(BDHelper.PASSAGE_ARRET)));
             }
             if (!jsonObject.isNull(BDHelper.PASSAGE_HORAIRE)) {
-                passage.setHoraire(LocalTime.parse((String) jsonObject.get(BDHelper.PASSAGE_HORAIRE)));
+                passage.setHoraire(LocalTime.parse(
+                        (String) jsonObject.get(BDHelper.PASSAGE_HORAIRE)));
             }
             if (!jsonObject.isNull(BDHelper.PASSAGE_PASSAGE_SUIVANT)) {
-                passage.setPassageSuivant(jsonObjectToPassage(jsonObject.getJSONObject(BDHelper.PASSAGE_PASSAGE_SUIVANT)));
+                passage.setPassageSuivant(jsonObjectToPassage(
+                        jsonObject.getJSONObject(BDHelper.PASSAGE_PASSAGE_SUIVANT)));
             }
         } catch (JSONException e) {
             return null;
@@ -160,18 +168,6 @@ public class Passage {
         }
 
         return nomsPassages;
-    }
-
-    private ArrayList<Passage> getPassages(ArrayList listePassage) {
-        Passage passage = this.passageSuivant;
-
-        if (passage == null) {
-            listePassage.add(this);
-        } else {
-            passage.getPassages(listePassage).add(this);
-        }
-
-        return listePassage;
     }
 
     public static List<String> getArretsPassages(List<Passage> passages) {

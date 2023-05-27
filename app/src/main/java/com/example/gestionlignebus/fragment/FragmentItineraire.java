@@ -69,10 +69,7 @@ public class FragmentItineraire extends Fragment
     private List<Periode> periodes;
     private List<Groupe> groupes;
     private Groupe groupeSelectionne;
-    private PassageDAO passageDAO;
     private ArretDAO arretDAO;
-    private LigneDAO ligneDAO;
-    private TrajetDAO trajetDAO;
 
     /**
      * Retourne une instance de FragmentDepense
@@ -102,18 +99,8 @@ public class FragmentItineraire extends Fragment
      * @param fragment Fragment pour la recherche d'un itinéraire.
      */
     private void initialiserDao(View fragment) {
-
-        passageDAO = new PassageDAO(fragment.getContext());
-        passageDAO.open();
-
         arretDAO = new ArretDAO(fragment.getContext());
         arretDAO.open();
-
-        ligneDAO = new LigneDAO(fragment.getContext());
-        ligneDAO.open();
-
-        trajetDAO =new TrajetDAO(fragment.getContext());
-        trajetDAO.open();
     }
 
     /**

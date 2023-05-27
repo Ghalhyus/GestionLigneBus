@@ -2,6 +2,7 @@ package com.example.gestionlignebus.test.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.example.gestionlignebus.model.Arret;
@@ -44,16 +45,16 @@ public class GroupeTest {
     @Test
     public void testEquals() {
         // Arrets identiques
-        assertTrue(groupe.equals(groupeBis));
+        assertEquals(groupe, groupeBis);
 
         // Arrets non identiques
-        assertFalse(groupe.equals(groupeDifferent));
+        assertNotEquals(groupe, groupeDifferent);
 
         // Arrets homonymes non identiques
-        assertFalse(groupe.equals(groupeHomonyme));
+        assertNotEquals(groupe, groupeHomonyme);
 
         // test avec null
-        assertFalse(groupe.equals(null));
+        assertNotEquals(null, groupe);
     }
 
 

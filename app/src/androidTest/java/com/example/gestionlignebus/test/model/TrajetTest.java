@@ -2,6 +2,7 @@ package com.example.gestionlignebus.test.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.example.gestionlignebus.dao.BDHelper;
@@ -86,13 +87,13 @@ public class TrajetTest {
     @Test
     public void testEquals() {
         // Arrets identiques
-        assertTrue(trajet.equals(trajetBis));
+        assertEquals(trajet, trajetBis);
 
         // Arrets non identiques
-        assertFalse(trajet.equals(trajetDifferent));
+        assertNotEquals(trajet, trajetDifferent);
 
         // test avec null
-        assertFalse(trajet.equals(null));
+        assertNotEquals(null, trajet);
     }
 
 

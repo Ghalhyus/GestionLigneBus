@@ -20,7 +20,6 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
     ///////////////////////////////////////////////////
     /////////////////// Attributs /////////////////////
     ///////////////////////////////////////////////////
-    private Context context;
     private final BDHelper bdHelper;
     private SQLiteDatabase sqLiteDatabase;
 

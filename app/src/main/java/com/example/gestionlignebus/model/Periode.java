@@ -2,8 +2,6 @@ package com.example.gestionlignebus.model;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.example.gestionlignebus.dao.BDHelper;
 
 import org.json.JSONException;
@@ -56,6 +54,11 @@ public class Periode {
     public boolean estHomonyme(Object obj) {
         return obj instanceof Periode
                 && Objects.equals(((Periode) obj).libelle, this.libelle);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode() + libelle.hashCode();
     }
 
     @Override

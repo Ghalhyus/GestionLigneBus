@@ -34,10 +34,6 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
 
     private static final int PICK_FILE = 10;
     private Spinner spinnerLigne;
-    private Button btnImportFichier;
-    private Button btnRetour;
-
-
     private LigneDAO ligneDAO;
     private TrajetDAO trajetDAO;
     private PassageDAO passageDAO;
@@ -65,11 +61,12 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
 
     private void initialisationIHM() {
         spinnerLigne = findViewById(R.id.spinner_ligne);
-        LigneSpinnerAdapter ligneSpinnerAdapter = new LigneSpinnerAdapter(this, ligneDAO.findAll());
+        LigneSpinnerAdapter ligneSpinnerAdapter
+                = new LigneSpinnerAdapter(this, ligneDAO.findAll());
         spinnerLigne.setAdapter(ligneSpinnerAdapter);
 
-        btnImportFichier = findViewById(R.id.btn_import_variable);
-        btnRetour = findViewById(R.id.btn_retour);
+        Button btnImportFichier = findViewById(R.id.btn_import_variable);
+        Button btnRetour = findViewById(R.id.btn_retour);
 
         btnRetour.setOnClickListener(this);
         btnImportFichier.setOnClickListener(this);
@@ -129,15 +126,18 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
                     }
                 } else {
                     // Erreur lecture fichier
-                    Toast.makeText(this, getString(R.string.erreur_import_trajet), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.erreur_import_trajet),
+                            Toast.LENGTH_LONG).show();
                 }
 
             } else {
                 // Erreur lecture fichier
-                Toast.makeText(this, getString(R.string.erreur_fichier_vide), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.erreur_fichier_vide),
+                        Toast.LENGTH_LONG).show();
             }
         } catch (FileNotFoundException e) {
-            Toast.makeText(this, getString(R.string.erreur_ouverture_fichier), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.erreur_ouverture_fichier),
+                    Toast.LENGTH_LONG).show();
         } finally {
             ligneDAO.close();
             passageDAO.close();

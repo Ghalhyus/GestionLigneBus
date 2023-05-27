@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ICommonDAO<T, Id> {
 
+    public static final String SELECT_ETOILE = "SELECT * FROM ";
     public static final String WHERE = " WHERE ";
     public static final String PARAMETRE = " = ? ";
 

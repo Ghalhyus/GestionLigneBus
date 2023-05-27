@@ -32,20 +32,17 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
         implements View.OnClickListener {
 
     private RecyclerView itineraires;
-    private TextView messageErreur;
     private Button boutonRetour;
     private List<List<Passage>> passages;
     private List<List<String>> lignes;
     private Periode periodeSelectionnee;
     private boolean autoriserCorrespondance;
-    private ItineraireAdapter adapter;
-    private PassageDAO passageDAO;
     private ArretDAO arretDAO;
-    private LigneDAO ligneDAO;
     private TrajetDAO trajetDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ItineraireAdapter adapter;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.resultat_recherche_itineraire);
 
@@ -80,21 +77,15 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
     }
 
     private void initialiserDao() {
-
-        passageDAO = new PassageDAO(this);
-        passageDAO.open();
-
         arretDAO = new ArretDAO(this);
         arretDAO.open();
-
-        ligneDAO = new LigneDAO(this);
-        ligneDAO.open();
 
         trajetDAO =new TrajetDAO(this);
         trajetDAO.open();
     }
 
     private void rechercherItineraires(SharedPreferences preferences) {
+        TextView messageErreur;
         String libelleArretDepart
                 = preferences.getString(FragmentItineraire.CLE_ARRET_DEPART, "");
         String libelleArretArrive
@@ -130,6 +121,7 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
 
         return passage;
     }
+
     private void rechercheItineraire(Passage depart, Passage arrive) {
         passages = new ArrayList<>();
         lignes = new ArrayList<>();

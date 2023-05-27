@@ -274,18 +274,6 @@ public class FragmentConsultation extends Fragment
         }
     }
 
-    public void ajoutArret(Arret arretSelectionne, DialogInterface dialog, int which) {
-        Groupe groupe = this.groupeSelectionne;
-
-        if (groupe == null) {
-            groupe = this.groupeDAO.findAll().get(0);
-        }
-
-        this.groupeSelectionne = groupe;
-        this.groupeDAO.ajouterArret(groupe, arretSelectionne);
-    }
-
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         // Nothing
@@ -356,7 +344,8 @@ public class FragmentConsultation extends Fragment
                     arretDAO.saveAll(arretList);
                 } else {
                     // Erreur lors de la lecture des arrêts
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_arret), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_arret),
+                            Toast.LENGTH_LONG).show();
                 }
 
                 List<Periode> periodeList = JSONUtils.jsonToPeriodeList(content);
@@ -368,7 +357,8 @@ public class FragmentConsultation extends Fragment
                     periodeDAO.saveAll(periodeList);
                 } else {
                     // Erreur lors de la lecture des périodes
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_periode), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_periode),
+                            Toast.LENGTH_LONG).show();
                 }
 
                 List<Ligne> ligneList = JSONUtils.jsonToLigneList(content);
@@ -378,11 +368,13 @@ public class FragmentConsultation extends Fragment
                     // On enregistre les lignes du fichier
                     ligneDAO.saveAll(ligneList);
                 } else {
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_ligne), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_ligne),
+                            Toast.LENGTH_LONG).show();
                 }
             } else {
                 // Erreur lecture fichier
-                Toast.makeText(this.getContext(), getString(R.string.erreur_fichier_vide), Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getContext(), getString(R.string.erreur_fichier_vide),
+                        Toast.LENGTH_LONG).show();
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

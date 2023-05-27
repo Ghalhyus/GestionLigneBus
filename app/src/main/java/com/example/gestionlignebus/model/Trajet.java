@@ -1,13 +1,10 @@
 package com.example.gestionlignebus.model;
 
-import androidx.annotation.Nullable;
-
 import com.example.gestionlignebus.dao.BDHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalTime;
 import java.util.Objects;
 
 public class Trajet {
@@ -62,6 +59,11 @@ public class Trajet {
                 && Objects.equals(((Trajet) obj).periode, this.periode)
                 && Objects.equals(((Trajet) obj).ligne, this.ligne)
                 && Objects.equals(((Trajet) obj).premierPassage, this.premierPassage);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode() + ligne.hashCode() + periode.hashCode() + premierPassage.hashCode();
     }
 
     /**

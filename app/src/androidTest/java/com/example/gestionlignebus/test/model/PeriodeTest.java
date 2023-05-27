@@ -2,6 +2,7 @@ package com.example.gestionlignebus.test.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.example.gestionlignebus.dao.BDHelper;
@@ -47,18 +48,18 @@ public class PeriodeTest {
     @Test
     public void testEquals() {
         // Arrets identiques
-        assertTrue(periode.equals(periodeBis));
+        assertEquals(periode, periodeBis);
 
         // Arrets non identiques
-        assertFalse(periode.equals(periodeDifferente));
+        assertNotEquals(periode, periodeDifferente);
 
         // Arrets homonymes non identiques
-        assertFalse(periode.equals(periodeHomonyme));
+        assertNotEquals(periode, periodeHomonyme);
 
         // test avec null
-        assertFalse(periode.equals(null));
+        assertNotEquals(null, periode);
 
-        assertFalse(periode.equals(new Groupe()));
+        assertNotEquals(periode, new Groupe());
     }
 
 
