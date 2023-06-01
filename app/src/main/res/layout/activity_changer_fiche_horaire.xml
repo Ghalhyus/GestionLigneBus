@@ -21,7 +21,7 @@
         <Button
             android:id="@+id/btn_import_variable"
             style="@style/button"
-            android:text="@string/bouton_import_fichier"/>
+            android:text="@string/btn_import_fichier"/>
     </TableRow>
 
 </TableLayout>

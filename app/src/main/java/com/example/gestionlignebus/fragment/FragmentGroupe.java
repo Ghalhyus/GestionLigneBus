@@ -126,7 +126,7 @@ public class FragmentGroupe extends Fragment
 
         builder.setTitle(R.string.titre_popup_creer_groupe);
 
-        builder.setPositiveButton(R.string.bouton_valider, (dialog, which) ->
+        builder.setPositiveButton(R.string.btn_valider, (dialog, which) ->
             onClickAjouterGroupe(customLayout)
         );
 
@@ -151,7 +151,7 @@ public class FragmentGroupe extends Fragment
 
         builder.setTitle(getText(R.string.titre_popup_modifier_groupe) + groupe.getLibelle());
 
-        builder.setPositiveButton(R.string.bouton_valider, (dialog, which) ->
+        builder.setPositiveButton(R.string.btn_valider, (dialog, which) ->
             onClickModifierGroupe(customLayout, groupe)
         );
 
@@ -174,7 +174,7 @@ public class FragmentGroupe extends Fragment
 
         builder.setTitle(getText(R.string.titre_popup_supprimer_groupe) + groupe.getLibelle());
 
-        builder.setPositiveButton(R.string.bouton_valider, (dialog, which) -> {
+        builder.setPositiveButton(R.string.btn_valider, (dialog, which) -> {
             groupeDao.delete(groupe);
             acutaliserListe();
         });
@@ -188,8 +188,12 @@ public class FragmentGroupe extends Fragment
         String saisie = ((EditText)customLayout.findViewById(R.id.saisie)).getText().toString();
 
         if (!saisie.isEmpty()) {
-            groupeDao.save(new Groupe(saisie));
-            acutaliserListe();
+            Groupe groupeSaved = groupeDao.save(new Groupe(saisie));
+            if (groupeSaved != null) {
+                acutaliserListe();
+            } else {
+                Toast.makeText(this.getContext(), R.string.erreur_groupe_existant, Toast.LENGTH_LONG ).show();
+            }
         } else {
             Toast.makeText(getView().getContext(),
                             R.string.message_erreur_saisie_vide, Toast.LENGTH_LONG)

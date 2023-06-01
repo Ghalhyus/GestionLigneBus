@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.adapter.ArretSpinnerAdapter;
 import com.example.gestionlignebus.adapter.ListViewAdapter;
-import com.example.gestionlignebus.adapter.PeriodeSpinnerAdapter;
 import com.example.gestionlignebus.dao.ArretDAO;
 import com.example.gestionlignebus.dao.GroupeDAO;
 import com.example.gestionlignebus.model.Arret;
@@ -102,7 +101,7 @@ public class ArretsGroupeActivity  extends AppCompatActivity
 
             builder.setTitle(R.string.titre_retirer_arret_groupe);
 
-            builder.setPositiveButton(R.string.bouton_valider, (dialog, which) -> {
+            builder.setPositiveButton(R.string.btn_valider, (dialog, which) -> {
                 groupe = groupeDao.retirerArret(groupe, arretASupp);
                 nettoyerListe();
             });
@@ -127,7 +126,7 @@ public class ArretsGroupeActivity  extends AppCompatActivity
 
             builder.setTitle(R.string.titre_ajouter_arret);
 
-            builder.setPositiveButton(R.string.bouton_valider, (dialog, which) -> {
+            builder.setPositiveButton(R.string.btn_valider, (dialog, which) -> {
                 groupe = groupeDao.ajouterArret(groupe, arretSelectionne);
                 nettoyerListe();
             });

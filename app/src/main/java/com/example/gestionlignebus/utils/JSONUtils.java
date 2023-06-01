@@ -1,8 +1,9 @@
 package com.example.gestionlignebus.utils;
 
-import android.content.Context;
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
 
-import com.example.gestionlignebus.dao.BDHelper;
+import android.util.Log;
+
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
@@ -13,9 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +24,13 @@ public class JSONUtils {
     public static final String LISTE_LIGNE_NAME = "lignes";
     public static final String LISTE_PERIODE_NAME = "periodes";
     public static final String LISTE_TRAJET_NAME = "trajets";
-    private static final String[] suffixes = new String[] {"A", "B", "C", "D", "E", "F", "G", "H",
-            "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
+    /**
+     * Constructeur privé pour cacher le constructeur implicite
+     */
+    private JSONUtils() {
+        // empty body
+    }
 
     /**
      * Lis un fichier et renvoi un String de son contenu
@@ -43,7 +46,7 @@ public class JSONUtils {
                     result.append(line);
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Log.e(CLE_LOG, "Erreur lors de la lecture du fichier JSON.");
             }
         }
         return result.toString();
@@ -57,12 +60,15 @@ public class JSONUtils {
     public static List<Arret> jsonToArretList(String json) {
         List<Arret> arrets = null;
         JSONObject jsonObject;
+
         try {
             jsonObject = new JSONObject(json);
+
             if (!jsonObject.isNull(LISTE_ARRET_NAME)) {
                 jsonObject.getJSONArray(LISTE_ARRET_NAME);
                 JSONArray o = jsonObject.getJSONArray(LISTE_ARRET_NAME);
                 arrets = new ArrayList<>();
+
                 for ( int i = 0 ; i < o.length() ; i++) {
                     JSONObject arretJson = o.getJSONObject(i);
                     Arret arret = Arret.jsonObjectToArret(arretJson);
@@ -70,7 +76,8 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, "Erreur lors de la récupération des arrêts depuis "
+                    + "le fichier JSON.");
         }
         return arrets;
     }
@@ -94,7 +101,8 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, "Erreur lors de la récupération des lignes depuis "
+                    + "le fichier JSON.");
         }
         return lignes;
     }
@@ -119,7 +127,8 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, "Erreur lors de la récupération des périodes depuis "
+                    + "le fichier JSON.");
         }
         return periodes;
     }
@@ -144,7 +153,8 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, "Erreur lors de la récupération des trajets depuis "
+                    + "le fichier JSON.");
         }
         return trajets;
     }

@@ -2,11 +2,11 @@ package com.example.gestionlignebus.test.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.example.gestionlignebus.dao.BDHelper;
 import com.example.gestionlignebus.model.Arret;
-import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Ligne;
 
 import org.json.JSONException;
@@ -55,16 +55,16 @@ public class LigneTest {
     @Test
     public void testEquals() {
         // Arrets identiques
-        assertTrue(ligne.equals(ligneBis));
+        assertEquals(ligne, ligneBis);
 
         // Arrets non identiques
-        assertFalse(ligne.equals(ligneDifferent));
+        assertNotEquals(ligne, ligneDifferent);
 
         // Arrets homonymes non identiques
-        assertFalse(ligne.equals(ligneHomonyme));
+        assertNotEquals(ligne, ligneHomonyme);
 
         // test avec null
-        assertFalse(ligne.equals(null));
+        assertNotEquals(null, ligne);
     }
 
 

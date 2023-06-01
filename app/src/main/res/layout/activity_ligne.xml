@@ -1,6 +1,7 @@
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/container_view">
+    style="@style/container_view"
+    android:weightSum="1">
     <TableRow
         style="@style/table_row_centered">
         <TextView
@@ -22,32 +23,36 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginHorizontal="@dimen/btn_horizontal_margin"
-            android:text="@string/trajet_precedent" />
+            android:text="@string/btn_trajet_precedent" />
 
         <Button
             android:id="@+id/trajet_suivant"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginHorizontal="@dimen/btn_horizontal_margin"
-            android:text="@string/trajet_suivant" />
+            android:text="@string/btn_trajet_suivant" />
     </TableRow>
     <TableRow
         style="@style/table_row_centered">
         <TextView
             style="@style/listview_title"
+            android:layout_weight="1"
             android:text="@string/label_arrets"/>
         <TextView
             style="@style/listview_title"
+            android:layout_weight="1"
             android:text="@string/label_horaires"/>
     </TableRow>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fiche_horaires"
-        style="@style/recyclerview"/>
+        style="@style/recyclerview"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
     <TableRow>
         <Button
             android:id="@+id/afficher_carte"
             style="@style/button"
-            android:visibility="invisible"
             android:text="@string/btn_afficher_carte"/>
     </TableRow>
+
 </TableLayout>

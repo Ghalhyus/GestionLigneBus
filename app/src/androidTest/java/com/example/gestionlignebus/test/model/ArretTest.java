@@ -2,8 +2,7 @@ package com.example.gestionlignebus.test.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -55,16 +54,16 @@ public class ArretTest {
     @Test
     public void testEquals() {
         // Arrets identiques
-        assertTrue(arret1.equals(arret1bis));
+        assertEquals(arret1, arret1bis);
 
         // Arrets non identiques
-        assertFalse(arret1.equals(arret2));
+        assertNotEquals(arret1, arret2);
 
         // Arrets homonymes non identiques
-        assertFalse(arret1.equals(arret1homonyme));
+        assertNotEquals(arret1, arret1homonyme);
 
         // test avec null
-        assertFalse(arret1.equals(null));
+        assertNotEquals(arret1, null);
     }
 
 

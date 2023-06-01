@@ -1,15 +1,17 @@
 package com.example.gestionlignebus.fragment;
 
+import static android.content.Context.LOCALE_SERVICE;
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
 import static java.util.Arrays.asList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,10 +37,13 @@ import com.example.gestionlignebus.adapter.SpinnerAdapter;
 import com.example.gestionlignebus.dao.ArretDAO;
 import com.example.gestionlignebus.dao.GroupeDAO;
 import com.example.gestionlignebus.dao.LigneDAO;
+import com.example.gestionlignebus.dao.PassageDAO;
 import com.example.gestionlignebus.dao.PeriodeDAO;
+import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Ligne;
+import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.utils.JSONUtils;
 
@@ -68,7 +73,8 @@ public class FragmentConsultation extends Fragment
     private ArretDAO arretDAO;
     private PeriodeDAO periodeDAO;
     private GroupeDAO groupeDAO;
-
+    private PassageDAO passageDAO;
+    private TrajetDAO trajetDAO;
     private List<String> listeLibelles;
     private List<Arret> listeArret;
     private List<Ligne> listeLigne;
@@ -158,6 +164,12 @@ public class FragmentConsultation extends Fragment
 
         periodeDAO = new PeriodeDAO(this.getContext());
         periodeDAO.open();
+
+        passageDAO = new PassageDAO(this.getContext());
+        passageDAO.open();
+
+        trajetDAO = new TrajetDAO(this.getContext());
+        trajetDAO.open();
     }
 
     @Override
@@ -184,12 +196,12 @@ public class FragmentConsultation extends Fragment
 
             builder.setTitle(R.string.titre_ajouter_arret);
 
-            builder.setPositiveButton(R.string.bouton_valider, (dialog, which) -> {
+            builder.setPositiveButton(R.string.btn_valider, (dialog, which) -> {
                 groupeSelectionne = groupeSelectionne == null
                         ? groupeDAO.findAll().get(0) : groupeSelectionne;
 
                 if (arretDAO.findByGroupe(groupeSelectionne).contains(arretSelectionne)) {
-                    Toast.makeText(this.getContext(), R.string.message_erreur_ajout_arret,
+                    Toast.makeText(this.getContext(), R.string.erreur_ajout_arret,
                             Toast.LENGTH_SHORT).show();
                 } else {
                     groupeDAO.ajouterArret(groupeSelectionne, arretSelectionne);
@@ -274,18 +286,6 @@ public class FragmentConsultation extends Fragment
         }
     }
 
-    public void ajoutArret(Arret arretSelectionne, DialogInterface dialog, int which) {
-        Groupe groupe = this.groupeSelectionne;
-
-        if (groupe == null) {
-            groupe = this.groupeDAO.findAll().get(0);
-        }
-
-        this.groupeSelectionne = groupe;
-        this.groupeDAO.ajouterArret(groupe, arretSelectionne);
-    }
-
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         // Nothing
@@ -346,46 +346,113 @@ public class FragmentConsultation extends Fragment
             // On récupère le contenu du JSON
             String content = JSONUtils.readJSON(bufferedReader);
 
+            String erreurArret = null;
+            String erreurPeriode = null;
+            String erreurLigne = null;
+
+            int nbErreurArret = 0;
+            int nbErreurLigne = 0;
+            int nbErreurPeriode = 0;
+
             if (!Objects.equals(content, "")) {
+                // On supprime les anciennes données
+                arretDAO.clear();
+                ligneDAO.clear();
+                periodeDAO.clear();
+                trajetDAO.clear();
+                passageDAO.clear();
                 // On convertit les Arret JSON en arrêt java
                 List<Arret> arretList = JSONUtils.jsonToArretList(content);
                 if (arretList != null) {
-                    // On supprime les anciennes données
-                    arretDAO.clear();
                     // On enregistre les arrêts du fichier
-                    arretDAO.saveAll(arretList);
+                    for (Arret arret : arretList) {
+                        Arret arretSaved = arretDAO.save(arret);
+                        if (arretSaved == null) {
+                            nbErreurArret++;
+                        }
+                    }
+                    if (nbErreurArret > 0 ) {
+                        erreurArret = String.format(getString(R.string.erreur_nb_arret), nbErreurArret);
+                    }
                 } else {
                     // Erreur lors de la lecture des arrêts
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_arret), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_arret),
+                            Toast.LENGTH_LONG).show();
                 }
 
                 List<Periode> periodeList = JSONUtils.jsonToPeriodeList(content);
 
                 if ( periodeList != null) {
                     // On supprime les anciennes données
-                    periodeDAO.clear();
                     // On enregistre les périodes du fichier
-                    periodeDAO.saveAll(periodeList);
+                    for (Periode periode : periodeList) {
+                        Periode periodeSaved = periodeDAO.save(periode);
+                        if (periodeSaved == null) {
+                            nbErreurPeriode++;
+                        }
+                    }
+                    if (nbErreurPeriode > 0 ) {
+                        erreurPeriode = String.format(getString(R.string.erreur_nb_periode), nbErreurPeriode);
+                    }
                 } else {
                     // Erreur lors de la lecture des périodes
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_periode), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_periode),
+                            Toast.LENGTH_LONG).show();
                 }
 
                 List<Ligne> ligneList = JSONUtils.jsonToLigneList(content);
                 if ( ligneList != null ) {
                     // On supprime les anciennes données
-                    ligneDAO.clear();
                     // On enregistre les lignes du fichier
-                    ligneDAO.saveAll(ligneList);
+                    for (Ligne ligne : ligneList) {
+                        Ligne ligneSaved = ligneDAO.save(ligne);
+                        if (ligneSaved == null) {
+                            nbErreurLigne++;
+                        }
+                    }
+                    if (nbErreurLigne > 0 ) {
+                        erreurLigne = String.format(getString(R.string.erreur_nb_ligne), nbErreurLigne);
+                    }
                 } else {
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_ligne), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_ligne),
+                            Toast.LENGTH_LONG).show();
                 }
             } else {
                 // Erreur lecture fichier
-                Toast.makeText(this.getContext(), getString(R.string.erreur_fichier_vide), Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getContext(), getString(R.string.erreur_fichier_vide),
+                        Toast.LENGTH_LONG).show();
+            }
+            // Si tout s'est bien passé, alors on affiche ce message
+            if (erreurArret == null
+                    && erreurLigne == null
+                    && erreurPeriode == null) {
+                Toast.makeText(this.getContext(), R.string.reussite_import_donnée_stable, Toast.LENGTH_LONG).show();
+            } else {
+                StringBuilder messageFinal = new StringBuilder();
+                if (erreurArret != null) {
+                    String res = String.format(getString(R.string.erreur_nb_arret), nbErreurArret);
+                    messageFinal.append(res);
+                }
+                if (erreurPeriode != null) {
+                    if (erreurArret != null) {
+                        messageFinal.append("\n");
+                    }
+                    String res = String.format(getString(R.string.erreur_nb_periode), nbErreurPeriode);
+                    messageFinal.append(res);
+                }
+                if (erreurLigne != null) {
+                    if (erreurPeriode != null) {
+                        messageFinal.append("\n");
+                    }
+                    String res = String.format(getString(R.string.erreur_nb_ligne), nbErreurLigne);
+                    messageFinal.append(res);
+                }
+                if (messageFinal.length() > 0) {
+                    Toast.makeText(this.getContext(), messageFinal.toString(), Toast.LENGTH_LONG).show();
+                }
             }
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, String.format("Erreur le fichier %s n'a pas été trouvé.", uri));
         } finally {
             arretDAO.close();
             periodeDAO.close();

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/container_view"
+    android:layout_height="match_parent"
+    android:weightSum="9">
+
+    <androidx.recyclerview.widget.RecyclerView
+        style="@style/recyclerview"
+        android:id="@+id/itineraires"
+        android:layout_weight="9"/>
+    <TextView
+        android:id="@+id/message_erreur"
+        android:visibility="invisible"/>
+
+    <TableRow
+        style="@style/table_row_centered">
+        <Button
+            android:id="@+id/btn_retour"
+            style="@style/button"
+            android:text="@string/btn_retour"/>
+    </TableRow>
+
+</TableLayout>

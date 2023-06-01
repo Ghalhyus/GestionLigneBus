@@ -1,10 +1,5 @@
 package com.example.gestionlignebus.model;
 
-import com.example.gestionlignebus.dao.BDHelper;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -93,6 +88,11 @@ public class Groupe {
      */
     public boolean estHomonyme(Object obj) {
         return Objects.equals(((Groupe) obj).libelle, this.libelle);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode() + libelle.hashCode() + arrets.hashCode();
     }
 
     @Override

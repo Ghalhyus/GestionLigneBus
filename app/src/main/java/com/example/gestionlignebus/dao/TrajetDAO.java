@@ -30,7 +30,8 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
     public static final int COLONNE_NUM_LIGNE = 2;
     public static final int COLONNE_NUM_PREMIER_PASSAGE = 3;
 
-    private static final String SELECT_ETOILE = "SELECT * FROM " + BDHelper.TRAJET_NOM_TABLE;
+    private static final String SELECT_ETOILE = ICommonDAO.SELECT_ETOILE
+            + BDHelper.TRAJET_NOM_TABLE;
 
     //////////////////////////////////////////////////////////////////
     ///////////////////////// Requêtes ///////////////////////////////
@@ -78,7 +79,7 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
     /**
      * Requête SQL permettant de retrouver des trajets par periode et ligne
      */
-    private final static String FIND_BY_PERIODE_AND_LIGNE = "SELECT * FROM "
+    private static final String FIND_BY_PERIODE_AND_LIGNE = "SELECT * FROM "
             + BDHelper.TRAJET_NOM_TABLE
             + WHERE + BDHelper.TRAJET_PERIODE
             + PARAMETRE + " AND "
@@ -136,7 +137,7 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
             Cursor cursor = sqLiteDatabase.rawQuery(FIND_BY_PASSAGE, new String[] { passage.getId().toString() });
             return cursorToObjectList(cursor);
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -178,7 +179,7 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
                     new String[] { periode.getId().toString() ,ligne.getId().toString()});
             return cursorToObjectList(cursor);
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
     @Override
@@ -188,41 +189,140 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
 
     @Override
     public Trajet save(Trajet toSave) {
+        if (toSave != null) {
+            toSave = initPeriode(toSave);
+            if (toSave != null) {
+                toSave = initLigne(toSave);
+                if (toSave != null) {
+                    toSave = initPremierPassage(toSave);
+                    if (toSave != null) {
+                        ContentValues enregistrement = objectToContentValues(toSave);
+                        long id = sqLiteDatabase.insert(BDHelper.TRAJET_NOM_TABLE, null, enregistrement);
+                        return findById(id);
+                    } else {
+                        // Aucun premier passage correspondant
+                        return null;
+                    }
+                } else {
+                    // Aucune ligne trouvée ou ligne invalide
+                    return null;
+                }
+            } else {
+                // Aucune période trouvé ou période invalide
+                return null;
+            }
+        } else {
+            // Argument null
+            return null;
+        }
+
+
+
+
         // On vérifie que le passage ne soit pas null
-        if (toSave.getPremierPassage().getId() == null) {
-            if (toSave.getPremierPassage().getArret() != null
-                && toSave.getPremierPassage().getHoraire() != null) {
-                // On ne vérifie si un passage similaire n'existe pas déjà
-                Passage passageFound = passageDAO.findByArretAndHoraire(
-                        toSave.getPremierPassage().getArret(),
-                        toSave.getPremierPassage().getHoraire());
-                if (passageFound != null) {
-                    // Si oui, on l'utilise
-                    toSave.setPremierPassage(passageFound);
-                } else {
-                    // Si non, on enregistre le passage et les passage chaînés
-                    Passage permierPassage = passageDAO.save(toSave.getPremierPassage());
-                    toSave.setPremierPassage(permierPassage);
-                }
-            }
-        }
+//        if (toSave.getPremierPassage().getId() == null
+//            && (toSave.getPremierPassage().getArret() != null
+//            && toSave.getPremierPassage().getHoraire() != null)) {
+//            // On ne vérifie si un passage similaire n'existe pas déjà
+//            Passage passageFound = passageDAO.findByArretAndHoraire(
+//                    toSave.getPremierPassage().getArret(),
+//                    toSave.getPremierPassage().getHoraire());
+//            if (passageFound != null) {
+//                // Si oui, on l'utilise
+//                toSave.setPremierPassage(passageFound);
+//            } else {
+//                // Si non, on renvoie null
+//                return null;
+//            }
+//        }
         // On vérifie que la période ne soit pas nulle
-        if (toSave.getPeriode().getId() == null) {
-            if (toSave.getPeriode().getLibelle() != null) {
-                // On cherche si une période identique n'existe pas déjà
-                Periode periodeFound = periodeDAO.findByLibelle(toSave.getPeriode().getLibelle());
-                if ( periodeFound != null) {
-                    // Si oui, on l'utilise
-                    toSave.setPeriode(periodeFound);
+//        if (toSave.getPeriode().getId() == null
+//                && (toSave.getPeriode().getLibelle() != null)) {
+//            // On cherche si une période identique n'existe pas déjà
+//            Periode periodeFound = periodeDAO.findByLibelle(toSave.getPeriode().getLibelle());
+//            if ( periodeFound != null) {
+//                // Si oui, on l'utilise
+//                toSave.setPeriode(periodeFound);
+//            } else {
+//                // Si non, on enregistre la nouvelle période
+//                toSave.setPeriode(periodeDAO.save(toSave.getPeriode()));
+//            }
+//        }
+    }
+
+    private Trajet initPeriode(Trajet toSave) {
+        if (toSave.getPeriode() != null) {
+            if (toSave.getPeriode().getId() != null) {
+                // Inutile d'aller plus loin
+                return toSave;
+            } else {
+                if (toSave.getPeriode().getLibelle() != null) {
+                    Periode periodeFound = periodeDAO.findByLibelle(toSave.getPeriode().getLibelle());
+                    if (periodeFound != null) {
+                        toSave.setPeriode(periodeFound);
+                        return toSave;
+                    } else {
+                        return null;
+                    }
                 } else {
-                    // Si non, on enregistre la nouvelle période
-                    toSave.setPeriode(periodeDAO.save(toSave.getPeriode()));
+                    // La période n'a pas de libelle
+                    return null;
                 }
             }
+        } else {
+            return null;
         }
-        ContentValues enregistrement = objectToContentValues(toSave);
-        long id = sqLiteDatabase.insert(BDHelper.TRAJET_NOM_TABLE, null, enregistrement);
-        return findById(id);
+    }
+
+    private Trajet initLigne(Trajet toSave) {
+        if (toSave.getLigne() != null) {
+            if (toSave.getLigne().getId() != null) {
+                // Inutile d'aller plus loin
+                return toSave;
+            } else {
+                if (toSave.getLigne().getLibelle() != null) {
+                    Ligne ligneFound = ligneDAO.findByLibelle(toSave.getLigne().getLibelle());
+                    if (ligneFound != null) {
+                        toSave.setLigne(ligneFound);
+                        return toSave;
+                    } else {
+                        return null;
+                    }
+                } else {
+                    // La ligne n'a pas de libelle
+                    return null;
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
+    private Trajet initPremierPassage(Trajet toSave) {
+        if (toSave.getPremierPassage() != null) {
+            if (toSave.getPremierPassage().getId() != null) {
+                // Inutile d'aller plus loin
+                return toSave;
+            } else {
+                if (toSave.getPremierPassage().getArret() != null
+                        && toSave.getPremierPassage().getHoraire() != null) {
+                    Passage passageFound = passageDAO.findByArretAndHoraire(
+                            toSave.getPremierPassage().getArret(),
+                            toSave.getPremierPassage().getHoraire());
+                    if (passageFound != null) {
+                        toSave.setPremierPassage(passageFound);
+                        return toSave;
+                    } else {
+                        return null;
+                    }
+                } else {
+                    // Le passage n'a pas d'arrêt ou d'horaire
+                    return null;
+                }
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -354,5 +454,9 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
                     ligne.getId().toString()
                 }
                 );
+    }
+
+    public void clear() {
+        sqLiteDatabase.delete(BDHelper.TRAJET_NOM_TABLE, null, null);
     }
 }

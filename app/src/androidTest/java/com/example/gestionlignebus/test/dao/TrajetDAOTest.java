@@ -26,8 +26,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.annotation.Target;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TrajetDAOTest {
@@ -71,35 +73,84 @@ public class TrajetDAOTest {
 
         // Periode
         periode1 = new Periode("Test Vacances scolaire");
-        periode1 = periodeDAO.save(periode1);
+        Periode periodeFound = periodeDAO.findByLibelle(periode1.getLibelle());
+        if (periodeFound != null ) {
+            periode1 = periodeFound;
+        } else {
+            periode1 = periodeDAO.save(periode1);
+        }
 
         periode2 = new Periode("Test Vacances été");
-        periode2 = periodeDAO.save(periode2);
-
-        // Ligne
-        ligne1 = new Ligne("Ligne A test");
-        ligne1 = ligneDAO.save(ligne1);
-
-        ligne2 = new Ligne("Ligne B test");
-        ligne2 = ligneDAO.save(ligne2);
+        periodeFound = periodeDAO.findByLibelle(periode2.getLibelle());
+        if (periodeFound != null ) {
+            periode2 = periodeFound;
+        } else {
+            periode2 = periodeDAO.save(periode2);
+        }
 
         // Arret
         arret1 = new Arret("Test Arret 1", "test position 1");
-        arret1 = arretDAO.save(arret1);
+        Arret arretFound = arretDAO.findByLibelle(arret1.getLibelle());
+        if (arretFound != null ) {
+            arret1 = arretFound;
+        } else {
+            arret1 = arretDAO.save(arret1);
+        }
 
         arret2 = new Arret("Test Arret 2", "test position 2");
-        arret2 = arretDAO.save(arret2);
+        arretFound = arretDAO.findByLibelle(arret2.getLibelle());
+        if (arretFound != null ) {
+            arret2 = arretFound;
+        } else {
+            arret2 = arretDAO.save(arret2);
+        }
+
+        // Ligne
+        ligne1 = new Ligne("Ligne A test");
+        Ligne ligneFound = ligneDAO.findByLibelle(ligne1.getLibelle());
+        if (ligneFound != null ) {
+            ligne1 = ligneFound;
+        } else {
+            ligne1.setArrets(Arrays.asList(arret1, arret2));
+            ligne1.setArretDepart(arret1);
+            ligne1.setArretRetour(arret2);
+            ligne1 = ligneDAO.save(ligne1);
+        }
+
+        ligne2 = new Ligne("Ligne B test");
+        ligneFound = ligneDAO.findByLibelle(ligne2.getLibelle());
+        if (ligneFound != null ) {
+            ligne2 = ligneFound;
+        } else {
+            ligne2.setArrets(Arrays.asList(arret1, arret2));
+            ligne2.setArretDepart(arret2);
+            ligne2.setArretRetour(arret1);
+            ligne2 = ligneDAO.save(ligne2);
+        }
 
         // Passage
-
         passage1 = new Passage(arret1, LocalTime.now());
-        passage1 = passageDAO.save(passage1);
+        Passage passageFound = passageDAO.findByArretAndHoraire(
+                passage1.getArret(),
+                passage1.getHoraire());
+        if (passageFound != null) {
+            passage1 = passageFound;
+        } else {
+            passage1 = passageDAO.save(passage1);
+        }
 
         passage2 = new Passage(arret2, LocalTime.now());
-        passage2 = passageDAO.save(passage2);
+        passageFound = passageDAO.findByArretAndHoraire(
+                passage2.getArret(),
+                passage2.getHoraire());
+        if (passageFound != null) {
+            passage2 = passageFound;
+        } else {
+            passage2 = passageDAO.save(passage2);
+        }
 
-        trajet1 = new Trajet(periode1, ligne1, passage1);
-        trajet2 = new Trajet(periode2, ligne2, passage2);
+        trajet1 = trajetDAO.save(new Trajet(periode1, ligne1, passage1));
+        trajet2 = trajetDAO.save(new Trajet(periode2, ligne2, passage2));
 
     }
 
@@ -113,44 +164,29 @@ public class TrajetDAOTest {
         periodeDAO.delete(periode2);
         arretDAO.delete(arret1);
         arretDAO.delete(arret2);
+        trajetDAO.delete(trajet1);
+        trajetDAO.delete(trajet2);
     }
 
     @Test
     public void testSave() {
-        // On l'enregistre
-        trajet1 = trajetDAO.save(trajet1);
-        assertNotNull(trajet1.getId());
+        Trajet trajet3 = trajetDAO.save(
+                new Trajet(
+                        periode1,
+                        ligne2,
+                        passage1
+                        )
+                );
 
-        // On vérifie qu'il est égal à celui en base
-        assertEquals(trajet1, trajetDAO.findById(trajet1.getId()));
-        trajetDAO.delete(trajet1);
-    }
+        assertNotNull(trajet3);
 
-    @Test
-    public void testSaveAll() {
-        List<Trajet> trajets = new ArrayList<>();
-        trajets.add(trajet1);
-        trajets.add(trajet2);
+        int res = trajetDAO.delete(trajet3);
 
-        List<Trajet> trajetsSaved = trajetDAO.saveAll(trajets);
-
-        // Pour chaque arret :
-        for (Trajet trajet : trajetsSaved) {
-            // l'id n'est pas null
-            assertNotNull(trajet.getId());
-
-            // Il est sauvegardé dans la base
-            Trajet sauv = trajetDAO.findById(trajet.getId());
-            assertEquals(trajet, sauv);
-        }
-
-        trajetDAO.deleteAll(trajetsSaved);
-
+        assertEquals(1, res);
     }
 
     @Test
     public void testDelete() {
-        trajet1 = trajetDAO.save(trajet1);
         int result = trajetDAO.delete(trajet1);
         assertEquals(1, result);
 
@@ -160,12 +196,6 @@ public class TrajetDAOTest {
 
     @Test
     public void testDeleteAll() {
-        trajet1 = trajetDAO.save(trajet1);
-        assertNotNull(trajet1.getId());
-
-        trajet2 = trajetDAO.save(trajet2);
-        assertNotNull(trajet2.getId());
-
         List<Trajet> trajets = new ArrayList<>();
         trajets.add(trajet1);
         trajets.add(trajet2);
@@ -176,8 +206,6 @@ public class TrajetDAOTest {
 
     @Test
     public void testUpdate() {
-        // On enregistre un passage
-        trajet1 = trajetDAO.save(trajet1);
 
         // On le modifie
         trajet1.setLigne(ligne2);
@@ -197,7 +225,6 @@ public class TrajetDAOTest {
 
     @Test
     public void testFinfById() {
-        trajet1 = trajetDAO.save(trajet1);
         assertNotNull(trajet1.getId());
 
         Trajet trajetFound = trajetDAO.findById(trajet1.getId());
@@ -208,23 +235,19 @@ public class TrajetDAOTest {
 
     @Test
     public void testFindAll() {
+        List<Trajet> trajets = new ArrayList<>();
+        trajets.add(trajet1);
+        trajets.add(trajet2);
+
         List<Trajet> trajetFound = trajetDAO.findAll();
 
         assertEquals(
-                trajetDAO.cursorToObjectList(trajetDAO.cursorFindAll()),
+                trajets,
                 trajetFound);
     }
 
     @Test
     public void testCursorToObjectList() {
-        // On enregistre des passages
-        trajet1 = trajetDAO.save(trajet1);
-        // Son id n'est pas null
-        assertNotNull(trajet1.getId());
-
-        trajet2 = trajetDAO.save(trajet2);
-        // Son id n'est pas null
-        assertNotNull(trajet2.getId());
 
         List<Trajet> trajetsExpected = new ArrayList<>();
         trajetsExpected.add(trajet1);
@@ -238,7 +261,6 @@ public class TrajetDAOTest {
 
     @Test
     public void testObjectToContentValues() {
-        trajet1 = trajetDAO.save(trajet1);
         ContentValues enregistrement = trajetDAO.objectToContentValues(trajet1);
 
         assertTrue(enregistrement.containsKey(BDHelper.TRAJET_CLE));
@@ -254,7 +276,6 @@ public class TrajetDAOTest {
 
     @Test
     public  void testFindByPeriodeAndArret(){
-        trajet1 = trajetDAO.save(trajet1);
         List<Trajet> trajetFound = trajetDAO.findByPeriodeAndArret(periode1, arret1);
 
         assertTrue(

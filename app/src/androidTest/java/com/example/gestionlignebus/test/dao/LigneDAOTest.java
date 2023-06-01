@@ -24,7 +24,7 @@ public class LigneDAOTest {
 
     private Ligne ligneTest;
     private List<Ligne> lignesTest;
-    private  ArrayList<Arret> arretsTest;
+    private  List<Arret> arretsTest;
     private LigneDAO ligneDao;
     private ArretDAO arretDao;
     private Arret arret1 = new Arret("Arrêt 1", "1");
@@ -44,6 +44,7 @@ public class LigneDAOTest {
         arretsTest.add(arret1);
         arretsTest.add(arret2);
         arretsTest.add(arret3);
+        arretsTest = arretDao.saveAll(arretsTest);
 
         ligneTest = new Ligne();
         ligneTest.setLibelle("LigneTest");
@@ -70,11 +71,15 @@ public class LigneDAOTest {
         lignesTest.get(2).setArrets(arretsTest);
         lignesTest.get(2).setArretDepart(arretsTest.get(0));
         lignesTest.get(2).setArretRetour(arretsTest.get(2));
+
+        lignesTest = ligneDao.saveAll(lignesTest);
+
+        lignesTest.add(0, ligneTest);
     }
 
     @After
     public void tearDown() throws Exception {
-        ligneDao.delete(ligneTest);
+        arretDao.deleteAll(arretsTest);
         int result = ligneDao.deleteAll(lignesTest);
 
         ligneDao.close();
@@ -90,10 +95,9 @@ public class LigneDAOTest {
 
     @Test
     public void findAll() {
-        lignesTest = ligneDao.saveAll(lignesTest);
         List<Ligne> lignesTrouves = ligneDao.findAll();
 
-        Assert.assertEquals(lignesTest, ligneTest);
+        Assert.assertEquals(lignesTest, lignesTrouves);
     }
     @Test
     public void save() {
@@ -104,15 +108,15 @@ public class LigneDAOTest {
     @Test
     public void saveAll() {
         int lignesSauvegardees = 0;
-        int attendu = 3;
+        int attendu = 4;
 
-        lignesTest = ligneDao.saveAll(lignesTest);
 
         List<Ligne> lignesTrouvees = ligneDao.findAll();
         for (Ligne ligne : lignesTrouvees) {
             lignesSauvegardees += ligne.equals(lignesTest.get(0)) ? 1 : 0;
             lignesSauvegardees += ligne.equals(lignesTest.get(1)) ? 1 : 0;
             lignesSauvegardees += ligne.equals(lignesTest.get(2)) ? 1 : 0;
+            lignesSauvegardees += ligne.equals(lignesTest.get(3)) ? 1 : 0;
         }
 
         Assert.assertEquals(attendu, lignesSauvegardees);
@@ -127,14 +131,14 @@ public class LigneDAOTest {
 
     @Test
     public void deleteAll() {
-        lignesTest = ligneDao.saveAll(lignesTest);
         ligneDao.deleteAll(lignesTest);
 
         List<Ligne> lignesTrouves = ligneDao.findAll();
         for (Ligne ligne : lignesTrouves) {
-            Assert.assertFalse(ligne.equals(lignesTest.get(0)));
-            Assert.assertFalse(ligne.equals(lignesTest.get(1)));
-            Assert.assertFalse(ligne.equals(lignesTest.get(2)));
+            Assert.assertNotEquals(ligne, lignesTest.get(0));
+            Assert.assertNotEquals(ligne, lignesTest.get(1));
+            Assert.assertNotEquals(ligne, lignesTest.get(2));
+            Assert.assertNotEquals(ligne, lignesTest.get(3));
         }
     }
 
@@ -145,6 +149,7 @@ public class LigneDAOTest {
         ligneTest.setLibelle(libelle);
         ligneTest = ligneDao.update(ligneTest);
 
+        assertEquals(libelle, ligneTest.getLibelle());
     }
 
     @Test

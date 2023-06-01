@@ -34,6 +34,9 @@ public class GroupeDAO implements ICommonDAO<Groupe, Long> {
     private static final String FIND_BY_ID = "SELECT * FROM "
             + BDHelper.GROUPE_NOM_TABLE + " WHERE " + BDHelper.GROUPE_CLE + PARAMETRE;
 
+    private static final String FIND_BY_LIBELLE = "SELECT * FROM "
+            + BDHelper.GROUPE_NOM_TABLE + " WHERE " + BDHelper.GROUPE_LIBELLE + PARAMETRE;
+
 
     public GroupeDAO(Context context) {
         bdHelper = new BDHelper(context, BDHelper.NOM_BD, null,BDHelper.VERSION);
@@ -58,6 +61,10 @@ public class GroupeDAO implements ICommonDAO<Groupe, Long> {
         return cursorToObject(cursorFindById(aLong));
     }
 
+    public Groupe findByLibelle(String libelle) {
+        return cursorToObject(sqLiteDatabase.rawQuery(FIND_BY_LIBELLE, new String[] {libelle}));
+    }
+
     @Override
     public List<Groupe> findAll() {
         return cursorToObjectList(cursorFindAll());
@@ -65,10 +72,16 @@ public class GroupeDAO implements ICommonDAO<Groupe, Long> {
 
     @Override
     public Groupe save(Groupe toSave) {
-        ContentValues enregistrement = objectToContentValues(toSave);
-        long id = sqLiteDatabase.insert(BDHelper.GROUPE_NOM_TABLE, null,
-                enregistrement);
-        return findById(id);
+        if (findByLibelle(toSave.getLibelle()) == null) {
+            ContentValues enregistrement = objectToContentValues(toSave);
+            long id = sqLiteDatabase.insert(BDHelper.GROUPE_NOM_TABLE, null,
+                    enregistrement);
+            return findById(id);
+        } else {
+            // Un groupe existe déjà avec ce libelle
+            return null;
+        }
+
     }
 
     @Override

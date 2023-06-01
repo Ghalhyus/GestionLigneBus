@@ -23,23 +23,31 @@
             android:id="@+id/itineraire_arret_depart"
             style="@style/edittext"
             android:hint="@string/itineraire_arret_depart_hint"
+            android:maxLength="30"
+            android:maxLines="1"
             />
         <AutoCompleteTextView
             android:id="@+id/itineraire_arret_arrive"
             style="@style/edittext"
+            android:maxLength="30"
+            android:maxLines="1"
             android:hint="@string/itineraire_arret_arrive_hint"
             />
     </TableRow>
     <TableRow style="@style/table_row_centered">
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/itineraire_horaire_depart"
+            android:inputType="none"
+            android:focusable="false"
             style="@style/edittext"
             android:hint="@string/itineraire_horaire_depart_hint"
             />
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/itineraire_horaire_arrive"
             style="@style/edittext"
             android:hint="@string/itineraire_horaire_arrive_hint"
+            android:inputType="none"
+            android:focusable="false"
             />
     </TableRow>
     <TableRow style="@style/table_row_centered">
@@ -65,9 +73,5 @@
             style="@style/button"
             android:text="@string/btn_rechercher"/>
     </TableRow>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itineraires"
-        style="@style/recyclerview"/>
 
 </TableLayout>

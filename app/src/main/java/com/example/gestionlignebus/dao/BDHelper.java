@@ -1,17 +1,10 @@
 package com.example.gestionlignebus.dao;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
-
-import com.example.gestionlignebus.model.Arret;
-
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BDHelper extends SQLiteOpenHelper {
     public static final String NOM_BD = "gestion_bus.db";
@@ -77,7 +70,7 @@ public class BDHelper extends SQLiteOpenHelper {
     public static final String PERIODE_NOM_TABLE = "periode";
     public static final String PERIODE_CLE = "_id";
     public static final String PERIODE_LIBELLE = "libelle";
-    public static final String PERIODE_CREATION_TABLE = "CREATE TABLE " + PERIODE_NOM_TABLE + "( " +
+    public static final String PERIODE_CREATION_TABLE = CREATE_TABLE + PERIODE_NOM_TABLE + "( " +
             PERIODE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
             PERIODE_LIBELLE + " TEXT UNIQUE NOT NULL " +
             ");";

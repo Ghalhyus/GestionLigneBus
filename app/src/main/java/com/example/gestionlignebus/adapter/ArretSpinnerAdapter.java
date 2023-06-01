@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.gestionlignebus.model.Arret;
-import com.example.gestionlignebus.model.Periode;
 
 import java.util.List;
 

@@ -1,12 +1,16 @@
 package com.example.gestionlignebus.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
+
+import android.util.Log;
+
 import com.example.gestionlignebus.dao.BDHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Arret {
@@ -65,7 +69,13 @@ public class Arret {
     }
 
     @Override
+    public int hashCode() {
+        return id.hashCode() + libelle.hashCode() + position.hashCode();
+    }
+
+    @Override
     public String toString() {
+
         return libelle;
     }
 
@@ -90,13 +100,16 @@ public class Arret {
      */
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
+
         try {
             jsonObject.put(BDHelper.ARRET_CLE, id);
             jsonObject.put(BDHelper.ARRET_LIBELLE, libelle);
             jsonObject.put(BDHelper.ARRET_POSITION, position);
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, String.format(
+                    "Erreur lors de la transformation de l'arrêt %s en objet JSON.", libelle));
         }
+
         return jsonObject;
     }
 

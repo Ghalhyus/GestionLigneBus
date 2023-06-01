@@ -37,9 +37,9 @@ public class GroupeDAOTest {
         arretDao.open();
 
         arretsTest = new ArrayList<>();
-        arretsTest.add(new Arret("Arrêt 1", "1"));
-        arretsTest.add(new Arret("Arrêt 2", "2"));
-        arretsTest.add(new Arret("Arrêt 3", "3"));
+        arretsTest.add(new Arret("Arrêt Test 1", "Position 1"));
+        arretsTest.add(new Arret("Arrêt Test 2", "Position 2"));
+        arretsTest.add(new Arret("Arrêt Test 3", "Position 3"));
         arretsTest = arretDao.saveAll(arretsTest);
 
         groupeTest = new Groupe("Test groupe");
@@ -55,11 +55,12 @@ public class GroupeDAOTest {
         groupesTest.get(1).setArrets(arretsTest);
         groupesTest.add(new Groupe("Test groupe3"));
         groupesTest.get(2).setArrets(arretsTest);
+        groupesTest = groupeDao.saveAll(groupesTest);
+        groupesTest.add(0, groupeTest);
     }
 
     @After
     public void tearDown() throws Exception {
-        groupeDao.delete(groupeTest);
         groupeDao.deleteAll(groupesTest);
         groupeDao.close();
 
@@ -77,7 +78,6 @@ public class GroupeDAOTest {
     // TODO Corriger ce test.
     @Test
     public void findAll() {
-        groupesTest = groupeDao.saveAll(groupesTest);
         List<Groupe> groupesTrouves = groupeDao.findAll();
 
         Assert.assertEquals(groupesTest, groupesTrouves);
@@ -91,15 +91,14 @@ public class GroupeDAOTest {
     @Test
     public void saveAll() {
         int groupesSauvegardes = 0;
-        int attendu = 3;
-
-        groupesTest = groupeDao.saveAll(groupesTest);
+        int attendu = 4;
 
         List<Groupe> groupesTrouves = groupeDao.findAll();
         for (Groupe groupe : groupesTrouves) {
             groupesSauvegardes += groupe.equals(groupesTest.get(0)) ? 1 : 0;
             groupesSauvegardes += groupe.equals(groupesTest.get(1)) ? 1 : 0;
             groupesSauvegardes += groupe.equals(groupesTest.get(2)) ? 1 : 0;
+            groupesSauvegardes += groupe.equals(groupesTest.get(3)) ? 1 : 0;
         }
 
         Assert.assertEquals(attendu, groupesSauvegardes);
@@ -114,7 +113,6 @@ public class GroupeDAOTest {
 
     @Test
     public void deleteAll() {
-        groupesTest = groupeDao.saveAll(groupesTest);
         groupeDao.deleteAll(groupesTest);
 
         List<Groupe> groupesTrouves = groupeDao.findAll();
@@ -122,6 +120,7 @@ public class GroupeDAOTest {
             Assert.assertNotEquals(groupe,groupesTest.get(0));
             Assert.assertNotEquals(groupe,groupesTest.get(1));
             Assert.assertNotEquals(groupe,groupesTest.get(2));
+            Assert.assertNotEquals(groupe,groupesTest.get(3));
         }
     }
 
@@ -141,6 +140,9 @@ public class GroupeDAOTest {
         groupeTest  = groupeDao.ajouterArret(groupeTest, attendu);
 
         Assert.assertTrue(groupeTest.getArrets().contains(attendu));
+
+        // On supprime l'arrêt
+        arretDao.delete(attendu);
     }
 
     @Test

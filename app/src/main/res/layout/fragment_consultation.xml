@@ -15,7 +15,9 @@
         <AutoCompleteTextView
             android:id="@+id/barre_recherche"
             style="@style/edittext"
-            android:hint="Recherche"/>
+            android:hint="@string/hint_recherche"
+            android:maxLength="30"
+            android:maxLines="1"/>
     </TableRow>
 
 

@@ -1,13 +1,14 @@
 package com.example.gestionlignebus.model;
 
-import androidx.annotation.Nullable;
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
+
+import android.util.Log;
 
 import com.example.gestionlignebus.dao.BDHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalTime;
 import java.util.Objects;
 
 public class Trajet {
@@ -64,6 +65,11 @@ public class Trajet {
                 && Objects.equals(((Trajet) obj).premierPassage, this.premierPassage);
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode() + ligne.hashCode() + periode.hashCode() + premierPassage.hashCode();
+    }
+
     /**
      * Convertit un trajet en JSONObject
      * @return le JSONObject après converison
@@ -82,7 +88,9 @@ public class Trajet {
                 jsonObject.put(BDHelper.TRAJET_PREMIER_PASSAGE, premierPassage.toJson());
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, String.format(
+                    "Erreur lors de la transformation du trajet %s %s en objet JSON.",
+                    ligne, periode));
         }
         return jsonObject;
     }

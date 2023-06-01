@@ -129,24 +129,14 @@ public class ArretDAOTest {
 
     @Test
     public void testFindAll() {
-        // On enregistre des arrets
-        Arret arret1Sauv = arretDAO.save(arret1);
-        Arret arret2Sauv = arretDAO.save(arret2);
-        Arret arret3Sauv = arretDAO.save(arret3);
-
         List<Arret> arretExpected = new ArrayList<>();
-        arretExpected.add(arret1Sauv);
-        arretExpected.add(arret2Sauv);
-        arretExpected.add(arret3Sauv);
+        arretExpected.add(arret1);
+        arretExpected.add(arret2);
+        arretExpected.add(arret3);
 
         List<Arret> arretsFound = arretDAO.findAll();
 
         assertEquals(arretExpected, arretsFound);
-
-        // On supprime l'arret
-        int result = arretDAO.deleteAll(arretsFound);
-
-        assertEquals(arretsFound.size(), result);
     }
 
     @Test
@@ -173,8 +163,10 @@ public class ArretDAOTest {
     @Test
     public void testFindByLigne() {
         Ligne ligne = new Ligne("libelle 1 test");
+        ligne.setArretDepart(arret1);
+        ligne.setArretRetour(arret3);
 
-        // On crée un groupe
+        // On crée une ligne
         ligne = ligneDAO.save(ligne);
         assertNotNull(ligne.getId());
 

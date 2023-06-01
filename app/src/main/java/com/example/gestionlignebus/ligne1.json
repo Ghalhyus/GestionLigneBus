@@ -9,46 +9,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "08:00",
+        "horaire" : "09:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "08:05",
+          "horaire": "09:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "08:10",
+            "horaire": "09:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "08:15",
+              "horaire": "09:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "08:20",
+                "horaire": "09:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "08:25",
+                  "horaire": "09:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "08:30"
+                    "horaire": "09:30"
                   }
                 }
               }
@@ -66,46 +66,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "08:00",
+        "horaire" : "09:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "08:05",
+          "horaire": "09:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "08:10",
+            "horaire": "09:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "08:15",
+              "horaire": "09:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "08:20",
+                "horaire": "09:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "08:25",
+                  "horaire": "09:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "08:30"
+                    "horaire": "09:30"
                   }
                 }
               }
@@ -123,46 +123,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "10:00",
+        "horaire" : "11:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "10:05",
+          "horaire": "11:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "10:10",
+            "horaire": "11:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "10:15",
+              "horaire": "11:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "10:20",
+                "horaire": "11:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "10:25",
+                  "horaire": "11:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "10:30"
+                    "horaire": "11:30"
                   }
                 }
               }
@@ -180,46 +180,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "12:00",
+        "horaire" : "13:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "12:05",
+          "horaire": "13:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "12:10",
+            "horaire": "13:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "12:15",
+              "horaire": "13:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "12:20",
+                "horaire": "13:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "12:25",
+                  "horaire": "13:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "12:30"
+                    "horaire": "13:30"
                   }
                 }
               }
@@ -237,46 +237,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "12:00",
+        "horaire" : "13:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "12:05",
+          "horaire": "13:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "12:10",
+            "horaire": "13:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "12:15",
+              "horaire": "13:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "12:20",
+                "horaire": "13:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "12:25",
+                  "horaire": "13:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "12:30"
+                    "horaire": "13:30"
                   }
                 }
               }
@@ -294,46 +294,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "12:00",
+        "horaire" : "13:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "12:05",
+          "horaire": "13:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "12:10",
+            "horaire": "13:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "12:15",
+              "horaire": "13:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "12:20",
+                "horaire": "13:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "12:25",
+                  "horaire": "13:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "12:30"
+                    "horaire": "13:30"
                   }
                 }
               }
@@ -351,46 +351,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "14:00",
+        "horaire" : "15:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "14:05",
+          "horaire": "15:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "14:10",
+            "horaire": "15:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "14:15",
+              "horaire": "15:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "14:20",
+                "horaire": "15:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "14:25",
+                  "horaire": "15:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "14:30"
+                    "horaire": "15:30"
                   }
                 }
               }
@@ -408,46 +408,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "16:00",
+        "horaire" : "17:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "16:05",
+          "horaire": "17:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "16:10",
+            "horaire": "17:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "16:15",
+              "horaire": "17:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "16:20",
+                "horaire": "17:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "16:25",
+                  "horaire": "17:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "16:30"
+                    "horaire": "17:30"
                   }
                 }
               }
@@ -465,46 +465,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "18:00",
+        "horaire" : "19:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "18:05",
+          "horaire": "19:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "18:10",
+            "horaire": "19:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "18:15",
+              "horaire": "19:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "18:20",
+                "horaire": "19:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "18:25",
+                  "horaire": "19:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "18:30"
+                    "horaire": "19:30"
                   }
                 }
               }
@@ -522,46 +522,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "18:00",
+        "horaire" : "19:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "18:05",
+          "horaire": "19:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "18:10",
+            "horaire": "19:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "18:15",
+              "horaire": "19:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "18:20",
+                "horaire": "19:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "18:25",
+                  "horaire": "19:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "18:30"
+                    "horaire": "19:30"
                   }
                 }
               }
@@ -579,46 +579,46 @@
       },
       "premier_passage" : {
         "arret" : {
-          "libelle" : "Arret A",
-          "position" : "position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
-        "horaire" : "18:00",
+        "horaire" : "19:00",
         "passage_suivant" : {
           "arret": {
-            "libelle" : "Arret B",
-            "position" : "position B"
+            "libelle": "Musée Soulages",
+            "position": "44.352383869791524:2.5677165403141444"
           },
-          "horaire": "18:05",
+          "horaire": "19:05",
           "passage_suivant": {
             "arret": {
-              "libelle" : "Arret C",
-              "position" : "position C"
+              "libelle": "Mairie Rodez",
+              "position": "44.349552284695775:2.576365889441748"
             },
-            "horaire": "18:10",
+            "horaire": "19:10",
             "passage_suivant": {
               "arret": {
-                "libelle" : "Arret D",
-                "position" : "position D"
+                "libelle": "Lycée Monteil",
+                "position": "44.35698298206564:2.571491310880559"
               },
-              "horaire": "18:15",
+              "horaire": "19:15",
               "passage_suivant": {
                 "arret": {
-                  "libelle" : "Arret E",
-                  "position" : "position E"
+                  "libelle": "Intermarché Rodez",
+                  "position": "44.35546359408144:2.576158316486859"
                 },
-                "horaire": "18:20",
+                "horaire": "19:20",
                 "passage_suivant": {
                   "arret": {
-                    "libelle" : "Arret F",
-                    "position" : "position F"
+                    "libelle": "Médiateque Rodez",
+                    "position": "44.35058352321975:2.576587468223317"
                   },
-                  "horaire": "18:25",
+                  "horaire": "19:25",
                   "passage_suivant": {
                     "arret": {
-                      "libelle" : "Arret G",
-                      "position" : "position G"
+                      "libelle": "Gare Rodez",
+                      "position": "44.362751566978:2.58060418389448"
                     },
-                    "horaire": "18:30"
+                    "horaire": "19:30"
                   }
                 }
               }

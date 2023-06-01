@@ -6,11 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.example.gestionlignebus.dao.BDHelper;
 import com.example.gestionlignebus.model.Arret;
-import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Passage;
-import com.example.gestionlignebus.model.Periode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,16 +82,16 @@ public class PassageTest {
     @Test
     public void testEquals() {
         // Passages identiques
-        assertTrue(passage1.equals(passage1Bis));
+        assertEquals(passage1, passage1Bis);
 
         // Passages arrêts identique mais horaire différent
-        assertFalse(passage1.equals(passage1HoraireDifferent));
+        assertNotEquals(passage1, passage1HoraireDifferent);
 
         // Passage arrêts différents
-        assertFalse(passage1.equals(passage2));
+        assertNotEquals(passage1, passage2);
 
         // test avec null
-        assertFalse(passage1.equals(null));
+        assertNotEquals(null, passage1);
     }
 
     @Test
@@ -160,5 +157,18 @@ public class PassageTest {
         assertEquals(passage3, convert.getPassageSuivant().getPassageSuivant());
         assertEquals(passage4, convert.getPassageSuivant().getPassageSuivant().getPassageSuivant());
         assertNull(passage4.getPassageSuivant());
+    }
+
+    @Test
+    public void testHorairesSuivantsCroissant() {
+        // Passage 1 2 3 4
+        assertTrue(passage1.horairesSuivantsCroissants());
+
+        // Passage 1 3 2 4
+        passage1.setPassageSuivant(passage3);
+        passage3.setPassageSuivant(passage2);
+        passage2.setPassageSuivant(passage4);
+
+        assertFalse(passage1.horairesSuivantsCroissants());
     }
 }

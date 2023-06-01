@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">GestionLigneBus</string>
+
     <!-- Onglet Recherche -->
     <string name="label_arrets">Arrêts</string>
     <string name="label_horaires">Horaires</string>
     <string name="consultation_onglet">Consultation</string>
+    <string name="affichage_arret_carte">Carte des arrêt</string>
+    <string name="hint_recherche">Recherche</string>
 
     <!-- Onglet Groupe -->
     <string name="groupe_onglet">Groupe</string>
@@ -31,6 +34,13 @@
     <string name="itineraire_horaire_arrive_hint">Horaire d\'arrivé</string>
     <string name="spinner_groupes">Groupes</string>
     <string name="itineraire_btn_inversion">Inverser itinéraire</string>
+    <string name="titre_carte_itineraire">"Carte de l'itineraire"</string>
+
+    <!-- Item itinéraire -->
+    <string name="colonne_départ">Départ</string>
+    <string name="colonne_arrive">Arrivée</string>
+
+
 
     <!-- Menu contextuel -->
     <string name="retirer_arret">"Retirer l'arrêt"</string>
@@ -46,16 +56,20 @@
     <string name="nom_groupe_hint">Nom du groupe</string>
 
     <!-- Boutons -->
-    <string name="bouton_valider">Valider</string>
+    <string name="btn_valider">Valider</string>
     <string name="btn_retour">Retour</string>
-    <string name="bouton_import_fichier">Import Fichier</string>
-    <string name="bouton_inverser_sens">Inverser sens de passage</string>
-    <string name="trajet_precedent">Trajet précédent</string>
-    <string name="trajet_suivant">Trajet \nsuivant</string>
+    <string name="btn_import_fichier">Import Fichier</string>
+    <string name="btn_inverser_sens">Inverser sens de passage</string>
+    <string name="btn_trajet_precedent">Trajet précédent</string>
+    <string name="btn_trajet_suivant">Trajet suivant</string>
     <string name="btn_afficher_carte">Afficher la carte</string>
     <string name="btn_creation_groupe">Créer un groupe</string>
     <string name="btn_rechercher">Rechercher</string>
-    <string name="btn_inverser_sens">Inverser sens de passage</string>
+
+    <!-- Message réussite -->
+    <string name="reussite_import_donnée_stable">Tous les lignes, périodes et arrêts ont bien été importés</string>
+    <string name="reussite_import_donnée_variable">Les trajets pour la ligne %s ont bien été importés !</string>
+
 
     <!-- Erreurs -->
     <string name="erreur_ouverture_fichier">Erreur lors de l\'ouverture du fichier</string>
@@ -64,6 +78,16 @@
     <string name="erreur_import_periode">Erreur lors de l\'import des périodes</string>
     <string name="erreur_import_ligne">Erreur lors de l\'import des lignes</string>
     <string name="erreur_import_trajet">Erreur lors de l\'import des trajets</string>
-    <string name="message_erreur_trajet">"Il n'y a pas d'autre trajet."</string>
-    <string name="message_erreur_ajout_arret">Cet arrêt existe déjà dans ce groupe.</string>
+    <string name="erreur_trajet">"Il n'y a pas d'autre trajet."</string>
+    <string name="erreur_ajout_arret">Cet arrêt existe déjà dans ce groupe.</string>
+    <string name="erreur_aucun_itineraire">
+        "Désolé, mais il n'y a aucun itinéraire pour votre recherche"
+    </string>
+    <!-- Homonymes -->
+    <string name="erreur_groupe_existant">Ce groupe existe déjà !</string>
+    <string name="erreur_horaires_desordonne">"L'horaire de départ doit être avant l'horaire d'arrivé"</string>
+    <string name="erreur_nb_arret">Erreur lors de l\'import de %d arrêts</string>
+    <string name="erreur_nb_periode">Erreur lors de l\'import de %d périodes</string>
+    <string name="erreur_nb_ligne">Erreur lors de l\'import de %d lignes</string>
+    <string name="erreur_nb_trajet">Erreur lors de l\'import de %d trajets</string>
 </resources>

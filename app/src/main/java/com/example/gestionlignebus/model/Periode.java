@@ -1,9 +1,11 @@
 package com.example.gestionlignebus.model;
 
+import static com.example.gestionlignebus.MainActivity.CLE_LOG;
+
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.example.gestionlignebus.dao.BDHelper;
 
 import org.json.JSONException;
@@ -59,6 +61,11 @@ public class Periode {
     }
 
     @Override
+    public int hashCode() {
+        return id.hashCode() + libelle.hashCode();
+    }
+
+    @Override
     public String toString() {
         return libelle;
     }
@@ -73,7 +80,8 @@ public class Periode {
             jsonObject.put(BDHelper.PERIODE_CLE, id);
             jsonObject.put(BDHelper.PERIODE_LIBELLE, libelle);
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e(CLE_LOG, String.format(
+                    "Erreur lors de la transformation de la période %s en objet JSON.", libelle));
         }
         return jsonObject;
     }

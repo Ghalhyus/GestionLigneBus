@@ -72,9 +72,18 @@ public class PeriodeDAO implements ICommonDAO<Periode, Long> {
 
     @Override
     public Periode save(Periode toSave) {
-        ContentValues enregistrement = objectToContentValues(toSave);
-        long id = sqLiteDatabase.insert(BDHelper.PERIODE_NOM_TABLE, null, enregistrement);
-        return findById(id);
+        if (toSave != null) {
+            if (findByLibelle(toSave.getLibelle()) == null) {
+                ContentValues enregistrement = objectToContentValues(toSave);
+                long id = sqLiteDatabase.insert(BDHelper.PERIODE_NOM_TABLE, null, enregistrement);
+                return findById(id);
+            } else {
+                // Il existe déjà
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override

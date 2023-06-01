@@ -28,11 +28,9 @@ import java.util.List;
 public class PassageDAOTest {
     private PassageDAO passageDAO;
     private ArretDAO arretDAO;
-
     private Passage passage1;
     private Passage passage2;
     private Passage passage3;
-
     private Arret arret1;
     private Arret arret2;
     private Arret arret3;

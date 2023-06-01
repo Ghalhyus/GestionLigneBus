@@ -20,7 +20,6 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
     ///////////////////////////////////////////////////
     /////////////////// Attributs /////////////////////
     ///////////////////////////////////////////////////
-    private Context context;
     private final BDHelper bdHelper;
     private SQLiteDatabase sqLiteDatabase;
 
@@ -86,9 +85,14 @@ public class ArretDAO implements ICommonDAO<Arret, Long> {
 
     @Override
     public Arret save(Arret toSave) {
-        ContentValues enregistrement = objectToContentValues(toSave);
-        long id = sqLiteDatabase.insert(BDHelper.ARRET_NOM_TABLE, null, enregistrement);
-        return findById(id);
+        if (findByLibelle(toSave.getLibelle()) == null) {
+            ContentValues enregistrement = objectToContentValues(toSave);
+            long id = sqLiteDatabase.insert(BDHelper.ARRET_NOM_TABLE, null, enregistrement);
+            return findById(id);
+        } else {
+            // L'arret existe déjà
+            return null;
+        }
     }
 
     @Override

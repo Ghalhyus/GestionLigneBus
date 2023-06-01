@@ -13,6 +13,9 @@
     android:supportsRtl="true"
     android:theme="@style/Theme.GestionLigneBus"
     tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA0DWLcYS_UWJY1_01WI4EooYzpvmph-LI" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -26,6 +29,7 @@
         <activity android:name=".activity.ArretsGroupeActivity"/>
         <activity android:name=".activity.ArretActivity"/>
         <activity android:name=".activity.ChangerFicheHoraireActivity"/>
+        <activity android:name=".activity.ResultatRechercheItineraireActivity"/>
     </application>
 
 </manifest>

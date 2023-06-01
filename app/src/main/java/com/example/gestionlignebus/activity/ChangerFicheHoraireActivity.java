@@ -14,12 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.adapter.LigneSpinnerAdapter;
-import com.example.gestionlignebus.dao.ArretDAO;
 import com.example.gestionlignebus.dao.LigneDAO;
 import com.example.gestionlignebus.dao.PassageDAO;
-import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.model.Ligne;
+import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Trajet;
 import com.example.gestionlignebus.utils.JSONUtils;
 
@@ -34,10 +33,6 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
 
     private static final int PICK_FILE = 10;
     private Spinner spinnerLigne;
-    private Button btnImportFichier;
-    private Button btnRetour;
-
-
     private LigneDAO ligneDAO;
     private TrajetDAO trajetDAO;
     private PassageDAO passageDAO;
@@ -65,11 +60,12 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
 
     private void initialisationIHM() {
         spinnerLigne = findViewById(R.id.spinner_ligne);
-        LigneSpinnerAdapter ligneSpinnerAdapter = new LigneSpinnerAdapter(this, ligneDAO.findAll());
+        LigneSpinnerAdapter ligneSpinnerAdapter
+                = new LigneSpinnerAdapter(this, ligneDAO.findAll());
         spinnerLigne.setAdapter(ligneSpinnerAdapter);
 
-        btnImportFichier = findViewById(R.id.btn_import_variable);
-        btnRetour = findViewById(R.id.btn_retour);
+        Button btnImportFichier = findViewById(R.id.btn_import_variable);
+        Button btnRetour = findViewById(R.id.btn_retour);
 
         btnRetour.setOnClickListener(this);
         btnImportFichier.setOnClickListener(this);
@@ -115,29 +111,59 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
 
             if (!Objects.equals(content, "")) {
                 List<Trajet> trajets = JSONUtils.jsonToTrajets(content);
-                // On supprime les trajets d'une ligne
-                trajetDAO.deleteByLigne((Ligne) spinnerLigne.getSelectedItem());
+
 
                 if (trajets != null) {
+                    // On récupère les trajets d'une ligne
+                    List<Trajet> trajetsByLigne = trajetDAO.findByLigne((Ligne) spinnerLigne.getSelectedItem());
+                    if (trajetsByLigne != null) {
+                        // On supprime les trajets d'une ligne
+                        trajetDAO.deleteByLigne((Ligne) spinnerLigne.getSelectedItem());
+                        for (Trajet trajet : trajetsByLigne) {
+                            // Pour chaque trajet on supprime les passages chaînés
+                            passageDAO.delete(trajet.getPremierPassage());
+                        }
+                    }
+                    int nbErreurTrajet = 0;
                     for (Trajet trajet : trajets) {
-                        // On supprime les passages du trajet
-                        passageDAO.delete(trajet.getPremierPassage());
-
+                        Passage passageFound = passageDAO.findByArretAndHoraire(
+                                trajet.getPremierPassage().getArret(),
+                                trajet.getPremierPassage().getHoraire());
+                        if (passageFound != null) {
+                            trajet.setPremierPassage(passageFound);
+                        } else {
+                            Passage passageSaved = passageDAO.save(trajet.getPremierPassage());
+                            trajet.setPremierPassage(passageSaved);
+                        }
                         // On s'assure que les trajets sont tous ajoutés pour cette ligne
                         trajet.setLigne((Ligne) spinnerLigne.getSelectedItem());
-                        trajetDAO.save(trajet);
+                        Trajet trajetSaved = trajetDAO.save(trajet);
+                        if (trajetSaved == null) {
+                            nbErreurTrajet++;
+                        }
+                    }
+                    if (nbErreurTrajet > 0 ) {
+                        // Message erreur
+                        String message = String.format(getString(R.string.erreur_nb_trajet), nbErreurTrajet);
+                        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                    } else {
+                        String messageReussite = String.format(getString(R.string.reussite_import_donnée_variable), ((Ligne) spinnerLigne.getSelectedItem()).getLibelle());
+                        Toast.makeText(this, messageReussite, Toast.LENGTH_LONG).show();
                     }
                 } else {
                     // Erreur lecture fichier
-                    Toast.makeText(this, getString(R.string.erreur_import_trajet), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.erreur_import_trajet),
+                            Toast.LENGTH_LONG).show();
                 }
 
             } else {
                 // Erreur lecture fichier
-                Toast.makeText(this, getString(R.string.erreur_fichier_vide), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.erreur_fichier_vide),
+                        Toast.LENGTH_LONG).show();
             }
         } catch (FileNotFoundException e) {
-            Toast.makeText(this, getString(R.string.erreur_ouverture_fichier), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.erreur_ouverture_fichier),
+                    Toast.LENGTH_LONG).show();
         } finally {
             ligneDAO.close();
             passageDAO.close();

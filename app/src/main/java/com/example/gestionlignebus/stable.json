@@ -1,108 +1,108 @@
 {
   "arrets": [
     {
-      "libelle": "Arret A",
-      "position": "Position A"
+      "libelle": "Iut Rodez",
+      "position": "44.36039596032373:2.575008275479258"
     },
     {
-      "libelle": "Arret B",
-      "position": "Position B"
+      "libelle": "Musée Soulages",
+      "position": "44.352383869791524:2.5677165403141444"
     },
     {
-      "libelle": "Arret C",
-      "position": "Position C"
+      "libelle": "Mairie Rodez",
+      "position": "44.349552284695775:2.576365889441748"
     },
     {
-      "libelle": "Arret D",
-      "position": "Position D"
+      "libelle": "Lycée Monteil",
+      "position": "44.35698298206564:2.571491310880559"
     },
     {
-      "libelle": "Arret E",
-      "position": "Position E"
+      "libelle": "Intermarché Rodez",
+      "position": "44.35546359408144:2.576158316486859"
     },
     {
-      "libelle": "Arret F",
-      "position": "Position F"
+      "libelle": "Médiateque Rodez",
+      "position": "44.35058352321975:2.576587468223317"
     },
     {
-      "libelle": "Arret G",
-      "position": "Position G"
+      "libelle": "Gare Rodez",
+      "position": "44.362751566978:2.58060418389448"
     },
     {
-      "libelle": "Arret H",
-      "position": "Position H"
+      "libelle": "Macdo",
+      "position": "44.36054937309657:2.570587995054201"
     },
     {
-      "libelle": "Arret I",
-      "position": "Position I"
+      "libelle": "Burgerking",
+      "position": "44.36441524152925:2.552992703844625"
     },
     {
-      "libelle": "Arret J",
-      "position": "Position J"
+      "libelle": "Notre-Dame de l'Assomption",
+      "position": "44.350655980172796:2.5741004862445527"
     },
     {
-      "libelle": "Arret K",
-      "position": "Position K"
+      "libelle": "Aquavalon",
+      "position": "44.354831690595425:2.565797772489543"
     },
     {
-      "libelle": "Arret L",
-      "position": "Position L"
+      "libelle": "Berges de Layoule",
+      "position": "44.353486477175196:2.585510866312439"
     },
     {
-      "libelle": "Arret M",
-      "position": "Position M"
+      "libelle": "CGR Rodez",
+      "position": "44.35189858819447:2.5662830088635284"
     },
     {
-      "libelle": "Arret N",
-      "position": "Position N"
+      "libelle": "Ibis Rodez",
+      "position": "44.3548374995623:2.57611958473504"
     },
     {
-      "libelle": "Arret O",
-      "position": "Position O"
+      "libelle": "Musée Denis-Puech",
+      "position": "44.34891851587486;2.578326945689829"
     },
     {
-      "libelle": "Arret P",
-      "position": "Position P"
+      "libelle": "RubanBleu",
+      "position": "44.344505487921225:2.564316809993253"
     },
     {
-      "libelle": "Arret Q",
-      "position": "Position Q"
+      "libelle": "Centre hospitalier Les Peyrieres",
+      "position": "44.3442725735571:2.557654410895932"
     },
     {
-      "libelle": "Arret R",
-      "position": "Position R"
+      "libelle": "Stade Rodez",
+      "position": "44.35085316267558:2.5630939162609674"
     },
     {
-      "libelle": "Arret S",
-      "position": "Position S"
+      "libelle": "Amphitéâtre Rodez",
+      "position": "44.35333897087759:2.5682471318523112"
     },
     {
-      "libelle": "Arret T",
-      "position": "Position T"
+      "libelle": "Crématorium Rodez",
+      "position": "44.36052637462455:2.5899289128132796"
     },
     {
-      "libelle": "Arret U",
-      "position": "Position U"
+      "libelle": "Aire de jeu",
+      "position": "44.352455414998644:2.5881293771723777"
     },
     {
-      "libelle": "Arret V",
-      "position": "Position V"
+      "libelle": "Athyrium",
+      "position": "44.36494153795773;2.596595374196251"
     },
     {
-      "libelle": "Arret W",
-      "position": "Position W"
+      "libelle": "Caf de l'Aveyron",
+      "position": "44.347132652062385:2.5755735264921413"
     },
     {
-      "libelle": "Arret X",
-      "position": "Position X"
+      "libelle": "The PUB",
+      "position": "44.34932615680266;2.5725879333347965"
     },
     {
-      "libelle": "Arret Y",
-      "position": "Position Y"
+      "libelle": "Agence regionale de santé",
+      "position": "44.349452515584844:2.564439548613201"
     },
     {
-      "libelle": "Arret Z",
-      "position": "Position Z"
+      "libelle": "Eglise de Gourgan",
+      "position": "44.34778350393839:2.567761047916854"
     }
   ],
   "periodes": [
@@ -120,151 +120,143 @@
     {
       "libelle": "Ligne 1",
       "arret_alle": {
-        "libelle": "Arret A",
-        "position": "Position A"
+        "libelle": "Iut Rodez",
+        "position": "44.36039596032373:2.575008275479258"
       },
       "arret_retour": {
-        "libelle": "Arret G",
-        "position": "Position G"
+        "libelle": "Gare Rodez",
+        "position": "44.362751566978:2.58060418389448"
       },
       "arrets": [
         {
-          "libelle": "Arret A",
-          "position": "Position A"
+          "libelle": "Iut Rodez",
+          "position": "44.36039596032373:2.575008275479258"
         },
         {
-          "libelle": "Arret B",
-          "position": "Position B"
+          "libelle": "Musée Soulages",
+          "position": "44.352383869791524:2.5677165403141444"
         },
         {
-          "libelle": "Arret C",
-          "position": "Position C"
+          "libelle": "Mairie Rodez",
+          "position": "44.349552284695775:2.576365889441748"
         },
         {
-          "libelle": "Arret D",
-          "position": "Position D"
+          "libelle": "Lycée Monteil",
+          "position": "44.35698298206564:2.571491310880559"
         },
         {
-          "libelle": "Arret E",
-          "position": "Position E"
+          "libelle": "Intermarché Rodez",
+          "position": "44.35546359408144:2.576158316486859"
         },
         {
-          "libelle": "Arret F",
-          "position": "Position F"
+          "libelle": "Médiateque Rodez",
+          "position": "44.35058352321975:2.576587468223317"
         },
         {
-          "libelle": "Arret G",
-          "position": "Position G"
+          "libelle": "Gare Rodez",
+          "position": "44.362751566978:2.58060418389448"
         }
       ]
     },
     {
       "libelle": "Ligne 2",
       "arret_alle": {
-        "libelle": "Arret G",
-        "position": "Position G"
+        "libelle": "Macdo",
+        "position": "44.36054937309657:2.570587995054201"
       },
       "arret_retour": {
-        "libelle": "Arret Q",
-        "position": "Position Q"
+        "libelle": "Amphitéâtre Rodez",
+        "position": "44.35333897087759:2.5682471318523112"
       },
       "arrets": [
         {
-          "libelle": "Arret G",
-          "position": "Position G"
+          "libelle": "Macdo",
+          "position": "44.36054937309657:2.570587995054201"
         },
         {
-          "libelle": "Arret H",
-          "position": "Position H"
+          "libelle": "Notre-Dame de l'Assomption",
+          "position": "44.350655980172796:2.5741004862445527"
         },
         {
-          "libelle": "Arret I",
-          "position": "Position I"
+          "libelle": "Aquavalon",
+          "position": "44.354831690595425:2.565797772489543"
         },
         {
-          "libelle": "Arret J",
-          "position": "Position J"
+          "libelle": "Berges de Layoule",
+          "position": "44.353486477175196:2.585510866312439"
         },
         {
-          "libelle": "Arret K",
-          "position": "Position K"
+          "libelle": "CGR Rodez",
+          "position": "44.35189858819447:2.5662830088635284"
         },
         {
-          "libelle": "Arret L",
-          "position": "Position L"
+          "libelle": "Ibis Rodez",
+          "position": "44.3548374995623:2.57611958473504"
         },
         {
-          "libelle": "Arret M",
-          "position": "Position M"
+          "libelle": "Musée Denis-Puech",
+          "position": "44.34891851587486;2.578326945689829"
         },
         {
-          "libelle": "Arret N",
-          "position": "Position N"
+          "libelle": "RubanBleu",
+          "position": "44.344505487921225:2.564316809993253"
         },
         {
-          "libelle": "Arret O",
-          "position": "Position O"
+          "libelle": "Centre hospitalier Les Peyrieres",
+          "position": "44.3442725735571:2.557654410895932"
         },
         {
-          "libelle": "Arret P",
-          "position": "Position P"
+          "libelle": "Stade Rodez",
+          "position": "44.35085316267558:2.5630939162609674"
         },
         {
-          "libelle": "Arret Q",
-          "position": "Position Q"
+          "libelle": "Amphitéâtre Rodez",
+          "position": "44.35333897087759:2.5682471318523112"
         }
       ]
     },
     {
       "libelle": "Ligne 3",
       "arret_alle": {
-        "libelle": "Arret Q",
-        "position": "Position Q"
+        "libelle": "Amphitéâtre Rodez",
+        "position": "44.35333897087759:2.5682471318523112"
       },
       "arret_retour": {
-        "libelle": "Arret Z",
-        "position": "Position Z"
+        "libelle": "Eglise de Gourgan",
+        "position": "44.34778350393839:2.567761047916854"
       },
       "arrets": [
         {
-          "libelle": "Arret Q",
-          "position": "Position Q"
+          "libelle": "Amphitéâtre Rodez",
+          "position": "44.35333897087759:2.5682471318523112"
         },
         {
-          "libelle": "Arret R",
-          "position": "Position R"
+          "libelle": "Crématorium Rodez",
+          "position": "44.36052637462455:2.5899289128132796"
         },
         {
-          "libelle": "Arret S",
-          "position": "Position S"
+          "libelle": "Aire de jeu",
+          "position": "44.352455414998644:2.5881293771723777"
         },
         {
-          "libelle": "Arret T",
-          "position": "Position T"
+          "libelle": "Athyrium",
+          "position": "44.36494153795773;2.596595374196251"
         },
         {
-          "libelle": "Arret U",
-          "position": "Position U"
+          "libelle": "Caf de l'Aveyron",
+          "position": "44.347132652062385:2.5755735264921413"
         },
         {
-          "libelle": "Arret V",
-          "position": "Position V"
+          "libelle": "The PUB",
+          "position": "44.34932615680266;2.5725879333347965"
         },
         {
-          "libelle": "Arret W",
-          "position": "Position W"
+          "libelle": "Agence regionale de santé",
+          "position": "44.349452515584844:2.564439548613201"
         },
         {
-          "libelle": "Arret X",
-          "position": "Position X"
-        },
-        {
-          "libelle": "Arret Y",
-          "position": "Position Y"
-        },
-        {
-          "libelle": "Arret Z",
-          "position": "Position Z"
+          "libelle": "Eglise de Gourgan",
+          "position": "44.34778350393839:2.567761047916854"
         }
       ]
     }
