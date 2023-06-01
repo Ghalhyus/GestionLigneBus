@@ -1,7 +1,5 @@
 package com.example.gestionlignebus;
 
-import android.widget.TextView;
-
 public class ArretHoraire {
     private String libelleArret;
     private String horairePassage;
