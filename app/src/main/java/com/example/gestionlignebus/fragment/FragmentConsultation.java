@@ -51,7 +51,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 public class FragmentConsultation extends Fragment
         implements AdapterView.OnItemSelectedListener,
