@@ -42,8 +42,8 @@ import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
-import com.example.gestionlignebus.utils.JSONUtils;
 import com.example.gestionlignebus.utils.GestionnairePreferences;
+import com.example.gestionlignebus.utils.JSONUtils;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
