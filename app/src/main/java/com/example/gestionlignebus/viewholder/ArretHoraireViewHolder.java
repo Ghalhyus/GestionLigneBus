@@ -5,8 +5,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gestionlignebus.model.ArretHoraire;
 import com.example.gestionlignebus.R;
+import com.example.gestionlignebus.model.ArretHoraire;
 
 public class ArretHoraireViewHolder extends RecyclerView.ViewHolder{
     private TextView libelleLigne;

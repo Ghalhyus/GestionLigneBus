@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -19,18 +17,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
 
-import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.activity.ArretsGroupeActivity;
 import com.example.gestionlignebus.adapter.ListViewAdapter;
 import com.example.gestionlignebus.dao.GroupeDAO;
 import com.example.gestionlignebus.model.Groupe;
+import com.example.gestionlignebus.utils.Preferences;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.List;
 
 public class FragmentGroupe extends Fragment
@@ -43,7 +37,7 @@ public class FragmentGroupe extends Fragment
 
     private GroupeDAO groupeDao;
 
-    private SharedPreferences preferences;
+    private Preferences preferences;
 
     public static FragmentGroupe newInstance() {
 
@@ -81,22 +75,7 @@ public class FragmentGroupe extends Fragment
         ajouterGroupe = fragmentGroupeView.findViewById(R.id.creer_groupe_button);
         ajouterGroupe.setOnClickListener(this::onClick);
 
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-
-            SharedPreferences preferences =  EncryptedSharedPreferences.create(
-                    "secret",
-                    masterKey,
-                    getContext(),
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-        } catch (GeneralSecurityException e) {
-            Log.e(MainActivity.CLE_LOG,
-                    "Erreur de sécurité lors la génération de la master Keys");
-        } catch (IOException e) {
-            Log.e(MainActivity.CLE_LOG,
-                    "Erreur fichier introuvable pour la génération de la master Keys");
-        }
+        preferences = Preferences.getPreferences(getContext());
 
         return fragmentGroupeView;
     }

@@ -1,9 +1,6 @@
 package com.example.gestionlignebus.activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -11,26 +8,21 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
 
-import com.example.gestionlignebus.MainActivity;
-import com.example.gestionlignebus.model.ArretHoraire;
-import com.example.gestionlignebus.adapter.ArretHoraireAdapteur;
 import com.example.gestionlignebus.R;
-import com.example.gestionlignebus.adapter.ListViewAdapter;
+import com.example.gestionlignebus.adapter.ArretHoraireAdapteur;
 import com.example.gestionlignebus.adapter.PeriodeSpinnerAdapter;
 import com.example.gestionlignebus.dao.ArretDAO;
 import com.example.gestionlignebus.dao.PassageDAO;
 import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.model.Arret;
+import com.example.gestionlignebus.model.ArretHoraire;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.model.Trajet;
+import com.example.gestionlignebus.utils.Preferences;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,24 +32,15 @@ import java.util.Map;
 
 public class ArretActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    public final static  String CLE_ID = "id_arret";
+    public static final String CLE_ID = "id_arret";
 
-    private ListViewAdapter adapter;
     private ArrayList<ArretHoraire> listArretHoraire;
-
-
     private PeriodeDAO periodeDao;
-
     private Periode periodeSelected;
-
     private Spinner spin;
-
     private List<Ligne> lignes;
-
     private List<LocalTime> horaire;
-
     private RecyclerView recyclerView;
-
     private List<Trajet> trajets;
     private TrajetDAO trajetDao;
     private Arret arret;
@@ -70,20 +53,20 @@ public class ArretActivity extends AppCompatActivity implements AdapterView.OnIt
         periodeDao = new PeriodeDAO(this);
         periodeDao.open();
 
-        PassageDAO passageDao=new PassageDAO(this);
+        PassageDAO passageDao = new PassageDAO(this);
         passageDao.open();
 
-        trajetDao=new TrajetDAO(this);
+        trajetDao = new TrajetDAO(this);
         trajetDao.open();
 
-        ArretDAO arretDao=new ArretDAO(this);
+        ArretDAO arretDao = new ArretDAO(this);
         arretDao.open();
 
         recyclerView=findViewById(R.id.liste_arret);
         listArretHoraire = new ArrayList<>();
 
-        horaire=new ArrayList<>();
-        lignes=new ArrayList<>();
+        horaire = new ArrayList<>();
+        lignes = new ArrayList<>();
         initialisationSpinner();
 
         String libellePeriode=spin.getSelectedItem().toString();
@@ -92,24 +75,8 @@ public class ArretActivity extends AppCompatActivity implements AdapterView.OnIt
         LinearLayoutManager gestionnaireLineaire = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(gestionnaireLineaire);
 
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-
-            SharedPreferences preferences =  EncryptedSharedPreferences.create(
-                    "secret",
-                    masterKey,
-                    this,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-
-            arret = arretDao.findById(preferences.getLong(CLE_ID, 1));
-        } catch (GeneralSecurityException e) {
-            Log.e(MainActivity.CLE_LOG,
-                    "Erreur de sécurité lors la génération de la master Keys");
-        } catch (IOException e) {
-            Log.e(MainActivity.CLE_LOG,
-                    "Erreur fichier introuvable pour la génération de la master Keys");
-        }
+        Preferences preferences = Preferences.getPreferences(this);
+        arret = arretDao.findById(preferences.getLong(CLE_ID));
 
         ArretHoraireAdapteur adaptateur = new ArretHoraireAdapteur(listArretHoraire);
         recyclerView.setAdapter(adaptateur);
@@ -167,7 +134,7 @@ public class ArretActivity extends AppCompatActivity implements AdapterView.OnIt
             listArretHoraire.clear();
             horaire.clear();
             lignes.clear();
-            listArretHoraire=new ArrayList<>();
+            listArretHoraire = new ArrayList<>();
             ArretHoraireAdapteur adaptateur = new ArretHoraireAdapteur(listArretHoraire);
             recyclerView.setAdapter(adaptateur);
             trouvelistligne(trajets);

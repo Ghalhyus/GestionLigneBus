@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.model.ArretHoraire;
 import com.example.gestionlignebus.viewholder.ArretHoraireViewHolder;
-import com.example.gestionlignebus.R;
 
 import java.util.List;
 

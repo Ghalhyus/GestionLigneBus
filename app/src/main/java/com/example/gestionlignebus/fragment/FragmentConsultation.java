@@ -1,6 +1,5 @@
 package com.example.gestionlignebus.fragment;
 
-import static android.content.Context.LOCALE_SERVICE;
 import static com.example.gestionlignebus.MainActivity.CLE_LOG;
 import static java.util.Arrays.asList;
 
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -26,10 +24,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
 
-import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.activity.ArretActivity;
 import com.example.gestionlignebus.activity.ChangerFicheHoraireActivity;
@@ -46,16 +41,14 @@ import com.example.gestionlignebus.dao.TrajetDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Ligne;
-import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.utils.JSONUtils;
+import com.example.gestionlignebus.utils.Preferences;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,13 +60,10 @@ public class FragmentConsultation extends Fragment
     private static final String ARRET = "Arrêt";
     private static final int PICK_FILE_STABLE = 1;
 
-
     private Spinner spin;
     private AutoCompleteTextView search;
-
     private ListView listeRecherche;
     private ListViewAdapter adapterlist;
-
     private LigneDAO ligneDAO;
     private ArretDAO arretDAO;
     private PeriodeDAO periodeDAO;
@@ -85,8 +75,7 @@ public class FragmentConsultation extends Fragment
     private List<Ligne> listeLigne;
     private Groupe groupeSelectionne;
     private boolean arretsAffiches;
-
-    private SharedPreferences preferences;
+    private Preferences preferences;
 
 
     public static FragmentConsultation newInstance() {
@@ -115,22 +104,7 @@ public class FragmentConsultation extends Fragment
 
         arretsAffiches = false;
 
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-
-            preferences =  EncryptedSharedPreferences.create(
-                    "secret",
-                    masterKey,
-                    getContext(),
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-        } catch (GeneralSecurityException e) {
-            Log.e(MainActivity.CLE_LOG,
-                    "Erreur de sécurité lors la génération de la master Keys");
-        } catch (IOException e) {
-            Log.e(MainActivity.CLE_LOG,
-                    "Erreur fichier introuvable pour la génération de la master Keys");
-        }
+        preferences = Preferences.getPreferences(getContext());
 
         return view;
     }
@@ -265,8 +239,9 @@ public class FragmentConsultation extends Fragment
     @Override//item du spinner
     public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
         changerTypeRecherche();
+
         List<Groupe> groupes = groupeDAO.findAll();
-        if (groupes.isEmpty() && index < groupes.size()) {
+        if (!groupes.isEmpty() && index < groupes.size()) {
             groupeSelectionne = groupes.get(index);
         }
     }

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +14,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
 
-import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.activity.ResultatRechercheItineraireActivity;
 import com.example.gestionlignebus.adapter.GroupeSpinnerAdapter;
@@ -35,12 +29,10 @@ import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Periode;
+import com.example.gestionlignebus.utils.Preferences;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class FragmentItineraire extends Fragment
@@ -206,23 +198,8 @@ public class FragmentItineraire extends Fragment
             LocalTime horaireDepart = LocalTime.parse(saisieHoraireDepart.getText().toString());
             LocalTime horaireArrive = LocalTime.parse(saisieHoraireArrive.getText().toString());
             if (horaireDepart.isBefore(horaireArrive)) {
-                SharedPreferences.Editor editeur = null;
-                try {
-                    String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-
-                    editeur =  EncryptedSharedPreferences.create(
-                            "secret",
-                            masterKey,
-                            getContext(),
-                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).edit();
-                } catch (GeneralSecurityException e) {
-                    Log.e(MainActivity.CLE_LOG,
-                            "Erreur de sécurité lors la génération de la master Keys");
-                } catch (IOException e) {
-                    Log.e(MainActivity.CLE_LOG,
-                            "Erreur fichier introuvable pour la génération de la master Keys");
-                }
+                Preferences preferences = Preferences.getPreferences(getContext());
+                SharedPreferences.Editor editeur = preferences.edit();
 
                 editeur.putString(CLE_ARRET_DEPART, saisieArretDepart.getText().toString());
                 editeur.putString(CLE_ARRET_ARRIVE, saisieArretArrive.getText().toString());
