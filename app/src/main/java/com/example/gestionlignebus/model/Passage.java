@@ -186,15 +186,15 @@ public class Passage {
         return nomsPassages;
     }
 
-    public Passage getCorrespondanceArrivee(List<Passage> passages) {
+    public Passage getCorrespondanceArrivee(List<Passage> passages, Passage depart) {
         for (Passage passage : passages) {
-            if (this.arretIdentique(passage)) {
+            if (this.arretIdentique(passage) && !this.equals(depart)) {
                 return this;
             }
         }
 
         return this.passageSuivant == null ? null
-                : this.passageSuivant.getCorrespondanceArrivee(passages);
+                : this.passageSuivant.getCorrespondanceArrivee(passages, depart);
     }
 
     public Passage getCorrespondanceDepart(List<Passage> passages) {

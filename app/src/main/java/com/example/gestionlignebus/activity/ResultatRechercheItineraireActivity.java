@@ -3,6 +3,7 @@ package com.example.gestionlignebus.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,7 +12,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
+import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.adapter.ItineraireAdapter;
 import com.example.gestionlignebus.dao.ArretDAO;
@@ -22,6 +26,8 @@ import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.model.Trajet;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +53,24 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
 
         initialiserDao();
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preferences = null;
+
+        try {
+            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+
+            preferences =  EncryptedSharedPreferences.create(
+                    "secret",
+                    masterKey,
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+        } catch (GeneralSecurityException e) {
+            Log.e(MainActivity.CLE_LOG,
+                    "Erreur de sécurité lors la génération de la master Keys");
+        } catch (IOException e) {
+            Log.e(MainActivity.CLE_LOG,
+                    "Erreur fichier introuvable pour la génération de la master Keys");
+        }
 
         // Récupération de la liste des itinéraires
         itinerairesLayout = this.findViewById(R.id.itineraires);
@@ -184,12 +207,10 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
         itineraire = rechercherCorrespondance(depart, itineraire, ligneItineraire, arrive,
                 trajet, trajets);
 
-        if (itineraire.isEmpty()) {
-            lignes = new ArrayList<>();
+        if (!itineraire.isEmpty()) {
+            itineraires.add(itineraire);
+            lignes.add(ligneItineraire);
         }
-
-        itineraires.add(itineraire);
-        lignes.add(ligneItineraire);
     }
 
     private List<Passage> rechercherCorrespondance(Passage depart, List<Passage> correspondances,
@@ -198,17 +219,23 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
         Passage correspondanceArrive;
         Passage correspondanceDepart = null;
 
-        if (trajets.isEmpty() || depart == null) {
+        if (trajets.isEmpty() || depart == null
+            || depart.getHoraire().isAfter(arrive.getHoraire())) {
             return new ArrayList<>();
         }
 
         for (int i = 0; i < trajets.size() && correspondanceDepart == null; i++) {
+
+            if (trajets.get(i).getPremierPassage().getHoraire().isAfter(arrive.getHoraire())) {
+                return new ArrayList<>();
+            }
+
             List<Passage> listePassages = trajets.get(i).getPremierPassage().getPassages();
 
             if (trajets.get(i).getPeriode().equals(periodeSelectionnee)) {
-                correspondanceArrive = depart.getCorrespondanceArrivee(listePassages);
+                correspondanceArrive = depart.getCorrespondanceArrivee(listePassages, depart);
 
-                if (correspondanceArrive != null) {
+                if (correspondanceArrive != null && !depart.equals(correspondanceArrive)) {
                     correspondanceDepart = correspondanceArrive.getCorrespondanceDepart(
                             trajets.get(i).getPremierPassage().getPassages());
 
@@ -220,6 +247,7 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
 
                     trajetDepart = trajets.get(i);
                     trajets.remove(i);
+
                 }
 
                 if (correspondanceDepart != null
@@ -266,7 +294,7 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
 
         for (int index = 0 ; index < itineraires.size() ; index++) {
             passages.add(new ArrayList<>());
-            for (int i = 0 ; i < itineraires.size() ; i+=2) {
+            for (int i = 0 ; i < itineraires.get(index).size() ; i+=2) {
                 List<Passage> aTraiter = itineraires.get(index).get(i).getPassages();
 
                 int indexPassage = 0;

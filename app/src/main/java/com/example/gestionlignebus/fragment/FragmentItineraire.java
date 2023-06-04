@@ -20,7 +20,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
+import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.activity.ResultatRechercheItineraireActivity;
 import com.example.gestionlignebus.adapter.GroupeSpinnerAdapter;
@@ -33,6 +36,8 @@ import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Periode;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -132,7 +137,7 @@ public class FragmentItineraire extends Fragment
         periodeDAO.open();
 
         periodes = periodeDAO.findAll();
-        if (periodes.size() != 0) {
+        if (!periodes.isEmpty()) {
             periodeSelectionnee = periodes.get(0);
         }
 
@@ -149,7 +154,7 @@ public class FragmentItineraire extends Fragment
         groupes.add(new Groupe());
         groupes.addAll(groupeDAO.findAll());
 
-        if (groupes.size() != 0 ) {
+        if (!groupes.isEmpty() ) {
             groupeSelectionne = groupes.get(0);
         }
 
@@ -170,12 +175,11 @@ public class FragmentItineraire extends Fragment
     private void showTimePicker(EditText view){
         int hour = LocalTime.now().getHour();
         int minute =LocalTime.now().getMinute();
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this.getContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                LocalTime localTime = LocalTime.of(selectedHour, selectedMinute);
-                view.setText(localTime.toString());
-            }
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this.getContext(),
+                (timePicker, selectedHour, selectedMinute) -> {
+            LocalTime localTime = LocalTime.of(selectedHour, selectedMinute);
+            view.setText(localTime.toString());
         }, hour, minute, true);
 
         timePickerDialog.show();
@@ -202,15 +206,31 @@ public class FragmentItineraire extends Fragment
             LocalTime horaireDepart = LocalTime.parse(saisieHoraireDepart.getText().toString());
             LocalTime horaireArrive = LocalTime.parse(saisieHoraireArrive.getText().toString());
             if (horaireDepart.isBefore(horaireArrive)) {
-                SharedPreferences.Editor editeur
-                        = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+                SharedPreferences.Editor editeur = null;
+                try {
+                    String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+
+                    editeur =  EncryptedSharedPreferences.create(
+                            "secret",
+                            masterKey,
+                            getContext(),
+                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).edit();
+                } catch (GeneralSecurityException e) {
+                    Log.e(MainActivity.CLE_LOG,
+                            "Erreur de sécurité lors la génération de la master Keys");
+                } catch (IOException e) {
+                    Log.e(MainActivity.CLE_LOG,
+                            "Erreur fichier introuvable pour la génération de la master Keys");
+                }
 
                 editeur.putString(CLE_ARRET_DEPART, saisieArretDepart.getText().toString());
                 editeur.putString(CLE_ARRET_ARRIVE, saisieArretArrive.getText().toString());
                 editeur.putString(CLE_HORAIRE_DEPART, saisieHoraireDepart.getText().toString());
                 editeur.putString(CLE_HORAIRE_ARRIVE, saisieHoraireArrive.getText().toString());
                 editeur.putLong(CLE_PERIODE, periodeSelectionnee.getId());
-                editeur.putBoolean(CLE_AUTORISE_CORRESPONDANCE, autoriserCorrespondance.isChecked());
+                editeur.putBoolean(CLE_AUTORISE_CORRESPONDANCE,
+                        autoriserCorrespondance.isChecked());
                 editeur.apply();
 
                 startActivity(new Intent(getContext(), ResultatRechercheItineraireActivity.class));

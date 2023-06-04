@@ -7,6 +7,7 @@
     <dimen name="spinner_height">60dp</dimen>
     <dimen name="listview_margin">5dp</dimen>
     <dimen name="item_list">40dp</dimen>
+    <dimen name="taille_itineraire">250dp</dimen>
 
     <dimen name="epaisseur_bordure_liste">2dp</dimen>
     <dimen name="epaisseur_bordure_liste_bottom">1dp</dimen>

@@ -23,6 +23,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 
 import java.util.List;
@@ -32,7 +34,6 @@ public class ItineraireViewHolder extends RecyclerView.ViewHolder
 
     private ListView itineraire;
     private List<Passage> trajet;
-    private PassageAdapter adapter;
     private FragmentManager fragmentManager;
     private View map;
 
@@ -42,8 +43,8 @@ public class ItineraireViewHolder extends RecyclerView.ViewHolder
     }
 
     public void bind(List<Passage> itineraires, List<Passage> trajet,
-                     List<String> lignes, FragmentManager fragmentManager) {
-        adapter = new PassageAdapter(itineraire.getContext(),
+                     List<String> lignes, FragmentManager fragmentManager, View map) {
+        PassageAdapter adapter = new PassageAdapter(itineraire.getContext(),
                 R.layout.ligne_itineraire , itineraires, lignes);
         itineraire.setAdapter(adapter);
         itineraire.setOnItemClickListener(this::onItemClick);
@@ -51,18 +52,12 @@ public class ItineraireViewHolder extends RecyclerView.ViewHolder
         this.trajet = trajet;
 
         this.fragmentManager = fragmentManager;
-
-        map = LayoutInflater.from(adapter.getContext())
-                .inflate(R.layout.popup_map,null);
+        this.map = map;
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-
-        if (map.getParent() != null) {
-            ((ViewGroup)map.getParent()).removeView(map);
-        }
 
         SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager
                 .findFragmentById(R.id.map);
@@ -72,13 +67,22 @@ public class ItineraireViewHolder extends RecyclerView.ViewHolder
 
         builder.setTitle(R.string.titre_carte_itineraire);
 
-        builder.setNeutralButton(R.string.btn_retour, null);
+        builder.setNeutralButton(R.string.btn_retour, (dialog, which) -> {
+            if (map.getParent() != null) {
+                ((ViewGroup)map.getParent()).removeView(map);
+            }
+        });
 
         builder.show();
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        googleMap.clear();
+
+        PolylineOptions parcours = new PolylineOptions();
+        parcours.width(3);
+
         for (Passage passage : trajet) {
             Arret arret = passage.getArret();
             double latitude = Double.parseDouble(arret.getPosition().split(":")[0]);
@@ -87,6 +91,7 @@ public class ItineraireViewHolder extends RecyclerView.ViewHolder
                     .position(new LatLng(latitude, longitude))
                     .title(passage.toString()));
 
+            parcours.add(new LatLng(latitude, longitude)) ;
         }
         double latitude = Double.parseDouble(
                 trajet.get(0).getArret().getPosition().split(":")[0]);
@@ -94,6 +99,6 @@ public class ItineraireViewHolder extends RecyclerView.ViewHolder
                 trajet.get(0).getArret().getPosition().split(":")[1]);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng( new LatLng(latitude,longitude)));
         googleMap.setMinZoomPreference(15);
-
+        googleMap.addPolyline(parcours);
     }
 }

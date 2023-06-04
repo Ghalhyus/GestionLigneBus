@@ -37,10 +37,8 @@
     <string name="titre_carte_itineraire">"Carte de l'itineraire"</string>
 
     <!-- Item itinéraire -->
-    <string name="colonne_départ">Départ</string>
+    <string name="colonne_depart">Départ</string>
     <string name="colonne_arrive">Arrivée</string>
-
-
 
     <!-- Menu contextuel -->
     <string name="retirer_arret">"Retirer l'arrêt"</string>

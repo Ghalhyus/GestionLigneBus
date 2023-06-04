@@ -3,6 +3,7 @@ package com.example.gestionlignebus.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -10,7 +11,10 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
+import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.model.ArretHoraire;
 import com.example.gestionlignebus.adapter.ArretHoraireAdapteur;
 import com.example.gestionlignebus.R;
@@ -25,6 +29,8 @@ import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.model.Trajet;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +40,7 @@ import java.util.Map;
 
 public class ArretActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    public static final String CLE_ID = "id_arret";
+    public final static  String CLE_ID = "id_arret";
 
     private ListViewAdapter adapter;
     private ArrayList<ArretHoraire> listArretHoraire;
@@ -86,9 +92,24 @@ public class ArretActivity extends AppCompatActivity implements AdapterView.OnIt
         LinearLayoutManager gestionnaireLineaire = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(gestionnaireLineaire);
 
-        SharedPreferences preferences
-                = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        arret = arretDao.findById(preferences.getLong(CLE_ID, 1));
+        try {
+            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+
+            SharedPreferences preferences =  EncryptedSharedPreferences.create(
+                    "secret",
+                    masterKey,
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+
+            arret = arretDao.findById(preferences.getLong(CLE_ID, 1));
+        } catch (GeneralSecurityException e) {
+            Log.e(MainActivity.CLE_LOG,
+                    "Erreur de sécurité lors la génération de la master Keys");
+        } catch (IOException e) {
+            Log.e(MainActivity.CLE_LOG,
+                    "Erreur fichier introuvable pour la génération de la master Keys");
+        }
 
         ArretHoraireAdapteur adaptateur = new ArretHoraireAdapteur(listArretHoraire);
         recyclerView.setAdapter(adaptateur);

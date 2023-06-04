@@ -7,7 +7,7 @@
     <ListView
         android:id="@+id/itineraire"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/taille_itineraire"
         android:layout_marginLeft="@dimen/petite_marge"
         android:layout_marginRight="@dimen/petite_marge"
         style="@style/listview"/>

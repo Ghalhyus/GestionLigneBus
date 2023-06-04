@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,7 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
+import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.adapter.ArretSpinnerAdapter;
 import com.example.gestionlignebus.adapter.ListViewAdapter;
@@ -24,6 +28,8 @@ import com.example.gestionlignebus.dao.GroupeDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +38,9 @@ public class ArretsGroupeActivity  extends AppCompatActivity
 
     public static final String CLE_ID = "id_groupe";
 
-
     private Button retour;
-
-
     private List<String> listeNomsArrets;
     private ListViewAdapter adapter;
-
     private GroupeDAO groupeDao;
     private ArretDAO arretDao;
     private Groupe groupe;
@@ -47,7 +49,6 @@ public class ArretsGroupeActivity  extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences preferences;
         ListView listeArretsView;
         TextView titreListe;
         Button ajoutArret;
@@ -64,8 +65,25 @@ public class ArretsGroupeActivity  extends AppCompatActivity
         ajoutArret.setOnClickListener(this);
         retour.setOnClickListener(this);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        groupe = groupeDao.findById(preferences.getLong(CLE_ID, 1));
+        try {
+            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+
+            SharedPreferences preferences =  EncryptedSharedPreferences.create(
+                    "secret",
+                    masterKey,
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+
+            groupe = groupeDao.findById(preferences.getLong(CLE_ID, 1));
+        } catch (GeneralSecurityException e) {
+            Log.e(MainActivity.CLE_LOG,
+                    "Erreur de sécurité lors la génération de la master Keys");
+        } catch (IOException e) {
+            Log.e(MainActivity.CLE_LOG,
+                    "Erreur fichier introuvable pour la génération de la master Keys");
+        }
+
         arretsGroupe = groupe.getArrets() == null ? new ArrayList<>() : groupe.getArrets();
 
         titreListe = findViewById(R.id.titre_liste_arrets_groupe);

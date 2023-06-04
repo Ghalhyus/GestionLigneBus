@@ -34,16 +34,22 @@ public class PassageAdapter extends ArrayAdapter<Passage> {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.ligne_itineraire, parent, false);
 
-        ((TextView)view.findViewById(R.id.itineraire_arret_nom))
+        ((TextView) view.findViewById(R.id.itineraire_arret_nom))
                 .setText(passages.get(position).getArret().getLibelle());
-        ((TextView)view.findViewById(R.id.itineraire_ligne_nom)).setText(lignes.get(position));
-        ((TextView)view.findViewById(R.id.itineraire_horaire))
+
+        ((TextView) view.findViewById(R.id.itineraire_ligne_nom)).setText(lignes.get(position));
+
+        ((TextView) view.findViewById(R.id.itineraire_horaire))
                 .setText(passages.get(position).getHoraire().toString());
 
-        if(position % 2 == 0)
-            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.item_pair));
-        else
+        if (position % 2 == 0) {
+
+        ((TextView) view.findViewById(R.id.itineraire_type)).setText(R.string.colonne_depart);
+        view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.item_pair));
+        } else {
+            ((TextView) view.findViewById(R.id.itineraire_type)).setText(R.string.colonne_arrive);
             view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.item_impair));
+        }
 
         return view;
     }

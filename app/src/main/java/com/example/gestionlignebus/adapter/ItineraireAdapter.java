@@ -21,6 +21,7 @@ public class ItineraireAdapter extends RecyclerView.Adapter<ItineraireViewHolder
     private List<List<Passage>> trajet;
     private List<List<String>> lignes;
     private FragmentManager fragmentManager;
+    private View map;
 
     public ItineraireAdapter(List<List<Passage>> itineraires, List<List<Passage>> trajet,
                              List<List<String>> lignes, FragmentManager fragmentManager) {
@@ -35,13 +36,18 @@ public class ItineraireAdapter extends RecyclerView.Adapter<ItineraireViewHolder
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_itineraire, parent, false);
 
+        if (map == null) {
+            map = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.popup_map,null);
+        }
+
         return new ItineraireViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItineraireViewHolder holder, int position) {
         holder.bind(itineraires.get(position), trajet.get(position),
-                lignes.get(position), fragmentManager);
+                lignes.get(position), fragmentManager, map);
     }
 
     @Override

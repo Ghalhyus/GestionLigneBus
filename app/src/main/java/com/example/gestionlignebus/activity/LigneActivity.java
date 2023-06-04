@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
+import com.example.gestionlignebus.MainActivity;
 import com.example.gestionlignebus.R;
 import com.example.gestionlignebus.adapter.ArretHoraireAdapteur;
 import com.example.gestionlignebus.adapter.PeriodeSpinnerAdapter;
@@ -36,6 +40,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,8 +100,24 @@ public class LigneActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ligne);
 
-        SharedPreferences preferences
-                = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences preferences = null;
+
+        try {
+            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+
+            preferences =  EncryptedSharedPreferences.create(
+                    "secret",
+                    masterKey,
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+        } catch (GeneralSecurityException e) {
+            Log.e(MainActivity.CLE_LOG,
+                    "Erreur de sécurité lors la génération de la master Keys");
+        } catch (IOException e) {
+            Log.e(MainActivity.CLE_LOG,
+                    "Erreur fichier introuvable pour la génération de la master Keys");
+        }
 
         ligneCourante = getLigneCourante(preferences.getLong(CLE_LIGNE, 1L));
 
