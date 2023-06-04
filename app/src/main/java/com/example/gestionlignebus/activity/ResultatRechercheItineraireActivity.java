@@ -225,10 +225,7 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
 
                 }
 
-                if (correspondanceDepart != null
-                        && correspondanceDepart.getPassages().contains(arrive)
-                        && (correspondanceDepart.getHoraire().isBefore(arrive.getHoraire())
-                        || correspondanceDepart.getHoraire().equals(arrive.getHoraire()))) {
+                if (contientArrive(correspondanceDepart, arrive)) {
                     correspondances.add(arrive);
                     lignes.add(trajetDepart.getLigne().getLibelle());
 
@@ -239,6 +236,19 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
 
         return rechercherCorrespondance(correspondanceDepart, correspondances, lignes, arrive,
                 trajetDepart, trajets);
+    }
+
+    /**
+     * Vérifie si le départ de la correspondance contient le passage d'arrivé.
+     * @param correspondanceDepart Le passage pour la correspondance de départ.
+     * @param arrive L'arrivé du trajet.
+     * @return True si le départ de la correspondance contient le passage d'arrivé.
+     */
+    private boolean contientArrive(Passage correspondanceDepart, Passage arrive) {
+        return correspondanceDepart != null
+                && correspondanceDepart.getPassages().contains(arrive)
+                && (correspondanceDepart.getHoraire().isBefore(arrive.getHoraire())
+                || correspondanceDepart.getHoraire().equals(arrive.getHoraire()));
     }
 
     private Trajet rechercherTrajetArrive(Passage arrive) {

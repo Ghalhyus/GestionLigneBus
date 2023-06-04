@@ -12,13 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LigneDAO implements ICommonDAO<Ligne, Long> {
-    ///////////////////////////////////////////////////
-    /////////////////// Attributs /////////////////////
-    ///////////////////////////////////////////////////
-    private final BDHelper bdHelper;
-    private SQLiteDatabase sqLiteDatabase;
-    private final ArretDAO arretDAO;
-
     public static final int COLONNE_NUM_CLE = 0;
     public static final int COLONNE_NUM_LIBELLE = 1;
     public static final int COLONNE_NUM_ARRET_ALLE = 2;
@@ -36,10 +29,16 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
     private static final String FIND_BY_ID = SELECT_ETOILE
             + BDHelper.LIGNE_NOM_TABLE + " WHERE " + BDHelper.LIGNE_CLE
             + PARAMETRE;
-
     private static final String FIND_BY_LIBELLE = SELECT_ETOILE
             + BDHelper.LIGNE_NOM_TABLE + " WHERE " + BDHelper.LIGNE_LIBELLE
             + PARAMETRE;
+
+    ///////////////////////////////////////////////////
+    /////////////////// Attributs /////////////////////
+    ///////////////////////////////////////////////////
+    private final BDHelper bdHelper;
+    private final ArretDAO arretDAO;
+    private SQLiteDatabase sqLiteDatabase;
 
     public LigneDAO(Context context) {
         arretDAO = new ArretDAO(context);
@@ -65,7 +64,7 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
     }
 
     public Ligne findByLibelle(String libelle) {
-        return cursorToObject(sqLiteDatabase.rawQuery(FIND_BY_LIBELLE, new String[] {libelle}));
+        return cursorToObject(sqLiteDatabase.rawQuery(FIND_BY_LIBELLE, new String[]{libelle}));
     }
 
     @Override
@@ -75,116 +74,73 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
 
     @Override
     public Ligne save(Ligne toSave) {
-        if (toSave != null) {
-            // On vérifie qu'une ligne ne possède pas déjà le même nom
-            if (findByLibelle(toSave.getLibelle()) == null) {
-                Ligne temp = initArretDepart(toSave);
-                if (temp != null) {
-                    temp = initArretRetour(toSave);
-                    if (temp != null) {
-                        if (toSave.getArrets() != null) {
-                            recupererArretsId(toSave);
-                        }
-                        ContentValues enregistrement = objectToContentValues(toSave);
-                        long id = sqLiteDatabase.insert(BDHelper.LIGNE_NOM_TABLE, null,
-                                enregistrement);
-                        if (id > 0 && toSave.getArrets() != null) {
-                            toSave.setId(id);
-                            for (Arret arret : toSave.getArrets()) {
-                                ajouterArret(toSave, arret);
-                            }
-                        }
-                        return findById(id);
-                    } else {
-                        // Erreur récupération arrêt de retour
-                        return null;
-                    }
-                } else {
-                    // Erreur lors de la récupération de l'arrêt de départ
-                    return null;
-                }
-
-            } else {
-                // erreur homonyme
-                return null;
+        if (toSave != null && findByLibelle(toSave.getLibelle()) == null) {
+            if (initArretDepart(toSave) != null && initArretRetour(toSave) != null
+                && toSave.getArrets() != null) {
+                recupererArretsId(toSave);
             }
-        } else {
-            // toSave est null
-            return null;
+
+            ContentValues enregistrement = objectToContentValues(toSave);
+            long id = sqLiteDatabase.insert(BDHelper.LIGNE_NOM_TABLE, null,
+                    enregistrement);
+
+            if (id > 0 && toSave.getArrets() != null) {
+                toSave.setId(id);
+                for (Arret arret : toSave.getArrets()) {
+                    ajouterArret(toSave, arret);
+                }
+            }
+
+            return findById(id);
         }
+
+        return null;
     }
 
-
     private Ligne initArretDepart(Ligne ligne) {
-        if (ligne != null) {
-            if (ligne.getArretDepart() != null) {
-                if (ligne.getArretDepart().getId() != null) {
-                    if (arretDAO.findById(ligne.getArretDepart().getId()) != null) {
-                        return ligne;
-                    } else {
-                        // Son id est initialisé mais il n'existe pas en base
-                        return null;
-                    }
-                } else {
-                    if (ligne.getArretDepart().getLibelle() != null) {
-                        Arret arretFound = arretDAO.findByLibelle(ligne.getArretDepart().getLibelle());
-                        if (arretFound != null) {
-                            ligne.setArretDepart(arretFound);
-                            return ligne;
-                        } else {
-                            // Aucun arrêt homonyme trouvé
-                            return null;
-                        }
-                    } else {
-                        // Le libelle de l'arrêt est null
-                        return null;
-                    }
-                }
-            } else {
-                // Erreur arrêt départ null
-                return null;
+        if (ligne != null && ligne.getArretDepart() != null
+                && ligne.getArretDepart().getId() != null) {
+            if (arretDAO.findById(ligne.getArretDepart().getId()) != null) {
+                return ligne;
             }
-        } else {
-            // Argument null
-            return null;
+        } else if (ligne != null && ligne.getArretDepart() != null) {
+            return setArretDepartByLibelle(ligne);
         }
+
+        return null;
+    }
+
+    private Ligne setArretDepartByLibelle(Ligne ligne) {
+        if (ligne.getArretDepart().getLibelle() != null) {
+            Arret arretFound = arretDAO.findByLibelle(ligne.getArretDepart().getLibelle());
+
+            if (arretFound != null) {
+                ligne.setArretDepart(arretFound);
+                return ligne;
+            }
+        }
+
+        return null;
     }
 
     private Ligne initArretRetour(Ligne ligne) {
-        if (ligne != null) {
-            if (ligne.getArretRetour() != null) {
-                if (ligne.getArretRetour().getId() != null) {
-                    if (arretDAO.findById(ligne.getArretRetour().getId()) != null) {
-                        return ligne;
-                    } else {
-                        // Son id est initialisé mais il n'existe pas en base
-                        return null;
-                    }
-                } else {
-                    if (ligne.getArretRetour().getLibelle() != null) {
-                        Arret arretFound = arretDAO.findByLibelle(ligne.getArretRetour().getLibelle());
-                        if (arretFound != null) {
-                            ligne.setArretRetour(arretFound);
-                            return ligne;
-                        } else {
-                            // Aucun arrêt homonyme trouvé
-                            return null;
-                        }
-                    } else {
-                        // Le libelle de l'arrêt est null
-                        return null;
-                    }
-                }
-            } else {
-                // Erreur arrêt départ null
-                return null;
+        if (ligne != null && ligne.getArretRetour() != null
+                && ligne.getArretRetour().getId() != null) {
+            if (arretDAO.findById(ligne.getArretRetour().getId()) != null) {
+                return ligne;
             }
-        } else {
-            // Argument null
-            return null;
+        } else if (ligne != null && ligne.getArretRetour() != null
+                && (ligne.getArretRetour().getLibelle() != null)) {
+                Arret arretFound = arretDAO.findByLibelle(ligne.getArretRetour().getLibelle());
+            if (arretFound != null) {
+                ligne.setArretRetour(arretFound);
+                return ligne;
+            }
         }
+
+        return null;
     }
-    
+
     private void recupererArretsId(Ligne ligne) {
         for (Arret arret : ligne.getArrets()) {
             // S'il n'a pas d'identifiant
@@ -216,7 +172,7 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
         return sqLiteDatabase.delete(
                 BDHelper.LIGNE_NOM_TABLE,
                 BDHelper.LIGNE_CLE + " = ? ",
-                new String[] { String.valueOf(toDelete.getId()) });
+                new String[]{String.valueOf(toDelete.getId())});
     }
 
     @Override
@@ -239,18 +195,19 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
         sqLiteDatabase.update(BDHelper.LIGNE_NOM_TABLE,
                 enregistrement,
                 BDHelper.LIGNE_CLE + " = ?",
-                new String[] {String.valueOf(toUpdate.getId())});
+                new String[]{String.valueOf(toUpdate.getId())});
         return findById(toUpdate.getId());
     }
 
     /**
      * Retourne un curseur sur la ligne trouvée.
+     *
      * @param id Id du groupe à trouver.
      * @return Un curseur sur la ligne trouvée.
      */
     public Cursor cursorFindById(Long id) {
         return sqLiteDatabase.rawQuery(FIND_BY_ID,
-                new String[] {String.valueOf(id)});
+                new String[]{String.valueOf(id)});
     }
 
     @Override
@@ -314,7 +271,7 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
             cursor.close();
             return lignes;
         }
-        for ( cursor.moveToFirst() ; !cursor.isAfterLast() ; cursor.moveToNext()) {
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             Ligne ligne = cursorToObject(cursor);
             lignes.add(ligne);
         }
@@ -331,7 +288,7 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
         enregistrement.put(BDHelper.LIGNE_LIBELLE, toConvert.getLibelle());
 
         if (toConvert.getArretDepart() != null
-            && toConvert.getArretDepart().getId() != null) {
+                && toConvert.getArretDepart().getId() != null) {
             enregistrement.put(BDHelper.LIGNE_FK_ARRET_ALLE, toConvert.getArretDepart().getId());
         } else {
             enregistrement.putNull(BDHelper.LIGNE_FK_ARRET_ALLE);

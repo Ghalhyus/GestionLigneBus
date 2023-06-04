@@ -79,7 +79,7 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, "arrêts"));
+            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, LISTE_ARRET_NAME));
         }
         return arrets;
     }
@@ -103,7 +103,7 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, "lignes"));
+            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, LISTE_LIGNE_NAME));
         }
         return lignes;
     }
@@ -128,7 +128,7 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, "périodes"));
+            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, LISTE_PERIODE_NAME));
         }
         return periodes;
     }
@@ -153,7 +153,7 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, "trajets"));
+            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, LISTE_TRAJET_NAME));
         }
         return trajets;
     }

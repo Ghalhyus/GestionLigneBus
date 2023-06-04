@@ -215,39 +215,6 @@ public class TrajetDAO implements ICommonDAO<Trajet, Long> {
             // Argument null
             return null;
         }
-
-
-
-
-        // On vérifie que le passage ne soit pas null
-//        if (toSave.getPremierPassage().getId() == null
-//            && (toSave.getPremierPassage().getArret() != null
-//            && toSave.getPremierPassage().getHoraire() != null)) {
-//            // On ne vérifie si un passage similaire n'existe pas déjà
-//            Passage passageFound = passageDAO.findByArretAndHoraire(
-//                    toSave.getPremierPassage().getArret(),
-//                    toSave.getPremierPassage().getHoraire());
-//            if (passageFound != null) {
-//                // Si oui, on l'utilise
-//                toSave.setPremierPassage(passageFound);
-//            } else {
-//                // Si non, on renvoie null
-//                return null;
-//            }
-//        }
-        // On vérifie que la période ne soit pas nulle
-//        if (toSave.getPeriode().getId() == null
-//                && (toSave.getPeriode().getLibelle() != null)) {
-//            // On cherche si une période identique n'existe pas déjà
-//            Periode periodeFound = periodeDAO.findByLibelle(toSave.getPeriode().getLibelle());
-//            if ( periodeFound != null) {
-//                // Si oui, on l'utilise
-//                toSave.setPeriode(periodeFound);
-//            } else {
-//                // Si non, on enregistre la nouvelle période
-//                toSave.setPeriode(periodeDAO.save(toSave.getPeriode()));
-//            }
-//        }
     }
 
     private Trajet initPeriode(Trajet toSave) {

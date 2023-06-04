@@ -51,6 +51,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class FragmentConsultation extends Fragment
         implements AdapterView.OnItemSelectedListener,
@@ -337,13 +338,9 @@ public class FragmentConsultation extends Fragment
             // On récupère le contenu du JSON
             String content = JSONUtils.readJSON(bufferedReader);
 
-            String erreurArret = null;
-            String erreurPeriode = null;
-            String erreurLigne = null;
-
-            int nbErreurArret = 0;
             int nbErreurLigne = 0;
             int nbErreurPeriode = 0;
+            int nbErreurArret = 0;
 
             if (!Objects.equals(content, "")) {
                 // On supprime les anciennes données
@@ -352,92 +349,32 @@ public class FragmentConsultation extends Fragment
                 periodeDAO.clear();
                 trajetDAO.clear();
                 passageDAO.clear();
+
                 // On convertit les Arret JSON en arrêt java
-                List<Arret> arretList = JSONUtils.jsonToArretList(content);
-                if (arretList != null) {
-                    // On enregistre les arrêts du fichier
-                    for (Arret arret : arretList) {
-                        Arret arretSaved = arretDAO.save(arret);
-                        if (arretSaved == null) {
-                            nbErreurArret++;
-                        }
-                    }
-                    if (nbErreurArret > 0 ) {
-                        erreurArret = String.format(getString(R.string.erreur_nb_arret), nbErreurArret);
-                    }
-                } else {
-                    // Erreur lors de la lecture des arrêts
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_arret),
-                            Toast.LENGTH_LONG).show();
-                }
+                nbErreurArret = conversionArretJson(content);
 
-                List<Periode> periodeList = JSONUtils.jsonToPeriodeList(content);
+                // On convertit les Periode JSON en Periode java
+                nbErreurPeriode = conversionPeriodeJson(content);
 
-                if ( periodeList != null) {
-                    // On supprime les anciennes données
-                    // On enregistre les périodes du fichier
-                    for (Periode periode : periodeList) {
-                        Periode periodeSaved = periodeDAO.save(periode);
-                        if (periodeSaved == null) {
-                            nbErreurPeriode++;
-                        }
-                    }
-                    if (nbErreurPeriode > 0 ) {
-                        erreurPeriode = String.format(getString(R.string.erreur_nb_periode), nbErreurPeriode);
-                    }
-                } else {
-                    // Erreur lors de la lecture des périodes
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_periode),
-                            Toast.LENGTH_LONG).show();
-                }
-
-                List<Ligne> ligneList = JSONUtils.jsonToLigneList(content);
-                if ( ligneList != null ) {
-                    // On supprime les anciennes données
-                    // On enregistre les lignes du fichier
-                    for (Ligne ligne : ligneList) {
-                        Ligne ligneSaved = ligneDAO.save(ligne);
-                        if (ligneSaved == null) {
-                            nbErreurLigne++;
-                        }
-                    }
-                    if (nbErreurLigne > 0 ) {
-                        erreurLigne = String.format(getString(R.string.erreur_nb_ligne), nbErreurLigne);
-                    }
-                } else {
-                    Toast.makeText(this.getContext(), getString(R.string.erreur_import_ligne),
-                            Toast.LENGTH_LONG).show();
-                }
+                // On convertit les Ligne JSON en Ligne java
+                nbErreurLigne = conversionLigneJson(content);
             } else {
                 // Erreur lecture fichier
                 Toast.makeText(this.getContext(), getString(R.string.erreur_fichier_vide),
                         Toast.LENGTH_LONG).show();
             }
             // Si tout s'est bien passé, alors on affiche ce message
-            if (erreurArret == null
-                    && erreurLigne == null
-                    && erreurPeriode == null) {
-                Toast.makeText(this.getContext(), R.string.reussite_import_donnée_stable, Toast.LENGTH_LONG).show();
+            if (nbErreurArret == 0 && nbErreurLigne == 0 && nbErreurPeriode == 0)  {
+                Toast.makeText(this.getContext(),
+                        R.string.reussite_import_donnée_stable,
+                        Toast.LENGTH_LONG).show();
             } else {
+                // Génération du message d'erreur
                 StringBuilder messageFinal = new StringBuilder();
-                if (erreurArret != null) {
-                    String res = String.format(getString(R.string.erreur_nb_arret), nbErreurArret);
-                    messageFinal.append(res);
-                }
-                if (erreurPeriode != null) {
-                    if (erreurArret != null) {
-                        messageFinal.append("\n");
-                    }
-                    String res = String.format(getString(R.string.erreur_nb_periode), nbErreurPeriode);
-                    messageFinal.append(res);
-                }
-                if (erreurLigne != null) {
-                    if (erreurPeriode != null) {
-                        messageFinal.append("\n");
-                    }
-                    String res = String.format(getString(R.string.erreur_nb_ligne), nbErreurLigne);
-                    messageFinal.append(res);
-                }
+                arretEnErreur(nbErreurArret, messageFinal);
+                periodeEnErreur(nbErreurPeriode, nbErreurArret, messageFinal);
+                ligneEnErreur(nbErreurLigne, nbErreurPeriode, messageFinal);
+
                 if (messageFinal.length() > 0) {
                     Toast.makeText(this.getContext(), messageFinal.toString(), Toast.LENGTH_LONG).show();
                 }
@@ -448,6 +385,133 @@ public class FragmentConsultation extends Fragment
             arretDAO.close();
             periodeDAO.close();
             ligneDAO.close();
+        }
+    }
+
+    /**
+     * Convertit les arrêts JSON en Ligne Java.
+     * @param content Le JSON à convertir.
+     * @return Le nombre d'arrêt en erreur.
+     */
+    private int conversionArretJson(String content) {
+        int nbErreurArret = 0;
+        List<Arret> arretList = JSONUtils.jsonToArretList(content);
+
+        if (arretList != null) {
+            // On enregistre les arrêts du fichier
+            for (Arret arret : arretList) {
+                Arret arretSaved = arretDAO.save(arret);
+                if (arretSaved == null) {
+                    nbErreurArret++;
+                }
+            }
+        } else {
+            // Erreur lors de la lecture des arrêts
+            Toast.makeText(this.getContext(), getString(R.string.erreur_import_arret),
+                    Toast.LENGTH_LONG).show();
+        }
+
+        return nbErreurArret;
+    }
+
+    /**
+     * Convertit les périodes JSON en Ligne Java.
+     * @param content Le JSON à convertir.
+     * @return Le nombre de période en erreur.
+     */
+    private int conversionPeriodeJson(String content) {
+        int nbErreurPeriode = 0;
+        List<Periode> periodeList = JSONUtils.jsonToPeriodeList(content);
+
+        if ( periodeList != null) {
+            // On supprime les anciennes données
+            // On enregistre les périodes du fichier
+            for (Periode periode : periodeList) {
+                Periode periodeSaved = periodeDAO.save(periode);
+                if (periodeSaved == null) {
+                    nbErreurPeriode++;
+                }
+            }
+        } else {
+            // Erreur lors de la lecture des périodes
+            Toast.makeText(this.getContext(), getString(R.string.erreur_import_periode),
+                    Toast.LENGTH_LONG).show();
+        }
+
+        return nbErreurPeriode;
+    }
+
+    /**
+     * Convertit les lignes JSON en Ligne Java.
+     * @param content Le JSON à convertir.
+     * @return Le nombre de ligne en erreur.
+     */
+    private int conversionLigneJson(String content) {
+        int nbErreurLigne = 0;
+        List<Ligne> ligneList = JSONUtils.jsonToLigneList(content);
+
+        if ( ligneList != null ) {
+            // On supprime les anciennes données
+            // On enregistre les lignes du fichier
+            for (Ligne ligne : ligneList) {
+                Ligne ligneSaved = ligneDAO.save(ligne);
+                if (ligneSaved == null) {
+                    nbErreurLigne++;
+                }
+            }
+        } else {
+            Toast.makeText(this.getContext(), getString(R.string.erreur_import_ligne),
+                    Toast.LENGTH_LONG).show();
+        }
+
+        return nbErreurLigne;
+    }
+
+    /**
+     * Ajoute un message d'erreur pour les arrêts, si les arrêts sont tombés en erreur.
+     * @param nbErreurArret Le nombre d'erreur pour les arrêts.
+     * @param messageFinal Le message d'erreur final.
+     */
+    private void arretEnErreur(int nbErreurArret, StringBuilder messageFinal) {
+        if (nbErreurArret != 0) {
+            String res = String.format(getString(R.string.erreur_nb_arret), nbErreurArret);
+            messageFinal.append(res);
+        }
+    }
+
+    /**
+     * Ajoute un message d'erreur pour les périodes, si elles sont tombées en erreur.
+     * @param nbErreurPeriode Le nombre d'erreur pour les périodes.
+     * @param nbErreurArret Le nombre d'erreur pour les arrêts.
+     * @param messageFinal Le message d'erreur final.
+     */
+    private void periodeEnErreur(int nbErreurPeriode, int nbErreurArret,
+                                 StringBuilder messageFinal) {
+        if (nbErreurPeriode > 0) {
+            if (nbErreurArret > 0) {
+                messageFinal.append("\n");
+            }
+            String res = String.format(getString(R.string.erreur_nb_periode),
+                    nbErreurPeriode);
+            messageFinal.append(res);
+        }
+    }
+
+    /**
+     * Ajoute un message d'erreur pour les lignes, si elles sont tombées en erreur.
+     * @param nbErreurLigne Le nombre d'erreur pour une ligne.
+     * @param nbErreurPeriode Le nombre d'erreur pour une période.
+     * @param messageFinal Le message d'erreur final.
+     */
+    private void ligneEnErreur(int nbErreurLigne, int nbErreurPeriode,
+                               StringBuilder messageFinal) {
+        if (nbErreurLigne > 0) {
+            if (nbErreurPeriode > 0) {
+                messageFinal.append("\n");
+            }
+            String res = String.format(getString(R.string.erreur_nb_ligne),
+                    nbErreurLigne);
+            messageFinal.append(res);
         }
     }
 }
