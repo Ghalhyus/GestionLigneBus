@@ -20,7 +20,6 @@ public class ListViewAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
-        Context context = this.getContext();
 
         if(position % 2 == 0)
             view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.item_pair));

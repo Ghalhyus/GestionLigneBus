@@ -20,8 +20,6 @@ public class PassageAdapter extends ArrayAdapter<Passage> {
     private List<Passage> passages;
     private List<String> lignes;
 
-    private FragmentManager fragmentManager;
-
     public PassageAdapter(Context context, int layout, List<Passage> passages,
                           List<String> lignes) {
         super(context, layout, passages);

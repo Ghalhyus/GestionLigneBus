@@ -27,17 +27,17 @@ public class LigneDAO implements ICommonDAO<Ligne, Long> {
     //////////////////////////////////////////////////////////////////
     ///////////////////////// Requêtes ///////////////////////////////
     //////////////////////////////////////////////////////////////////
-    private static final String FIND_ALL = "SELECT * FROM "
+    private static final String FIND_ALL = SELECT_ETOILE
             + BDHelper.LIGNE_NOM_TABLE;
 
     ///////////////////////////////////////////////////
     /////////////////// Prepared //////////////////////
     ///////////////////////////////////////////////////
-    private static final String FIND_BY_ID = "SELECT * FROM "
+    private static final String FIND_BY_ID = SELECT_ETOILE
             + BDHelper.LIGNE_NOM_TABLE + " WHERE " + BDHelper.LIGNE_CLE
             + PARAMETRE;
 
-    private static final String FIND_BY_LIBELLE = "SELECT * FROM "
+    private static final String FIND_BY_LIBELLE = SELECT_ETOILE
             + BDHelper.LIGNE_NOM_TABLE + " WHERE " + BDHelper.LIGNE_LIBELLE
             + PARAMETRE;
 

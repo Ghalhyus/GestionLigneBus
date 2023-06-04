@@ -21,7 +21,7 @@ import com.example.gestionlignebus.dao.ArretDAO;
 import com.example.gestionlignebus.dao.GroupeDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
-import com.example.gestionlignebus.utils.Preferences;
+import com.example.gestionlignebus.utils.GestionnairePreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +58,8 @@ public class ArretsGroupeActivity  extends AppCompatActivity
         ajoutArret.setOnClickListener(this);
         retour.setOnClickListener(this);
 
-        Preferences preferences = Preferences.getPreferences(this);
-        groupe = groupeDao.findById(preferences.getLong(CLE_ID));
+        GestionnairePreferences gestionnairePreferences = GestionnairePreferences.getPreferences(this);
+        groupe = groupeDao.findById(gestionnairePreferences.getLong(CLE_ID));
         arretsGroupe = groupe.getArrets() == null ? new ArrayList<>() : groupe.getArrets();
 
         titreListe = findViewById(R.id.titre_liste_arrets_groupe);

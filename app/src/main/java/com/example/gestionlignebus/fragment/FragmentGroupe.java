@@ -23,7 +23,7 @@ import com.example.gestionlignebus.activity.ArretsGroupeActivity;
 import com.example.gestionlignebus.adapter.ListViewAdapter;
 import com.example.gestionlignebus.dao.GroupeDAO;
 import com.example.gestionlignebus.model.Groupe;
-import com.example.gestionlignebus.utils.Preferences;
+import com.example.gestionlignebus.utils.GestionnairePreferences;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class FragmentGroupe extends Fragment
 
     private GroupeDAO groupeDao;
 
-    private Preferences preferences;
+    private GestionnairePreferences gestionnairePreferences;
 
     public static FragmentGroupe newInstance() {
 
@@ -75,14 +75,14 @@ public class FragmentGroupe extends Fragment
         ajouterGroupe = fragmentGroupeView.findViewById(R.id.creer_groupe_button);
         ajouterGroupe.setOnClickListener(this::onClick);
 
-        preferences = Preferences.getPreferences(getContext());
+        gestionnairePreferences = GestionnairePreferences.getPreferences(getContext());
 
         return fragmentGroupeView;
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View fragmentGroupeView, int index, long l) {
-        SharedPreferences.Editor editeur = preferences.edit();
+        SharedPreferences.Editor editeur = gestionnairePreferences.edit();
         editeur.putLong(ArretsGroupeActivity.CLE_ID, listeGroupes.get(index).getId());
         editeur.apply();
 

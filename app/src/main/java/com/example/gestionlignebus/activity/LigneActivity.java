@@ -27,7 +27,7 @@ import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.model.Trajet;
-import com.example.gestionlignebus.utils.Preferences;
+import com.example.gestionlignebus.utils.GestionnairePreferences;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -93,8 +93,8 @@ public class LigneActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ligne);
 
-        Preferences preferences = Preferences.getPreferences(this);
-        ligneCourante = getLigneCourante(preferences.getLong(CLE_LIGNE));
+        GestionnairePreferences gestionnairePreferences = GestionnairePreferences.getPreferences(this);
+        ligneCourante = getLigneCourante(gestionnairePreferences.getLong(CLE_LIGNE));
 
         initialisationSpinner();
         initialisationBoutons();

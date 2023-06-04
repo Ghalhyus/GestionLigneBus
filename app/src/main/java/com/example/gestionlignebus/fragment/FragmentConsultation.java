@@ -43,7 +43,7 @@ import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.utils.JSONUtils;
-import com.example.gestionlignebus.utils.Preferences;
+import com.example.gestionlignebus.utils.GestionnairePreferences;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -75,7 +75,7 @@ public class FragmentConsultation extends Fragment
     private List<Ligne> listeLigne;
     private Groupe groupeSelectionne;
     private boolean arretsAffiches;
-    private Preferences preferences;
+    private GestionnairePreferences gestionnairePreferences;
 
 
     public static FragmentConsultation newInstance() {
@@ -104,7 +104,7 @@ public class FragmentConsultation extends Fragment
 
         arretsAffiches = false;
 
-        preferences = Preferences.getPreferences(getContext());
+        gestionnairePreferences = GestionnairePreferences.getPreferences(getContext());
 
         return view;
     }
@@ -224,12 +224,12 @@ public class FragmentConsultation extends Fragment
     @Override//item de la liste
     public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
         if(spin.getSelectedItem().equals(LIGNE)) {
-            SharedPreferences.Editor editeur = preferences.edit();
+            SharedPreferences.Editor editeur = gestionnairePreferences.edit();
             editeur.putLong(LigneActivity.CLE_LIGNE, listeLigne.get(index).getId());
             editeur.apply();
             startActivity(new Intent(view.getContext(), LigneActivity.class));
         }else{
-            SharedPreferences.Editor editeur = preferences.edit();
+            SharedPreferences.Editor editeur = gestionnairePreferences.edit();
             editeur.putLong(ArretActivity.CLE_ID, listeArret.get(index).getId());
             editeur.apply();
             startActivity(new Intent(view.getContext(), ArretActivity.class));

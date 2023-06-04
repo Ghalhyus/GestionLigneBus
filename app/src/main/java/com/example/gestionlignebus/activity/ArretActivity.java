@@ -21,7 +21,7 @@ import com.example.gestionlignebus.model.ArretHoraire;
 import com.example.gestionlignebus.model.Ligne;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.model.Trajet;
-import com.example.gestionlignebus.utils.Preferences;
+import com.example.gestionlignebus.utils.GestionnairePreferences;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -75,8 +75,8 @@ public class ArretActivity extends AppCompatActivity implements AdapterView.OnIt
         LinearLayoutManager gestionnaireLineaire = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(gestionnaireLineaire);
 
-        Preferences preferences = Preferences.getPreferences(this);
-        arret = arretDao.findById(preferences.getLong(CLE_ID));
+        GestionnairePreferences gestionnairePreferences = GestionnairePreferences.getPreferences(this);
+        arret = arretDao.findById(gestionnairePreferences.getLong(CLE_ID));
 
         ArretHoraireAdapteur adaptateur = new ArretHoraireAdapteur(listArretHoraire);
         recyclerView.setAdapter(adaptateur);

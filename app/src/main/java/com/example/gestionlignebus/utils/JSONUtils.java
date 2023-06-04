@@ -25,6 +25,9 @@ public class JSONUtils {
     public static final String LISTE_PERIODE_NAME = "periodes";
     public static final String LISTE_TRAJET_NAME = "trajets";
 
+    private static final String MESSAGE_ERREUR = "Erreur lors de la récupération des %s depuis "
+            + "le fichier JSON.";
+
     /**
      * Constructeur privé pour cacher le constructeur implicite
      */
@@ -76,8 +79,7 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(CLE_LOG, "Erreur lors de la récupération des arrêts depuis "
-                    + "le fichier JSON.");
+            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, "arrêts"));
         }
         return arrets;
     }
@@ -101,8 +103,7 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(CLE_LOG, "Erreur lors de la récupération des lignes depuis "
-                    + "le fichier JSON.");
+            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, "lignes"));
         }
         return lignes;
     }
@@ -127,8 +128,7 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(CLE_LOG, "Erreur lors de la récupération des périodes depuis "
-                    + "le fichier JSON.");
+            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, "périodes"));
         }
         return periodes;
     }
@@ -153,8 +153,7 @@ public class JSONUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e(CLE_LOG, "Erreur lors de la récupération des trajets depuis "
-                    + "le fichier JSON.");
+            Log.e(CLE_LOG, String.format(MESSAGE_ERREUR, "trajets"));
         }
         return trajets;
     }

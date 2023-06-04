@@ -29,7 +29,7 @@ import com.example.gestionlignebus.dao.PeriodeDAO;
 import com.example.gestionlignebus.model.Arret;
 import com.example.gestionlignebus.model.Groupe;
 import com.example.gestionlignebus.model.Periode;
-import com.example.gestionlignebus.utils.Preferences;
+import com.example.gestionlignebus.utils.GestionnairePreferences;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -198,8 +198,8 @@ public class FragmentItineraire extends Fragment
             LocalTime horaireDepart = LocalTime.parse(saisieHoraireDepart.getText().toString());
             LocalTime horaireArrive = LocalTime.parse(saisieHoraireArrive.getText().toString());
             if (horaireDepart.isBefore(horaireArrive)) {
-                Preferences preferences = Preferences.getPreferences(getContext());
-                SharedPreferences.Editor editeur = preferences.edit();
+                GestionnairePreferences gestionnairePreferences = GestionnairePreferences.getPreferences(getContext());
+                SharedPreferences.Editor editeur = gestionnairePreferences.edit();
 
                 editeur.putString(CLE_ARRET_DEPART, saisieArretDepart.getText().toString());
                 editeur.putString(CLE_ARRET_ARRIVE, saisieArretArrive.getText().toString());

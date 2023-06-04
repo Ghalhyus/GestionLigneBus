@@ -18,7 +18,7 @@ import com.example.gestionlignebus.fragment.FragmentItineraire;
 import com.example.gestionlignebus.model.Passage;
 import com.example.gestionlignebus.model.Periode;
 import com.example.gestionlignebus.model.Trajet;
-import com.example.gestionlignebus.utils.Preferences;
+import com.example.gestionlignebus.utils.GestionnairePreferences;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
 
         initialiserDao();
 
-        Preferences preferences = Preferences.getPreferences(this);
+        GestionnairePreferences gestionnairePreferences = GestionnairePreferences.getPreferences(this);
 
         // Récupération de la liste des itinéraires
         itinerairesLayout = this.findViewById(R.id.itineraires);
@@ -54,15 +54,15 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
         periodeDAO.open();
 
         periodeSelectionnee = periodeDAO.findById(
-                preferences.getLong(FragmentItineraire.CLE_PERIODE));
+                gestionnairePreferences.getLong(FragmentItineraire.CLE_PERIODE));
 
-        autoriserCorrespondance = preferences.getBoolean(
+        autoriserCorrespondance = gestionnairePreferences.getBoolean(
                 FragmentItineraire.CLE_AUTORISE_CORRESPONDANCE);
 
         // Initialisation de la liste des itinéraires
         itineraires = new ArrayList<>();
         lignes = new ArrayList<>();
-        rechercherItineraires(preferences);
+        rechercherItineraires(gestionnairePreferences);
         getItinerairesPassages();
 
         adapter = new ItineraireAdapter(itineraires, passages, lignes, getSupportFragmentManager());
@@ -82,16 +82,16 @@ public class ResultatRechercheItineraireActivity  extends AppCompatActivity
         trajetDAO.open();
     }
 
-    private void rechercherItineraires(Preferences preferences) {
+    private void rechercherItineraires(GestionnairePreferences gestionnairePreferences) {
         TextView messageErreur;
         String libelleArretDepart
-                = preferences.getString(FragmentItineraire.CLE_ARRET_DEPART);
+                = gestionnairePreferences.getString(FragmentItineraire.CLE_ARRET_DEPART);
         String libelleArretArrive
-                = preferences.getString(FragmentItineraire.CLE_ARRET_ARRIVE);
+                = gestionnairePreferences.getString(FragmentItineraire.CLE_ARRET_ARRIVE);
         String horaireDepart
-                = preferences.getString(FragmentItineraire.CLE_HORAIRE_DEPART);
+                = gestionnairePreferences.getString(FragmentItineraire.CLE_HORAIRE_DEPART);
         String horaireArrive
-                = preferences.getString(FragmentItineraire.CLE_HORAIRE_ARRIVE);
+                = gestionnairePreferences.getString(FragmentItineraire.CLE_HORAIRE_ARRIVE);
 
         try {
             Passage passageDepart = creerPassage(libelleArretDepart, horaireDepart);

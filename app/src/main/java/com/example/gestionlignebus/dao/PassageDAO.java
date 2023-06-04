@@ -132,37 +132,6 @@ public class PassageDAO implements ICommonDAO<Passage, Long> {
             // Argument invalide
             return null;
         }
-
-
-
-//        if (findByArretAndHoraire(toSave.getArret(), toSave.getHoraire()) == null) {
-//            if (toSave.getArret() != null && toSave.getArret().getId() == null) {
-//                Arret arretFound = arretDAO.findByLibelle(toSave.getArret().getLibelle());
-//                if (arretFound != null ) {
-//                    toSave.setArret(arretFound);
-//                } else {
-//                    toSave.setArret(arretDAO.save(toSave.getArret()));
-//                }
-//            }
-//            ContentValues enregistrement = objectToContentValues(toSave);
-//            long id = sqLiteDatabase.insert(
-//                    BDHelper.PASSAGE_NOM_TABLE, null, enregistrement);
-//
-//            // On enregistre le passage suivant
-//            if (toSave.getPassageSuivant() != null && toSave.getPassageSuivant().getId() == null) {
-//                Passage passageSuivant = save(toSave.getPassageSuivant());
-//
-//                // On met à jour l'arrêt à enregistrer
-//                toSave = findById(id);
-//                toSave.setPassageSuivant(passageSuivant);
-//                update(toSave);
-//            }
-//
-//            return findById(id);
-//        } else {
-//            // Un passage identique existe déjà
-//            return null;
-//        }
     }
 
     @Override

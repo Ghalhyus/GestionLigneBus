@@ -115,7 +115,8 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
 
                 if (trajets != null) {
                     // On récupère les trajets d'une ligne
-                    List<Trajet> trajetsByLigne = trajetDAO.findByLigne((Ligne) spinnerLigne.getSelectedItem());
+                    List<Trajet> trajetsByLigne
+                            = trajetDAO.findByLigne((Ligne) spinnerLigne.getSelectedItem());
                     if (trajetsByLigne != null) {
                         // On supprime les trajets d'une ligne
                         trajetDAO.deleteByLigne((Ligne) spinnerLigne.getSelectedItem());
@@ -124,32 +125,10 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
                             passageDAO.delete(trajet.getPremierPassage());
                         }
                     }
-                    int nbErreurTrajet = 0;
-                    for (Trajet trajet : trajets) {
-                        Passage passageFound = passageDAO.findByArretAndHoraire(
-                                trajet.getPremierPassage().getArret(),
-                                trajet.getPremierPassage().getHoraire());
-                        if (passageFound != null) {
-                            trajet.setPremierPassage(passageFound);
-                        } else {
-                            Passage passageSaved = passageDAO.save(trajet.getPremierPassage());
-                            trajet.setPremierPassage(passageSaved);
-                        }
-                        // On s'assure que les trajets sont tous ajoutés pour cette ligne
-                        trajet.setLigne((Ligne) spinnerLigne.getSelectedItem());
-                        Trajet trajetSaved = trajetDAO.save(trajet);
-                        if (trajetSaved == null) {
-                            nbErreurTrajet++;
-                        }
-                    }
-                    if (nbErreurTrajet > 0 ) {
-                        // Message erreur
-                        String message = String.format(getString(R.string.erreur_nb_trajet), nbErreurTrajet);
-                        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                    } else {
-                        String messageReussite = String.format(getString(R.string.reussite_import_donnée_variable), ((Ligne) spinnerLigne.getSelectedItem()).getLibelle());
-                        Toast.makeText(this, messageReussite, Toast.LENGTH_LONG).show();
-                    }
+
+                    int nbErreurTrajet = enregistrerTrajet(trajets);
+                    afficherResultat(nbErreurTrajet);
+
                 } else {
                     // Erreur lecture fichier
                     Toast.makeText(this, getString(R.string.erreur_import_trajet),
@@ -167,6 +146,54 @@ public class ChangerFicheHoraireActivity extends AppCompatActivity implements Vi
         } finally {
             ligneDAO.close();
             passageDAO.close();
+        }
+    }
+
+    /**
+     * Enregistre en base de données les trajets récupérés depuis le fichier JSON.
+     * @param trajets La liste des trajets à enregistrer.
+     * @return Le nombre de trajet n'ayant pas été enregistré.
+     */
+    private int enregistrerTrajet(List<Trajet> trajets) {
+        int nbErreurTrajet = 0;
+
+        for (Trajet trajet : trajets) {
+            Passage passageFound = passageDAO.findByArretAndHoraire(
+                    trajet.getPremierPassage().getArret(),
+                    trajet.getPremierPassage().getHoraire());
+
+            if (passageFound != null) {
+                trajet.setPremierPassage(passageFound);
+            } else {
+                Passage passageSaved = passageDAO.save(trajet.getPremierPassage());
+                trajet.setPremierPassage(passageSaved);
+            }
+
+            // On s'assure que les trajets sont tous ajoutés pour cette ligne
+            trajet.setLigne((Ligne) spinnerLigne.getSelectedItem());
+            Trajet trajetSaved = trajetDAO.save(trajet);
+            if (trajetSaved == null) {
+                nbErreurTrajet++;
+            }
+        }
+
+        return nbErreurTrajet;
+    }
+
+    /**
+     * Affiche le résultat de l'importation des trajets.
+     * @param nbErreurTrajet Le nombre de trajet en erreur.
+     */
+    private void afficherResultat(int nbErreurTrajet) {
+        if (nbErreurTrajet > 0 ) {
+            // Message erreur
+            String message = String.format(getString(R.string.erreur_nb_trajet), nbErreurTrajet);
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        } else {
+            String messageReussite = String.format(
+                    getString(R.string.reussite_import_donnée_variable),
+                    ((Ligne) spinnerLigne.getSelectedItem()).getLibelle());
+            Toast.makeText(this, messageReussite, Toast.LENGTH_LONG).show();
         }
     }
 }
